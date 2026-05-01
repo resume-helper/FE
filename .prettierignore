@@ -1,0 +1,13 @@
+.next/
+node_modules/
+out/
+build/
+coverage/
+
+package-lock.json
+*.tsbuildinfo
+
+.env*
+
+*.min.js
+*.log
