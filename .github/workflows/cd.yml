@@ -53,7 +53,7 @@ jobs:
             package.json \
             package-lock.json \
             next.config.ts \
-            ecosystem.config.js \
+            ecosystem.config.cjs \
             .env.production
 
       - uses: actions/upload-artifact@v4
@@ -112,7 +112,7 @@ jobs:
         run: |
           rsync -avz \
             -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
-            package.json package-lock.json next.config.ts ecosystem.config.js .env.production \
+            package.json package-lock.json next.config.ts ecosystem.config.cjs .env.production \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
 
       - name: Install production dependencies and restart app
@@ -125,10 +125,10 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             source "$NVM_DIR/nvm.sh"
             cd /home/ubuntu/app
-            npm ci --omit=dev
+            npm ci --omit=dev --ignore-scripts
             pm2 describe resume-helper > /dev/null 2>&1 \
               && pm2 reload resume-helper \
-              || pm2 start ecosystem.config.js --env production
+              || pm2 start ecosystem.config.cjs --env production
             pm2 save
 
       - name: Close port 22
