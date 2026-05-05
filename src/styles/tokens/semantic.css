@@ -1,0 +1,124 @@
+:root {
+  /* Label */
+  --semantic-label-normal: var(--color-cool-neutral-10);
+  --semantic-label-strong: var(--color-common-0);
+  --semantic-label-alternative: rgb(
+    var(--color-cool-neutral-25-rgb) / var(--opacity-61)
+  );
+  --semantic-label-neutral: rgb(
+    var(--color-cool-neutral-22-rgb) / var(--opacity-88)
+  );
+  --semantic-label-assistive: rgb(
+    var(--color-cool-neutral-25-rgb) / var(--opacity-28)
+  );
+  --semantic-label-disable: rgb(
+    var(--color-cool-neutral-25-rgb) / var(--opacity-16)
+  );
+
+  /* Background */
+  --semantic-background-normal: var(--color-common-100);
+  --semantic-background-alternative: var(--color-cool-neutral-99);
+  --semantic-background-elevated-normal: var(--color-common-100);
+  --semantic-background-elevated-alternative: var(--color-cool-neutral-99);
+  --semantic-background-transparent-normal: rgb(
+    var(--color-common-100-rgb) / var(--opacity-8)
+  );
+  --semantic-background-transparent-alternative: rgb(
+    var(--color-common-100-rgb) / var(--opacity-28)
+  );
+
+  /* Line */
+  --semantic-line-normal: var(--color-cool-neutral-50);
+  --semantic-line-normal-strong: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-52)
+  );
+  --semantic-line-normal-neutral: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-16)
+  );
+  --semantic-line-normal-alternative: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-8)
+  );
+  --semantic-line-solid-normal: var(--color-cool-neutral-96);
+  --semantic-line-solid-neutral: var(--color-cool-neutral-97);
+  --semantic-line-solid-alternative: var(--color-cool-neutral-98);
+
+  /* Fill */
+  --semantic-fill-normal: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-8)
+  );
+  --semantic-fill-alternative: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-5)
+  );
+  --semantic-fill-strong: rgb(
+    var(--color-cool-neutral-50-rgb) / var(--opacity-16)
+  );
+
+  /* Primary */
+  --semantic-primary-normal: var(--color-blue-50);
+  --semantic-primary-strong: var(--color-blue-45);
+  --semantic-primary-heavy: var(--color-blue-40);
+
+  /* Status */
+  --semantic-status-positive: var(--color-green-50);
+  --semantic-status-cautionary: var(--color-orange-50);
+  --semantic-status-negative: var(--color-red-50);
+
+  /* Interaction */
+  --semantic-interaction-inactive: var(--color-cool-neutral-70);
+  --semantic-interaction-disable: var(--color-cool-neutral-98);
+
+  /* Static */
+  --semantic-static-white: var(--color-common-100);
+  --semantic-static-black: var(--color-common-0);
+
+  /* Inverse */
+  --semantic-inverse-primary: var(--color-blue-60);
+  --semantic-inverse-background: var(--color-cool-neutral-15);
+  --semantic-inverse-label: var(--color-cool-neutral-99);
+
+  /* Accent Background */
+  --semantic-accent-bg-red-orange: var(--color-red-orange-50);
+  --semantic-accent-bg-lime: var(--color-lime-50);
+  --semantic-accent-bg-cyan: var(--color-cyan-50);
+  --semantic-accent-bg-light-blue: var(--color-light-blue-50);
+  --semantic-accent-bg-violet: var(--color-violet-50);
+  --semantic-accent-bg-purple: var(--color-purple-50);
+  --semantic-accent-bg-pink: var(--color-pink-50);
+
+  /* Accent Foreground */
+  --semantic-accent-fg-red: var(--color-red-40);
+  --semantic-accent-fg-red-orange: var(--color-red-orange-48);
+  --semantic-accent-fg-orange: var(--color-orange-39);
+  --semantic-accent-fg-lime: var(--color-lime-37);
+  --semantic-accent-fg-green: var(--color-green-40);
+  --semantic-accent-fg-cyan: var(--color-cyan-40);
+  --semantic-accent-fg-light-blue: var(--color-light-blue-40);
+  --semantic-accent-fg-blue: var(--color-blue-45);
+  --semantic-accent-fg-violet: var(--color-violet-45);
+  --semantic-accent-fg-purple: var(--color-purple-40);
+  --semantic-accent-fg-pink: var(--color-pink-46);
+
+  /* Material */
+  --semantic-material-dimmer: rgb(
+    var(--color-cool-neutral-10-rgb) / var(--opacity-52)
+  );
+
+  /* Elevation - Normal */
+  --semantic-elevation-normal-xsmall: 0px 1px 2px -1px rgba(23, 23, 23, 0.1);
+  --semantic-elevation-normal-small:
+    0px 4px 6px -1px rgba(23, 23, 23, 0.06),
+    0px 2px 4px -2px rgba(23, 23, 23, 0.06);
+  --semantic-elevation-normal-medium:
+    0px 10px 15px -3px rgba(23, 23, 23, 0.07),
+    0px 4px 6px -2px rgba(0, 0, 0, 0.07);
+  --semantic-elevation-normal-large:
+    0px 16px 24px -6px rgba(23, 23, 23, 0.08),
+    0px 6px 10px -4px rgba(23, 23, 23, 0.08);
+  --semantic-elevation-normal-xlarge:
+    0px 24px 38px -10px rgba(23, 23, 23, 0.12),
+    0px 10px 15px -5px rgba(23, 23, 23, 0.1);
+
+  /* Elevation - Spread */
+  --semantic-elevation-spread-small: 0px 0px 60px rgba(23, 23, 23, 0.1);
+  --semantic-elevation-spread-medium: 0px 15px 75px rgba(23, 23, 23, 0.16);
+}

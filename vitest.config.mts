@@ -11,5 +11,6 @@ export default defineConfig({
     globals: true,
     clearMocks: true,
     setupFiles: ["./vitest.setup.ts"],
+    passWithNoTests: true,
   },
 });
