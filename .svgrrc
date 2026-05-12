@@ -1,0 +1,21 @@
+{
+  "typescript": true,
+  "prettier": false,
+  "jsxRuntime": "automatic",
+  "replaceAttrValues": {
+    "#171719": "currentColor"
+  },
+  "svgProps": {
+    "aria-hidden": "true"
+  },
+  "svgoConfig": {
+    "plugins": [
+      {
+        "name": "removeAttrs",
+        "params": {
+          "attrs": "data-role"
+        }
+      }
+    ]
+  }
+}
