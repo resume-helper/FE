@@ -14,7 +14,9 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "svg": "svgr --out-dir src/shared/icons --ignore-existing -- src/assets/icons && prettier --write src/shared/icons",
+    "svg:all": "svgr --out-dir src/shared/icons -- src/assets/icons && prettier --write src/shared/icons"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -33,6 +35,7 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@svgr/cli": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.100.7",
     "@testing-library/dom": "^10.4.1",
