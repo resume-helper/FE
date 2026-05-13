@@ -2,6 +2,7 @@
 @import "../styles/tokens/atomic.css";
 @import "../styles/tokens/semantic.css";
 @import "../styles/tokens/typography.css";
+@import "../styles/animation/spinner.css";
 
 @theme {
   --breakpoint-lg: 1200px;
