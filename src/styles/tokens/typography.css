@@ -1,0 +1,84 @@
+@theme {
+  /* Display */
+  --text-display-1: 56px;
+  --text-display-1--line-height: 72px;
+  --text-display-1--letter-spacing: -0.0319em;
+
+  --text-display-2: 40px;
+  --text-display-2--line-height: 52px;
+  --text-display-2--letter-spacing: -0.0282em;
+
+  --text-display-3: 36px;
+  --text-display-3--line-height: 48px;
+  --text-display-3--letter-spacing: -0.027em;
+
+  /* Title */
+  --text-title-1: 32px;
+  --text-title-1--line-height: 44px;
+  --text-title-1--letter-spacing: -0.0253em;
+
+  --text-title-2: 28px;
+  --text-title-2--line-height: 38px;
+  --text-title-2--letter-spacing: -0.0236em;
+
+  --text-title-3: 24px;
+  --text-title-3--line-height: 32px;
+  --text-title-3--letter-spacing: -0.023em;
+
+  /* Heading */
+  --text-heading-1: 22px;
+  --text-heading-1--line-height: 30px;
+  --text-heading-1--letter-spacing: -0.0194em;
+
+  --text-heading-2: 20px;
+  --text-heading-2--line-height: 28px;
+  --text-heading-2--letter-spacing: -0.012em;
+
+  /* Headline */
+  --text-headline-1: 18px;
+  --text-headline-1--line-height: 26px;
+  --text-headline-1--letter-spacing: -0.002em;
+
+  --text-headline-2: 17px;
+  --text-headline-2--line-height: 26px;
+  --text-headline-2--letter-spacing: 0em;
+
+  /* Body */
+  --text-body-1-normal: 16px;
+  --text-body-1-normal--line-height: 24px;
+  --text-body-1-normal--letter-spacing: 0.0057em;
+
+  --text-body-1-reading: 16px;
+  --text-body-1-reading--line-height: 26px;
+  --text-body-1-reading--letter-spacing: 0.0057em;
+
+  --text-body-2-normal: 15px;
+  --text-body-2-normal--line-height: 22px;
+  --text-body-2-normal--letter-spacing: 0.0096em;
+
+  --text-body-2-reading: 15px;
+  --text-body-2-reading--line-height: 24px;
+  --text-body-2-reading--letter-spacing: 0.0096em;
+
+  /* Label */
+  --text-label-1-normal: 14px;
+  --text-label-1-normal--line-height: 20px;
+  --text-label-1-normal--letter-spacing: 0.0145em;
+
+  --text-label-1-reading: 14px;
+  --text-label-1-reading--line-height: 22px;
+  --text-label-1-reading--letter-spacing: 0.0145em;
+
+  --text-label-2: 13px;
+  --text-label-2--line-height: 18px;
+  --text-label-2--letter-spacing: 0.0194em;
+
+  /* Caption */
+  --text-caption-1: 12px;
+  --text-caption-1--line-height: 16px;
+  --text-caption-1--letter-spacing: 0.0252em;
+
+  --text-caption-2: 11px;
+  --text-caption-2--line-height: 14px;
+  --text-caption-2--letter-spacing: 0.0311em;
+}
