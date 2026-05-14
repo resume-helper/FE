@@ -13,6 +13,7 @@ export { default as ChevronLeft } from "./ChevronLeft";
 export { default as ChevronRight } from "./ChevronRight";
 export { default as ChevronUp } from "./ChevronUp";
 export { default as Clock } from "./Clock";
+export { default as Close } from "./Close";
 export { default as DocumentText } from "./DocumentText";
 export { default as Download } from "./Download";
 export { default as HandleDesktop } from "./HandleDesktop";
