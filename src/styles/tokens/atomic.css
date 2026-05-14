@@ -198,6 +198,11 @@
   --color-pink-20: #730560;
   --color-pink-10: #3d0133;
 
+  /* Brand */
+  --color-brand-kakao: #fee500;
+  --color-brand-naver: #03c75a;
+  --color-brand-google: #747775;
+
   /* Opacity */
   --opacity-5: 0.05;
   --opacity-8: 0.08;

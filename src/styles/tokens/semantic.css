@@ -121,4 +121,9 @@
   /* Elevation - Spread */
   --semantic-elevation-spread-small: 0px 0px 60px rgba(23, 23, 23, 0.1);
   --semantic-elevation-spread-medium: 0px 15px 75px rgba(23, 23, 23, 0.16);
+
+  /* Social Brand */
+  --semantic-social-kakao-bg: var(--color-brand-kakao);
+  --semantic-social-naver-bg: var(--color-brand-naver);
+  --semantic-social-google-border: var(--color-brand-google);
 }
