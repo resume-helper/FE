@@ -20,6 +20,7 @@ export { default as Link } from "./Link";
 export { default as List } from "./List";
 export { default as LogoGoogleColor } from "./LogoGoogleColor";
 export { default as LogoKakaoColor } from "./LogoKakaoColor";
+export { default as LogoNaverColor } from "./LogoNaverColor";
 export { default as Minus } from "./Minus";
 export { default as MoreHorizontal } from "./MoreHorizontal";
 export { default as MoreVertical } from "./MoreVertical";
