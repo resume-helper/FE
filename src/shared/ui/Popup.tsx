@@ -4,7 +4,7 @@ import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cva } from "class-variance-authority";
-import { X } from "lucide-react";
+import { Close } from "@/shared/icons";
 import { cn } from "@/shared/lib/cn";
 
 // ─────────────────────────────────────────────
@@ -262,7 +262,7 @@ const PopupClose = React.forwardRef<HTMLButtonElement, PopupCloseProps>(
         className
       )}
     >
-      {children ?? <X width={20} height={20} aria-hidden="true" />}
+      {children ?? <Close width={20} height={20} />}
     </DialogPrimitive.Close>
   )
 );
