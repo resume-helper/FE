@@ -4,9 +4,9 @@ import { cn } from "@/shared/lib/cn";
 const spinnerVariants = cva("text-line-solid-normal", {
   variants: {
     size: {
-      sm: "size-4",
-      md: "size-8",
-      lg: "size-12",
+      sm: "size-4.5",
+      md: "size-5",
+      lg: "size-6",
     },
   },
   defaultVariants: { size: "md" },
