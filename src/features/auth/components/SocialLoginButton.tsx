@@ -14,7 +14,7 @@ export function SocialLoginButton({ provider, onClick }: Props) {
   return (
     <button
       onClick={onClick}
-      className={`flex h-10 w-full cursor-pointer items-center justify-center gap-[10px] rounded-full px-4 leading-[var(--text-label-1-normal--line-height)] tracking-[var(--text-label-1-normal--letter-spacing)] text-[var(--text-label-1-normal)] ${className}`}
+      className={`text-label-1-normal flex h-10 w-full cursor-pointer items-center justify-center gap-[10px] rounded-full px-4 ${className}`}
     >
       <Icon width={20} height={20} />
       {label}
