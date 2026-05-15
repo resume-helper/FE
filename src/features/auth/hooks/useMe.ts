@@ -17,8 +17,11 @@ export function useMe() {
 
   // OAuth 로그인 완료 후 리다이렉트 감지
   useEffect(() => {
-    if (localStorage.getItem("oauth_pending") === "1") {
-      localStorage.removeItem("oauth_pending");
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("oauth") === "success") {
+      params.delete("oauth");
+      window.history.replaceState({}, "", params.size ? `/?${params}` : "/");
       setHasSession(true);
     }
   }, [setHasSession]);
