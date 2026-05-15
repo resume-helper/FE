@@ -4,6 +4,7 @@
 @import "../styles/tokens/typography.css";
 @import "../styles/animation/spinner.css";
 @import "../styles/animation/popup.css";
+@import "../styles/animation/progress-indicator.css";
 
 @theme {
   --breakpoint-lg: 1200px;
