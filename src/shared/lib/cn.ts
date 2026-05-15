@@ -25,6 +25,41 @@ const twMerge = extendTailwindMerge({
         "text-caption-1",
         "text-caption-2",
       ],
+      "text-color": [
+        "text-label-normal",
+        "text-label-strong",
+        "text-label-alternative",
+        "text-label-neutral",
+        "text-label-assistive",
+        "text-label-disable",
+
+        "text-primary-normal",
+        "text-primary-strong",
+        "text-primary-heavy",
+
+        "text-status-positive",
+        "text-status-cautionary",
+        "text-status-negative",
+
+        "text-static-white",
+        "text-static-black",
+
+        "text-inverse-primary",
+        "text-inverse-background",
+        "text-inverse-label",
+
+        "text-accent-fg-red",
+        "text-accent-fg-red-orange",
+        "text-accent-fg-orange",
+        "text-accent-fg-lime",
+        "text-accent-fg-green",
+        "text-accent-fg-cyan",
+        "text-accent-fg-light-blue",
+        "text-accent-fg-blue",
+        "text-accent-fg-violet",
+        "text-accent-fg-purple",
+        "text-accent-fg-pink",
+      ],
     },
   },
 });
