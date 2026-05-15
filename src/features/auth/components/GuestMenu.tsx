@@ -19,6 +19,7 @@ import {
   PopupActionButton,
   PopupTrigger,
 } from "@/shared/ui/Popup";
+import { Avatar } from "@/shared/ui/Avatar";
 
 export function GuestMenu() {
   const [loginOpen, setLoginOpen] = useState(false);
@@ -44,7 +45,9 @@ export function GuestMenu() {
   };
 
   return (
-    <>
+    <div className="flex items-center gap-3">
+      <Avatar variant="person" />
+
       {/* 로그인 팝업 */}
       <Popup open={loginOpen} onOpenChange={setLoginOpen}>
         <PopupTrigger asChild>
@@ -117,6 +120,6 @@ export function GuestMenu() {
           </PopupActionArea>
         </PopupContainer>
       </Popup>
-    </>
+    </div>
   );
 }

@@ -6,85 +6,25 @@ import { cn } from "@/shared/lib/cn";
 import { AvatarPerson, AvatarCompany, AvatarAcademy } from "@/shared/icons";
 
 export type AvatarVariant = "person" | "company" | "academy";
-export type AvatarSize =
-  | "xsmall"
-  | "small"
-  | "medium"
-  | "large"
-  | "xlarge"
-  | number;
+export type AvatarSize = "xsmall" | "small" | "medium" | "large" | "xlarge";
 
 // ─────────────────────────────────────────────
 // 사이즈 토큰
 // ─────────────────────────────────────────────
 
 const SIZE_CONFIG = {
-  xsmall: {
-    px: 24,
-    fontSize: "10px",
-    radius: { company: "6px", academy: "6px" },
-  },
-  small: {
-    px: 32,
-    fontSize: "12px",
-    radius: { company: "8px", academy: "8px" },
-  },
-  medium: {
-    px: 40,
-    fontSize: "14px",
-    radius: { company: "10px", academy: "10px" },
-  },
-  large: {
-    px: 48,
-    fontSize: "16px",
-    radius: { company: "12px", academy: "12px" },
-  },
-  xlarge: {
-    px: 64,
-    fontSize: "18px",
-    radius: { company: "16px", academy: "16px" },
-  },
+  xsmall: { px: 24, fontSize: "10px", radius: "6px" },
+  small: { px: 32, fontSize: "12px", radius: "8px" },
+  medium: { px: 40, fontSize: "14px", radius: "10px" },
+  large: { px: 48, fontSize: "16px", radius: "12px" },
+  xlarge: { px: 64, fontSize: "18px", radius: "16px" },
 } as const;
-
-type SizeKey = keyof typeof SIZE_CONFIG;
-
-const NAMED_SIZE_PX: Record<SizeKey, number> = {
-  xsmall: 24,
-  small: 32,
-  medium: 40,
-  large: 48,
-  xlarge: 64,
-};
-
-// ─────────────────────────────────────────────
-// 색상 토큰
-// ─────────────────────────────────────────────
-
-const VARIANT_COLORS: Record<AvatarVariant, { bg: string; fg: string }> = {
-  person: { bg: "#E8E9EA", fg: "#FFFFFF" },
-  company: { bg: "#E8E9EA", fg: "#FFFFFF" },
-  academy: { bg: "#E8E9EA", fg: "#FFFFFF" },
-};
 
 const FALLBACK_ICON: Record<AvatarVariant, React.ElementType> = {
   person: AvatarPerson,
   company: AvatarCompany,
   academy: AvatarAcademy,
 };
-
-// ─────────────────────────────────────────────
-// border-radius 계산
-// ─────────────────────────────────────────────
-
-function getBorderRadius(variant: AvatarVariant, size: AvatarSize): string {
-  if (variant === "person") return "9999px";
-  if (typeof size === "number") {
-    const raw = size * 0.25;
-    const rounded = Math.ceil(raw % 2 !== 0 ? raw + 1 : raw);
-    return `${rounded}px`;
-  }
-  return SIZE_CONFIG[size as SizeKey].radius[variant as "company" | "academy"];
-}
 
 // ─────────────────────────────────────────────
 // Avatar
@@ -135,15 +75,8 @@ export const Avatar = React.forwardRef<
     },
     ref
   ) => {
-    const isCustomSize = typeof size === "number";
-    const sizePx = isCustomSize
-      ? (size as number)
-      : SIZE_CONFIG[size as SizeKey].px;
-    const fontSize = isCustomSize
-      ? `${Math.round((size as number) * 0.35)}px`
-      : SIZE_CONFIG[size as SizeKey].fontSize;
-    const borderRadius = getBorderRadius(variant, size);
-    const colors = VARIANT_COLORS[variant];
+    const config = SIZE_CONFIG[size];
+    const borderRadius = variant === "person" ? "9999px" : config.radius;
     const Icon = FALLBACK_ICON[variant];
 
     return (
@@ -157,15 +90,14 @@ export const Avatar = React.forwardRef<
           justifyContent: "center",
           flexShrink: 0,
           userSelect: "none",
-          width: sizePx,
-          height: sizePx,
-          minWidth: sizePx,
-          minHeight: sizePx,
+          width: config.px,
+          height: config.px,
+          minWidth: config.px,
+          minHeight: config.px,
+          fontSize: config.fontSize,
           overflow: "visible",
           borderRadius,
-          backgroundColor: colors.bg,
-          color: colors.fg,
-          fontSize,
+          backgroundColor: "#E8E9EA",
           outline: `${borderWeight}px solid ${borderColor ?? "#DFE0E2"}`,
           outlineOffset: "0px",
           ...style,
@@ -210,7 +142,14 @@ export const Avatar = React.forwardRef<
             }}
           >
             {children ?? (
-              <Icon style={{ width: "140%", height: "140%", flexShrink: 0 }} />
+              <Icon
+                style={{
+                  width: "140%",
+                  height: "140%",
+                  flexShrink: 0,
+                  color: "#FFFFFF",
+                }}
+              />
             )}
           </AvatarPrimitive.Fallback>
         </span>
@@ -224,17 +163,13 @@ Avatar.displayName = "Avatar";
 // PushBadge
 // ─────────────────────────────────────────────
 
-const BADGE_DOT_SIZE = { xsmall: 6, small: 8, medium: 10 } as const;
-
-function getBadgeDotSize(avatarSize: AvatarSize): number {
-  const px =
-    typeof avatarSize === "number"
-      ? avatarSize
-      : NAMED_SIZE_PX[avatarSize as SizeKey];
-  if (px <= 36) return BADGE_DOT_SIZE.xsmall;
-  if (px <= 52) return BADGE_DOT_SIZE.small;
-  return BADGE_DOT_SIZE.medium;
-}
+const BADGE_DOT_SIZE: Record<AvatarSize, number> = {
+  xsmall: 6,
+  small: 6,
+  medium: 8,
+  large: 8,
+  xlarge: 10,
+};
 
 export interface PushBadgeProps {
   children: React.ReactNode;
@@ -247,7 +182,7 @@ export function PushBadge({
   avatarSize = "small",
   className,
 }: PushBadgeProps) {
-  const dotSize = getBadgeDotSize(avatarSize);
+  const dotSize = BADGE_DOT_SIZE[avatarSize];
   const offset = -Math.floor(dotSize / 4);
 
   return (
@@ -299,19 +234,9 @@ export const AvatarButton = React.forwardRef<
     },
     ref
   ) => {
-    const overlayRadius = (() => {
-      if (variant === "person") return "9999px";
-      if (typeof size === "number") {
-        const raw = size * 0.25;
-        const rounded = Math.ceil(raw % 2 !== 0 ? raw + 1 : raw);
-        return `${rounded + 8}px`;
-      }
-      const base = parseInt(
-        SIZE_CONFIG[size as SizeKey].radius[variant as "company" | "academy"],
-        10
-      );
-      return `${base + 8}px`;
-    })();
+    const config = SIZE_CONFIG[size];
+    const overlayRadius =
+      variant === "person" ? "9999px" : `${parseInt(config.radius, 10) + 8}px`;
 
     return (
       <button
