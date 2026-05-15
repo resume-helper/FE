@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { oauthLogin } from "@/features/auth/api/api";
-import { SocialLoginButton } from "@/features/auth/components/SocialLoginButton";
+import { KakaoLoginButton } from "@/features/auth/components/KakaoLoginButton";
+import { NaverLoginButton } from "@/features/auth/components/NaverLoginButton";
+import { GoogleLoginButton } from "@/features/auth/components/GoogleLoginButton";
+import { Button } from "@/shared/ui/Button";
 import {
   Popup,
   PopupContainer,
@@ -46,9 +49,9 @@ export function GuestMenu() {
       {/* 로그인 팝업 */}
       <Popup open={loginOpen} onOpenChange={setLoginOpen}>
         <PopupTrigger asChild>
-          <button type="button" className="cursor-pointer">
+          <Button variant="solid" color="primary" size="small">
             로그인
-          </button>
+          </Button>
         </PopupTrigger>
 
         <PopupContainer size="medium" aria-label="소셜 로그인">
@@ -67,16 +70,13 @@ export function GuestMenu() {
                   </PopupDescription>
                 </div>
                 <div className="flex w-full flex-col gap-3">
-                  <SocialLoginButton
-                    provider="kakao"
+                  <KakaoLoginButton
                     onClick={() => handleSocialLogin("kakao")}
                   />
-                  <SocialLoginButton
-                    provider="naver"
+                  <NaverLoginButton
                     onClick={() => handleSocialLogin("naver")}
                   />
-                  <SocialLoginButton
-                    provider="google"
+                  <GoogleLoginButton
                     onClick={() => handleSocialLogin("google")}
                   />
                 </div>

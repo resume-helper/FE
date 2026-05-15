@@ -32,6 +32,10 @@ const buttonVariants = cva(
         true: "",
         false: "",
       },
+      fullWidth: {
+        true: "w-full",
+        false: "",
+      },
     },
     compoundVariants: [
       // solid + primary
@@ -84,6 +88,7 @@ const buttonVariants = cva(
       color: "primary",
       size: "large",
       iconOnly: false,
+      fullWidth: false,
     },
   }
 );
@@ -112,6 +117,7 @@ function Button({
   color,
   size,
   iconOnly,
+  fullWidth,
   loading = false,
   disabled,
   leadingIcon,
@@ -132,7 +138,7 @@ function Button({
       aria-disabled={disabled || loading || undefined}
       data-loading={loading || undefined}
       className={cn(
-        buttonVariants({ variant, color, size, iconOnly }),
+        buttonVariants({ variant, color, size, iconOnly, fullWidth }),
         className
       )}
     >

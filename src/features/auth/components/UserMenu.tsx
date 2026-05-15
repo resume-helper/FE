@@ -1,20 +1,22 @@
 "use client";
 
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { Button } from "@/shared/ui/Button";
 
 export function UserMenu() {
   const { mutate: logout, isPending } = useLogout();
 
   return (
     <div className="flex items-center gap-3">
-      <button
-        type="button"
+      <Button
+        variant="outlined"
+        color="assistive"
+        size="small"
+        loading={isPending}
         onClick={() => logout()}
-        disabled={isPending}
-        className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
       >
         로그아웃
-      </button>
+      </Button>
     </div>
   );
 }

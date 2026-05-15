@@ -1,23 +1,34 @@
 "use client";
 
+import { Button } from "@/shared/ui/Button";
+import { cn } from "@/shared/lib/cn";
 import type { OAuthProvider } from "@/features/auth/types/auth";
 import { SOCIAL_CONFIG } from "@/features/auth/config/socialConfig";
 
-interface Props {
+interface SocialLoginButtonProps {
   provider: OAuthProvider;
   onClick: () => void;
+  children: React.ReactNode;
 }
 
-export function SocialLoginButton({ provider, onClick }: Props) {
-  const { label, icon: Icon, className } = SOCIAL_CONFIG[provider];
+export function SocialLoginButton({
+  provider,
+  onClick,
+  children,
+}: SocialLoginButtonProps) {
+  const { icon: Icon, className } = SOCIAL_CONFIG[provider];
 
   return (
-    <button
+    <Button
       onClick={onClick}
-      className={`text-label-1-normal flex h-10 w-full cursor-pointer items-center justify-center gap-[10px] rounded-full px-4 ${className}`}
+      fullWidth
+      leadingIcon={<Icon width={20} height={20} />}
+      className={cn(
+        "text-label-1-normal h-10 gap-[10px] rounded-full px-4 font-medium",
+        className
+      )}
     >
-      <Icon width={20} height={20} />
-      {label}
-    </button>
+      {children}
+    </Button>
   );
 }
