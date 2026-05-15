@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cn } from "@/shared/lib/cn";
-import { Person, Company, Graduation } from "@/shared/icons";
+import { PersonFill, Company, Graduation } from "@/shared/icons";
 
 export type AvatarVariant = "person" | "company" | "academy";
 export type AvatarSize =
@@ -49,7 +49,7 @@ function getBadgeDotSize(size: AvatarSize): number {
 }
 
 const FALLBACK_ICON: Record<AvatarVariant, React.ElementType> = {
-  person: Person,
+  person: PersonFill,
   company: Company,
   academy: Graduation,
 };
