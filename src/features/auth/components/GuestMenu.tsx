@@ -31,7 +31,6 @@ export function GuestMenu() {
 
   // 소셜 로그인 핸들러
   const handleSocialLogin = (provider: Parameters<typeof oauthLogin>[0]) => {
-    localStorage.setItem("oauth_pending", "1");
     oauthLogin(provider);
     setLoginOpen(false);
   };
