@@ -3,27 +3,55 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cn } from "@/shared/lib/cn";
-import { AvatarPerson, AvatarCompany, AvatarAcademy } from "@/shared/icons";
+import { Person, Company, Graduation } from "@/shared/icons";
 
 export type AvatarVariant = "person" | "company" | "academy";
-export type AvatarSize = "xsmall" | "small" | "medium" | "large" | "xlarge";
+export type AvatarSize =
+  | "xsmall"
+  | "small"
+  | "medium"
+  | "large"
+  | "xlarge"
+  | number;
 
 // ─────────────────────────────────────────────
 // 사이즈 토큰
 // ─────────────────────────────────────────────
 
 const SIZE_CONFIG = {
-  xsmall: { px: 24, fontSize: "10px", radius: "6px" },
-  small: { px: 32, fontSize: "12px", radius: "8px" },
-  medium: { px: 40, fontSize: "14px", radius: "10px" },
-  large: { px: 48, fontSize: "16px", radius: "12px" },
-  xlarge: { px: 64, fontSize: "18px", radius: "16px" },
+  xsmall: { px: 24, fontSize: "10px", radius: "6px", iconSize: 16 },
+  small: { px: 32, fontSize: "12px", radius: "8px", iconSize: 20 },
+  medium: { px: 40, fontSize: "14px", radius: "10px", iconSize: 26 },
+  large: { px: 48, fontSize: "16px", radius: "12px", iconSize: 32 },
+  xlarge: { px: 64, fontSize: "18px", radius: "16px", iconSize: 38 },
 } as const;
 
+type NamedSize = keyof typeof SIZE_CONFIG;
+
+function getConfig(size: AvatarSize) {
+  if (typeof size === "number") {
+    return {
+      px: size,
+      fontSize: `${Math.round(size * 0.35)}px`,
+      radius: `${size / 4}px`,
+      iconSize: Math.round(size * 0.625),
+    };
+  }
+  return SIZE_CONFIG[size as NamedSize];
+}
+
+function getBadgeDotSize(size: AvatarSize): number {
+  const px =
+    typeof size === "number" ? size : SIZE_CONFIG[size as NamedSize].px;
+  if (px <= 28) return 6;
+  if (px <= 44) return 8;
+  return 10;
+}
+
 const FALLBACK_ICON: Record<AvatarVariant, React.ElementType> = {
-  person: AvatarPerson,
-  company: AvatarCompany,
-  academy: AvatarAcademy,
+  person: Person,
+  company: Company,
+  academy: Graduation,
 };
 
 // ─────────────────────────────────────────────
@@ -75,7 +103,7 @@ export const Avatar = React.forwardRef<
     },
     ref
   ) => {
-    const config = SIZE_CONFIG[size];
+    const config = getConfig(size);
     const borderRadius = variant === "person" ? "9999px" : config.radius;
     const Icon = FALLBACK_ICON[variant];
 
@@ -144,8 +172,8 @@ export const Avatar = React.forwardRef<
             {children ?? (
               <Icon
                 style={{
-                  width: "140%",
-                  height: "140%",
+                  width: config.iconSize,
+                  height: config.iconSize,
                   flexShrink: 0,
                   color: "#FFFFFF",
                 }}
@@ -163,14 +191,6 @@ Avatar.displayName = "Avatar";
 // PushBadge
 // ─────────────────────────────────────────────
 
-const BADGE_DOT_SIZE: Record<AvatarSize, number> = {
-  xsmall: 6,
-  small: 6,
-  medium: 8,
-  large: 8,
-  xlarge: 10,
-};
-
 export interface PushBadgeProps {
   children: React.ReactNode;
   avatarSize?: AvatarSize;
@@ -182,7 +202,7 @@ export function PushBadge({
   avatarSize = "small",
   className,
 }: PushBadgeProps) {
-  const dotSize = BADGE_DOT_SIZE[avatarSize];
+  const dotSize = getBadgeDotSize(avatarSize);
   const offset = -Math.floor(dotSize / 4);
 
   return (
@@ -234,7 +254,7 @@ export const AvatarButton = React.forwardRef<
     },
     ref
   ) => {
-    const config = SIZE_CONFIG[size];
+    const config = getConfig(size);
     const overlayRadius =
       variant === "person" ? "9999px" : `${parseInt(config.radius, 10) + 8}px`;
 
