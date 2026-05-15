@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { cva } from "class-variance-authority";
 import { Close } from "@/shared/icons";
+import { Button } from "@/shared/ui/Button";
 import { cn } from "@/shared/lib/cn";
 
 // ─────────────────────────────────────────────
@@ -80,35 +81,6 @@ const popupActionAreaVariants = cva(
       },
     },
     defaultVariants: { variant: "neutral" },
-  }
-);
-
-const popupActionButtonVariants = cva(
-  [
-    "inline-flex items-center justify-center",
-    "h-11 rounded-lg px-4 min-w-20",
-    "text-body-2-normal font-semibold",
-    "border-none cursor-pointer",
-    "transition-[background,opacity] duration-[120ms] ease-in",
-    "disabled:opacity-40 disabled:cursor-not-allowed",
-    "focus-visible:outline-2 focus-visible:outline-primary-normal focus-visible:outline-offset-2",
-  ],
-  {
-    variants: {
-      color: {
-        primary: "bg-primary-normal text-static-white",
-        assistive: "bg-fill-alternative text-label-neutral",
-        negative: "bg-status-negative text-static-white",
-      },
-      fullWidth: {
-        true: "w-full flex-1",
-        false: "w-auto",
-      },
-    },
-    defaultVariants: {
-      color: "primary",
-      fullWidth: false,
-    },
   }
 );
 
@@ -386,7 +358,7 @@ const PopupActionArea: React.FC<PopupActionAreaProps> = ({
 // ─────────────────────────────────────────────
 
 interface PopupActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: "primary" | "assistive" | "negative";
+  color?: "primary" | "assistive";
   fullWidth?: boolean;
 }
 
@@ -397,12 +369,16 @@ const PopupActionButton: React.FC<PopupActionButtonProps> = ({
   className,
   ...props
 }) => (
-  <button
-    className={cn(popupActionButtonVariants({ color, fullWidth }), className)}
+  <Button
+    variant="solid"
+    color={color}
+    size="medium"
+    fullWidth={fullWidth}
+    className={className}
     {...props}
   >
     {children}
-  </button>
+  </Button>
 );
 
 // ─────────────────────────────────────────────
