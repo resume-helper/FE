@@ -54,20 +54,17 @@ const popupContainerVariants = cva(
   }
 );
 
-const popupNavTitleVariants = cva(
-  "flex-1 font-semibold py-1 text-label-strong",
-  {
-    variants: {
-      variant: {
-        normal: "text-center text-body-2-normal",
-        emphasized: "text-left text-body-2-normal",
-        floating: "sr-only",
-        display: "text-center text-headline-1",
-      },
+const popupNavTitleVariants = cva("flex-1 py-1 text-label-strong", {
+  variants: {
+    variant: {
+      normal: "text-center text-body-2-normal-bold",
+      emphasized: "text-left text-body-2-normal-bold",
+      floating: "sr-only",
+      display: "text-center text-headline-1-bold",
     },
-    defaultVariants: { variant: "normal" },
-  }
-);
+  },
+  defaultVariants: { variant: "normal" },
+});
 
 const popupActionAreaVariants = cva(
   "shrink-0 flex gap-2 p-[var(--popup-padding,20px)] border-t border-line-solid-normal",
@@ -296,12 +293,7 @@ const PopupHeading: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className }) => (
-  <p
-    className={cn(
-      "text-headline-2 text-label-strong m-0 font-semibold",
-      className
-    )}
-  >
+  <p className={cn("text-headline-2-bold text-label-strong m-0", className)}>
     {children}
   </p>
 );
@@ -312,7 +304,7 @@ const PopupSummary: React.FC<{
 }> = ({ children, className }) => (
   <p
     className={cn(
-      "text-label-1-normal text-label-neutral m-0 font-medium",
+      "text-label-1-normal-medium text-label-neutral m-0",
       className
     )}
   >
@@ -326,7 +318,10 @@ const PopupDescription: React.FC<{
 }> = ({ children, className }) => (
   <DialogPrimitive.Description asChild>
     <p
-      className={cn("text-body-2-reading text-label-assistive m-0", className)}
+      className={cn(
+        "text-body-2-reading-regular text-label-assistive m-0",
+        className
+      )}
     >
       {children}
     </p>

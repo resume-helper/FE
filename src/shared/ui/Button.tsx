@@ -5,7 +5,7 @@ import { Spinner } from "@/shared/ui/Spinner";
 const buttonVariants = cva(
   [
     "relative inline-flex items-center justify-center overflow-hidden",
-    "font-semibold whitespace-nowrap cursor-pointer select-none",
+    "whitespace-nowrap cursor-pointer select-none",
     "transition-colors duration-150 ease-in-out",
     "disabled:cursor-not-allowed disabled:pointer-events-none",
     "after:absolute after:inset-0 after:rounded-[inherit] after:bg-label-normal after:opacity-0 after:transition-opacity after:duration-150 after:ease-in-out",
@@ -24,9 +24,10 @@ const buttonVariants = cva(
         assistive: "",
       },
       size: {
-        large: "px-7 py-3 rounded-xl gap-1.5 text-body-1-normal",
-        medium: "px-5 py-[9px] rounded-[10px] gap-[5px] text-body-2-normal",
-        small: "px-3.5 py-[7px] rounded-lg gap-1 text-label-2",
+        large: "px-7 py-3 rounded-xl gap-1.5 text-body-1-normal-bold",
+        medium:
+          "px-5 py-[9px] rounded-[10px] gap-[5px] text-body-2-normal-bold",
+        small: "px-3.5 py-[7px] rounded-lg gap-1 text-label-2-bold",
       },
       iconOnly: {
         true: "",

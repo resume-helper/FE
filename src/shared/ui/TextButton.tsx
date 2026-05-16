@@ -5,7 +5,7 @@ import { Spinner } from "@/shared/ui/Spinner";
 const textButtonVariants = cva(
   [
     "relative inline-flex items-center justify-center gap-1",
-    "font-semibold whitespace-nowrap cursor-pointer select-none",
+    "whitespace-nowrap cursor-pointer select-none",
     "transition-colors duration-150 ease-in-out",
     "disabled:cursor-not-allowed disabled:pointer-events-none",
     "after:absolute after:inset-x-[-7px] after:inset-y-0 after:rounded-md",
@@ -17,8 +17,8 @@ const textButtonVariants = cva(
   {
     variants: {
       size: {
-        medium: "py-1 text-body-1-normal",
-        small: "py-[3px] text-label-1-normal",
+        medium: "py-1 text-body-1-normal-bold",
+        small: "py-[3px] text-label-1-normal-bold",
       },
     },
     defaultVariants: {
