@@ -35,3 +35,6 @@ export { default as Star } from "./Star";
 export { default as StarFill } from "./StarFill";
 export { default as Thumbnail } from "./Thumbnail";
 export { default as Trash } from "./Trash";
+export { default as TriangleExclamationFill } from "./TriangleExclamationFill";
+export { default as CirceCheckFill } from "./CircleCheckFill";
+export { default as CircelCloseFill } from "./CircleCloseFill";
