@@ -31,7 +31,7 @@ export function Toast() {
             "rounded-xl px-4 py-[11px]",
             "bg-inverse-background/52 backdrop-blur-[32px]",
             "before:absolute before:inset-0 before:bg-primary-normal/5",
-            "text-body-2-normal font-semibold",
+            "text-body-2-normal-bold",
             "text-static-white/[0.88]"
           ),
           icon: "relative shrink-0 z-10",

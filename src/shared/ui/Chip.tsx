@@ -62,10 +62,10 @@ const chipVariants = cva(
 );
 
 const textClassMap = {
-  xsmall: "text-caption-1 font-medium",
-  small: "text-label-1-normal font-medium",
-  medium: "text-body-2-normal font-medium",
-  large: "text-body-2-normal font-medium",
+  xsmall: "text-caption-1-medium",
+  small: "text-label-1-normal-medium",
+  medium: "text-body-2-normal-medium",
+  large: "text-body-2-normal-medium",
 } as const;
 
 const iconSizeMap = {

@@ -24,7 +24,7 @@ export function SocialLoginButton({
       fullWidth
       leadingIcon={<Icon width={20} height={20} />}
       className={cn(
-        "text-label-1-normal h-10 gap-[10px] rounded-full px-4 font-medium",
+        "text-label-1-normal-medium h-10 gap-[10px] rounded-full px-4",
         className
       )}
     >

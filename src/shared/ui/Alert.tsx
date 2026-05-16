@@ -41,7 +41,7 @@ function AlertContent({
     <AlertDialog.Content
       {...props}
       className={cn(
-        "bg-background-elevated-normal relative z-50 flex w-[calc(100vw-40px)] max-w-100 flex-col gap-4 rounded-xl p-5",
+        "bg-background-elevated-normal relative z-50 flex w-[calc(100vw-40px)] max-w-100 min-w-[320px] flex-col gap-4 rounded-xl p-5",
         "data-[state=open]:animate-popup-content-in data-[state=closed]:animate-popup-content-out",
         className
       )}
@@ -71,10 +71,7 @@ function AlertHeading({ className, ...props }: AlertHeadingProps) {
   return (
     <AlertDialog.Title
       {...props}
-      className={cn(
-        "text-label-normal text-[18px] leading-normal font-semibold",
-        className
-      )}
+      className={cn("text-label-normal text-headline-1-bold", className)}
     />
   );
 }
@@ -87,7 +84,7 @@ function AlertDescription({
     <AlertDialog.Description
       {...props}
       className={cn(
-        "text-label-alternative text-[15px] leading-normal font-normal",
+        "text-label-alternative text-body-2-normal-regular",
         className
       )}
     />
