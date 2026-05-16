@@ -2,6 +2,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import QueryProvider from "./providers/QueryProvider";
 import { GlobalAlert } from "@/shared/ui/GlobalAlert";
+import { Toast } from "@/shared/ui/Toast";
 
 const pretendard = localFont({
   src: "./fonts/PretendardJPVariable.woff2",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <QueryProvider>
           {children}
           <GlobalAlert />
+          <Toast />
         </QueryProvider>
       </body>
     </html>
