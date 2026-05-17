@@ -59,6 +59,7 @@
 
   /* Primary */
   --color-primary-normal: var(--semantic-primary-normal);
+  --color-primary-normal-rgb: var(--semantic-primary-normal-rgb);
   --color-primary-strong: var(--semantic-primary-strong);
   --color-primary-heavy: var(--semantic-primary-heavy);
 

@@ -55,6 +55,7 @@
 
   /* Primary */
   --semantic-primary-normal: var(--color-blue-50);
+  --semantic-primary-normal-rgb: var(--color-blue-50-rgb);
   --semantic-primary-strong: var(--color-blue-45);
   --semantic-primary-heavy: var(--color-blue-40);
 

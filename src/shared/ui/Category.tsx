@@ -154,13 +154,11 @@ export function CategoryList({
         {/* 우측 고정 아이콘 버튼 */}
         {iconButton && (
           <div
-            className="flex shrink-0 items-center bg-white pr-2 pl-2"
-            style={{
-              background:
-                "linear-gradient(to right, transparent 0%, white 20%)",
-              paddingLeft: "16px",
-              paddingRight: horizontalPadding ? "16px" : "0",
-            }}
+            className={cn(
+              "flex shrink-0 items-center pl-4",
+              "bg-[linear-gradient(to_right,transparent_0%,var(--semantic-background-normal)_20%)]",
+              horizontalPadding ? "pr-4" : "pr-0"
+            )}
           >
             {iconButton}
           </div>
@@ -199,23 +197,26 @@ export function CategoryListItem({
       className={cn(
         // 기본 레이아웃
         "relative inline-flex shrink-0 items-center justify-center",
-        "cursor-pointer whitespace-nowrap select-none",
-        "rounded-full border transition-all duration-150",
-        "outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
+        "text-label-1-normal-medium cursor-pointer whitespace-nowrap select-none",
+        "rounded-lg border transition-all duration-150",
+        "focus-visible:outline-primary-normal outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[1px]",
         "disabled:pointer-events-none disabled:opacity-40",
 
         // normal variant
         variant === "normal" && [
-          "border-transparent bg-transparent text-[#9EA7B2]",
-          "hover:bg-[#F1F3F5] hover:text-[#495057]",
-          "data-[state=active]:border-transparent data-[state=active]:bg-[#1B1C1E] data-[state=active]:text-white",
+          "border-line-solid-normal text-label-normal bg-transparent",
+          "hover:bg-fill-normal",
+          "data-[state=active]:bg-inverse-background data-[state=active]:text-inverse-label data-[state=active]:border-transparent",
         ],
 
         // alternative variant
         variant === "alternative" && [
-          "border-[#DEE2E6] bg-transparent text-[#9EA7B2]",
-          "hover:border-[#ADB5BD] hover:text-[#495057]",
-          "data-[state=active]:border-[#1B1C1E] data-[state=active]:font-semibold data-[state=active]:text-[#1B1C1E]",
+          "text-label-normal border-transparent bg-transparent",
+          "shadow-[inset_0_0_0_1px_var(--semantic-line-normal-neutral)]",
+          "hover:bg-fill-normal",
+          "data-[state=active]:text-primary-normal",
+          "data-[state=active]:bg-[rgba(var(--semantic-primary-normal-rgb),0.05)]",
+          "data-[state=active]:shadow-[inset_0_0_0_1px_rgba(var(--semantic-primary-normal-rgb),0.43)]",
         ],
 
         className
@@ -224,8 +225,6 @@ export function CategoryListItem({
         height: cfg.height,
         paddingLeft: cfg.px,
         paddingRight: cfg.px,
-        fontSize: cfg.fontSize,
-        fontWeight: "inherit",
         gap: cfg.gap,
       }}
     >
