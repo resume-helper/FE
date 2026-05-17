@@ -22,6 +22,7 @@
 
   /* Label */
   --color-label-normal: var(--semantic-label-normal);
+  --color-label-normal-rgb: var(--semantic-label-normal-rgb);
   --color-label-strong: var(--semantic-label-strong);
   --color-label-alternative: var(--semantic-label-alternative);
   --color-label-neutral: var(--semantic-label-neutral);
