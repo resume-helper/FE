@@ -75,7 +75,9 @@
   /* Inverse */
   --semantic-inverse-primary: var(--color-blue-60);
   --semantic-inverse-background: var(--color-cool-neutral-15);
+  --semantic-inverse-background-rgb: var(--color-cool-neutral-15-rgb);
   --semantic-inverse-label: var(--color-cool-neutral-99);
+  --semantic-inverse-label-rgb: var(--color-cool-neutral-99-rgb);
 
   /* Accent Background */
   --semantic-accent-bg-red-orange: var(--color-red-orange-50);
