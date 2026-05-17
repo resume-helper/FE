@@ -60,7 +60,7 @@ export function GuestMenu() {
           <PopupNavigation variant="normal">서비스명</PopupNavigation>
           <PopupContent>
             <PopupContentItem>
-              <div className="flex w-full flex-col gap-12">
+              <div className="flex w-full flex-col gap-5">
                 <div className="flex flex-col gap-3">
                   <PopupHeading className="text-center">
                     [서비스명]에 오신 것을 환영합니다!
@@ -75,11 +75,11 @@ export function GuestMenu() {
                   <KakaoLoginButton
                     onClick={() => handleSocialLogin("kakao")}
                   />
-                  <NaverLoginButton
-                    onClick={() => handleSocialLogin("naver")}
-                  />
                   <GoogleLoginButton
                     onClick={() => handleSocialLogin("google")}
+                  />
+                  <NaverLoginButton
+                    onClick={() => handleSocialLogin("naver")}
                   />
                 </div>
               </div>

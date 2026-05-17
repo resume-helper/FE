@@ -9,7 +9,7 @@ interface Props {
 export function KakaoLoginButton({ onClick }: Props) {
   return (
     <SocialLoginButton provider="kakao" onClick={onClick}>
-      카카오톡으로 로그인
+      카카오 로그인
     </SocialLoginButton>
   );
 }
