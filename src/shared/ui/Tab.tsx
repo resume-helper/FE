@@ -16,13 +16,10 @@ export type TabPanelMountMode = "only-active" | "force-mount" | "always";
 // 사이즈 토큰
 // ─────────────────────────────────────────────
 
-const SIZE_CONFIG: Record<
-  TabSize,
-  { height: string; fontSize: string; px: string }
-> = {
-  small: { height: "40px", fontSize: "13px", px: "12px" },
-  medium: { height: "44px", fontSize: "14px", px: "14px" },
-  large: { height: "48px", fontSize: "15px", px: "16px" },
+const SIZE_CONFIG: Record<TabSize, { height: string; typography: string }> = {
+  small: { height: "40px", typography: "text-body-2-normal-bold" },
+  medium: { height: "48px", typography: "text-headline-2-bold" },
+  large: { height: "56px", typography: "text-heading-2-bold" },
 };
 
 // ─────────────────────────────────────────────
@@ -38,12 +35,9 @@ const TabContext = React.createContext<TabContextValue>({
   resize: "hug",
 });
 
-// indicator 위치 계산을 위한 ref 공유
 const TabListRefContext = React.createContext<
   React.RefObject<HTMLDivElement | null>
->({
-  current: null,
-});
+>({ current: null });
 
 // ─────────────────────────────────────────────
 // Tab
@@ -140,7 +134,9 @@ export function TabList({
     const activeRect = active.getBoundingClientRect();
     setIndicatorStyle({
       width: activeRect.width,
-      transform: `translateX(${activeRect.left - listRect.left + listRef.current.scrollLeft}px)`,
+      transform: `translateX(${
+        activeRect.left - listRect.left + listRef.current.scrollLeft
+      }px)`,
     });
   }, [listRef]);
 
@@ -161,24 +157,28 @@ export function TabList({
       observer.disconnect();
       window.removeEventListener("resize", updateIndicator);
     };
-  }, [updateIndicator]);
+  }, [listRef, updateIndicator]);
 
   return (
     <TabContext.Provider value={{ size, resize }}>
       <div
         className={cn("relative flex w-full items-end", className)}
-        style={style}
+        style={
+          { "--wds-tab-padding-x": "12px", ...style } as React.CSSProperties
+        }
       >
         {/* 탭 목록 스크롤 영역 */}
         <TabsPrimitive.List
           ref={listRef as React.RefObject<HTMLDivElement>}
+          data-role="tab-list-wrapper"
           className={cn(
             "relative flex min-w-0 flex-1 items-end",
+            "gap-[calc(var(--wds-tab-padding-x)*2)]",
             resize === "hug"
               ? "scrollbar-none overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               : "overflow-x-hidden",
             resize === "fill" && "w-full",
-            "border-b border-[#E9ECEF]",
+            "border-line-normal-alternative border-b",
             horizontalPadding && resize !== "fill" && "px-4"
           )}
           style={{ height: cfg.height }}
@@ -189,7 +189,8 @@ export function TabList({
           {/* 슬라이딩 active indicator */}
           <span
             aria-hidden
-            className="pointer-events-none absolute bottom-0 left-0 h-[2px] bg-[#1B1C1E] transition-transform duration-200 ease-out"
+            data-role="tab-motion"
+            className="bg-label-normal pointer-events-none absolute bottom-0 left-0 h-[2px] transition-[transform,width] duration-200 ease-out"
             style={indicatorStyle}
           />
         </TabsPrimitive.List>
@@ -197,13 +198,11 @@ export function TabList({
         {/* 우측 고정 아이콘 버튼 */}
         {iconButton && (
           <div
-            className="flex shrink-0 items-center self-center pr-0 pb-0 pl-2"
-            style={{
-              background:
-                "linear-gradient(to right, transparent 0%, white 20%)",
-              paddingLeft: "16px",
-              paddingRight: horizontalPadding ? "16px" : "0",
-            }}
+            className={cn(
+              "flex shrink-0 items-center self-center",
+              "bg-[linear-gradient(to_right,transparent_0%,var(--semantic-background-normal)_20%)]",
+              horizontalPadding ? "px-4" : "pr-0 pl-4"
+            )}
           >
             {iconButton}
           </div>
@@ -221,7 +220,6 @@ TabList.displayName = "TabList";
 export interface TabListItemProps {
   value: string;
   disabled?: boolean;
-  as?: React.ElementType;
   children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -241,27 +239,34 @@ export function TabListItem({
     <TabsPrimitive.Trigger
       value={value}
       disabled={disabled}
+      data-role="tab-list-item"
       className={cn(
         "relative inline-flex shrink-0 items-center justify-center",
         "cursor-pointer whitespace-nowrap select-none",
         "transition-colors duration-150 outline-none",
         "focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-[-2px]",
         "disabled:pointer-events-none disabled:opacity-40",
-        "font-medium text-[#9EA7B2]",
-        "hover:text-[#495057]",
-        "data-[state=active]:text-[#1B1C1E]",
+        cfg.typography,
+        "text-label-assistive",
+        "hover:text-label-alternative",
+        "data-[state=active]:text-label-strong",
         resize === "fill" && "flex-1",
         className
       )}
-      style={{
-        height: cfg.height,
-        paddingLeft: cfg.px,
-        paddingRight: cfg.px,
-        fontSize: cfg.fontSize,
-        ...style,
-      }}
+      style={{ height: cfg.height, ...style }}
     >
-      {children}
+      {/* 텍스트 래퍼 */}
+      <p data-role="tab-list-item-text-wrapper">
+        <span data-role="tab-list-item-text">{children}</span>
+      </p>
+
+      {/* 인터랙션 영역 */}
+      <div
+        data-role="tab-list-item-interaction-area"
+        aria-hidden
+        className="absolute top-1/2 left-1/2 h-full -translate-x-1/2 -translate-y-1/2"
+        style={{ width: "calc(100% + (var(--wds-tab-padding-x) * 2))" }}
+      />
     </TabsPrimitive.Trigger>
   );
 }
