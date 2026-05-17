@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { cn } from "@/shared/lib/cn";
+import { CaretDown } from "@/shared/icons";
 
 // ─────────────────────────────────────────────
 // 타입
@@ -98,19 +99,6 @@ function ChevronRight({ size = 16 }: { size?: number }) {
     </svg>
   );
 }
-function ChevronDown({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden>
-      <path
-        d="M3 5l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 // ─────────────────────────────────────────────
 // 공통 페이지 버튼
@@ -135,13 +123,13 @@ function PageButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-lg text-[13px] font-medium",
+        "inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-[6px]",
         "transition-colors duration-100 outline-none",
-        "focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
+        "focus-visible:outline-primary-normal focus-visible:outline-2 focus-visible:outline-offset-[1px]",
         "disabled:pointer-events-none disabled:opacity-40",
         isActive
-          ? "bg-[#1B1C1E] text-white"
-          : "text-[#495057] hover:bg-[#F1F3F5]"
+          ? "text-label-strong text-body-2-normal-medium bg-[rgba(var(--semantic-label-normal-rgb),0.09)]"
+          : "text-label-neutral hover:bg-fill-normal text-body-2-normal-regular"
       )}
     >
       {page}
@@ -171,14 +159,28 @@ function NavButton({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-lg",
-        "text-[#868E96] transition-colors duration-100 outline-none",
-        "hover:bg-[#F1F3F5] hover:text-[#495057]",
-        "focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1",
+        "group relative inline-flex cursor-pointer items-center justify-center rounded-full",
+        "text-label-alternative outline-none",
+        "focus-visible:outline-primary-normal focus-visible:outline-2 focus-visible:outline-offset-[1px]",
         "disabled:pointer-events-none disabled:opacity-40"
       )}
     >
-      {direction === "prev" ? <ChevronLeft /> : <ChevronRight />}
+      {direction === "prev" ? (
+        <ChevronLeft size={16} />
+      ) : (
+        <ChevronRight size={16} />
+      )}
+      <div
+        role="presentation"
+        className={cn(
+          "absolute top-1/2 left-1/2 -z-[1] -translate-x-1/2 -translate-y-1/2 rounded-full",
+          "bg-[var(--semantic-label-normal)]",
+          "scale-0 opacity-0",
+          "transition-[transform,opacity] duration-[120ms] ease-in",
+          "group-hover:scale-100 group-hover:opacity-[0.08]"
+        )}
+        style={{ width: "calc(100% + 16px)", height: "calc(100% + 16px)" }}
+      />
     </button>
   );
 }
@@ -214,60 +216,65 @@ export function PaginationSelect({
   const value = pageSize !== undefined ? String(pageSize) : undefined;
 
   return (
-    <SelectPrimitive.Root
-      defaultValue={defaultVal}
-      value={value}
-      onValueChange={(v) => onChange?.(Number(v))}
-      disabled={disabled}
-      open={open}
-      onOpenChange={onOpenChange}
-      defaultOpen={defaultOpen}
-    >
-      <SelectPrimitive.Trigger
-        className={cn(
-          "inline-flex h-8 items-center gap-1 rounded-lg border border-[#DEE2E6] px-2",
-          "bg-white text-[13px] text-[#495057]",
-          "transition-colors hover:border-[#ADB5BD]",
-          "focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none",
-          "disabled:pointer-events-none disabled:opacity-40",
-          "cursor-pointer select-none"
-        )}
-        aria-label="페이지당 항목 수"
+    <div className="inline-flex items-center gap-1.5">
+      <SelectPrimitive.Root
+        defaultValue={defaultVal}
+        value={value}
+        onValueChange={(v) => onChange?.(Number(v))}
+        disabled={disabled}
+        open={open}
+        onOpenChange={onOpenChange}
+        defaultOpen={defaultOpen}
       >
-        <SelectPrimitive.Value />
-        <ChevronDown />
-        <span className="text-[#868E96]">{label}</span>
-      </SelectPrimitive.Trigger>
-
-      <SelectPrimitive.Portal>
-        <SelectPrimitive.Content
-          position="popper"
-          sideOffset={4}
+        <SelectPrimitive.Trigger
           className={cn(
-            "z-50 min-w-[80px] overflow-hidden rounded-lg border border-[#DEE2E6] bg-white shadow-md",
-            "animate-in fade-in-0 zoom-in-95"
+            "border-line-normal-neutral inline-flex h-8 items-center gap-1 rounded-lg border pr-[6px] pl-2",
+            "text-label-2-regular bg-background-normal text-label-normal",
+            "hover:border-line-normal-strong transition-colors",
+            "focus-visible:outline-primary-normal focus-visible:outline-2 focus-visible:outline-offset-[1px]",
+            "disabled:pointer-events-none disabled:opacity-40",
+            "cursor-pointer select-none"
           )}
+          aria-label="페이지당 항목 수"
         >
-          <SelectPrimitive.Viewport className="p-1">
-            {pageSizeOptions.map((opt) => (
-              <SelectPrimitive.Item
-                key={opt}
-                value={String(opt)}
-                className={cn(
-                  "flex h-8 items-center rounded-md px-3 text-[13px] text-[#495057]",
-                  "cursor-pointer outline-none select-none",
-                  "hover:bg-[#F1F3F5]",
-                  "data-[state=checked]:font-semibold data-[state=checked]:text-[#1B1C1E]",
-                  "focus:bg-[#F1F3F5]"
-                )}
-              >
-                <SelectPrimitive.ItemText>{opt}</SelectPrimitive.ItemText>
-              </SelectPrimitive.Item>
-            ))}
-          </SelectPrimitive.Viewport>
-        </SelectPrimitive.Content>
-      </SelectPrimitive.Portal>
-    </SelectPrimitive.Root>
+          <SelectPrimitive.Value />
+          <CaretDown width={16} height={16} />
+        </SelectPrimitive.Trigger>
+
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content
+            position="popper"
+            sideOffset={4}
+            className={cn(
+              "border-line-solid-normal bg-background-normal z-50 min-w-[80px] overflow-hidden rounded-[6px] border shadow-md",
+              "animate-in fade-in-0 zoom-in-95"
+            )}
+          >
+            <SelectPrimitive.Viewport className="p-1">
+              {pageSizeOptions.map((opt) => (
+                <SelectPrimitive.Item
+                  key={opt}
+                  value={String(opt)}
+                  className={cn(
+                    "text-body-2-normal-regular text-label-normal flex h-7 items-center rounded-md px-3",
+                    "cursor-pointer outline-none select-none",
+                    "transition-[font-weight,color] duration-150 will-change-[font-weight,color]",
+                    "hover:bg-fill-normal",
+                    "data-[state=checked]:text-label-2-bold data-[state=checked]:text-label-strong",
+                    "focus:bg-fill-normal"
+                  )}
+                >
+                  <SelectPrimitive.ItemText>{opt}</SelectPrimitive.ItemText>
+                </SelectPrimitive.Item>
+              ))}
+            </SelectPrimitive.Viewport>
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
+      </SelectPrimitive.Root>
+      <span className="text-label-2-medium text-label-alternative whitespace-nowrap">
+        {label}
+      </span>
+    </div>
   );
 }
 PaginationSelect.displayName = "PaginationSelect";
@@ -302,7 +309,7 @@ export function PaginationField({
   };
 
   return (
-    <div className="inline-flex items-center gap-1.5">
+    <div className="inline-flex items-center gap-2">
       <input
         type="number"
         min={1}
@@ -311,16 +318,16 @@ export function PaginationField({
         disabled={disabled}
         onChange={(e) => setInputVal(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="—"
+        placeholder=""
         aria-label={label}
         className={cn(
-          "h-8 w-12 rounded-lg border border-[#DEE2E6] px-2 text-center text-[13px] text-[#495057]",
-          "outline-none focus:border-[#1B1C1E] focus:ring-1 focus:ring-[#1B1C1E]",
+          "text-label-2-regular text-label-normal border-line-solid-normal h-8 w-[53px] rounded-lg border px-2 text-center",
+          "focus:border-primary-normal focus:ring-primary-normal outline-none focus:ring-1",
           "disabled:pointer-events-none disabled:opacity-40",
           "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         )}
       />
-      <span className="text-[13px] whitespace-nowrap text-[#868E96]">
+      <span className="text-label-2-medium text-label-alternative whitespace-nowrap">
         {label}
       </span>
     </div>
@@ -380,7 +387,7 @@ export function Pagination({
     return (
       <nav
         aria-label="페이지 탐색"
-        className={cn("inline-flex items-center gap-1", className)}
+        className={cn("inline-flex items-center gap-2", className)}
         style={style}
       >
         {!hidePrevButton && (
@@ -391,10 +398,11 @@ export function Pagination({
             ariaLabel="이전 페이지"
           />
         )}
-        <span className="min-w-[48px] px-2 text-center text-[13px] text-[#495057]">
-          {current}
-          <span className="text-[#ADB5BD]">/{totalPages}</span>
+
+        <span className="text-label-2-medium text-label-neutral text-center">
+          {current}/{totalPages}
         </span>
+
         {!hideNextButton && (
           <NavButton
             direction="next"
@@ -419,7 +427,7 @@ export function Pagination({
         });
 
   const pageButtons = (
-    <div className="inline-flex items-center gap-0.5" role="list">
+    <div className="inline-flex items-center gap-1.5" role="list">
       {items.map((item, idx) =>
         typeof item === "number" ? (
           <PageButton
@@ -432,7 +440,7 @@ export function Pagination({
         ) : (
           <span
             key={`${item}-${idx}`}
-            className="inline-flex h-8 w-8 items-center justify-center text-[13px] text-[#ADB5BD] select-none"
+            className="text-body-2-normal-regular text-label-alternative inline-flex h-7 w-7 items-center justify-center select-none"
             aria-hidden
           >
             …
@@ -464,7 +472,7 @@ export function Pagination({
     return (
       <nav
         aria-label="페이지 탐색"
-        className={cn("inline-flex items-center gap-1", className)}
+        className={cn("inline-flex items-center gap-4", className)}
         style={style}
       >
         {prevBtn}
@@ -502,7 +510,7 @@ export function Pagination({
       )}
 
       {/* 페이지 버튼 */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-4">
         {prevBtn}
         {pageButtons}
         {nextBtn}

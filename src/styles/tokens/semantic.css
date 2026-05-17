@@ -1,6 +1,7 @@
 :root {
   /* Label */
   --semantic-label-normal: var(--color-cool-neutral-10);
+  --semantic-label-normal-rgb: 23, 23, 25;
   --semantic-label-strong: var(--color-common-0);
   --semantic-label-alternative: rgb(
     var(--color-cool-neutral-25-rgb) / var(--opacity-61)
