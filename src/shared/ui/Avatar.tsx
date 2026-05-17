@@ -210,16 +210,12 @@ export function PushBadge({
       {children}
       <span
         aria-label="새 알림"
+        className="bg-primary-normal absolute z-[3] rounded-full shadow-[0_0_0_2px_white]"
         style={{
-          position: "absolute",
           top: offset,
           right: offset,
           width: dotSize,
           height: dotSize,
-          borderRadius: "9999px",
-          backgroundColor: "#3B82F6",
-          boxShadow: "0 0 0 2px white",
-          zIndex: 3,
         }}
       />
     </span>
