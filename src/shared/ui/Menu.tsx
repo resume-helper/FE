@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/shared/lib/cn";
+import { Check } from "@/shared/icons";
 
 // ─────────────────────────────────────────────
 // 타입
@@ -46,59 +47,37 @@ function CheckIcon() {
 }
 
 function RadioIcon({ checked }: { checked: boolean }) {
+  if (checked) {
+    return (
+      <span className="bg-primary-normal flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full">
+        <span className="bg-static-white h-2 w-2 rounded-full" />
+      </span>
+    );
+  }
   return (
     <span
+      className="bg-background-normal h-[18px] w-[18px] shrink-0 rounded-full"
       style={{
-        width: 18,
-        height: 18,
-        borderRadius: "50%",
-        flexShrink: 0,
-        border: `2px solid ${checked ? "#1B1C1E" : "#CED4DA"}`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        boxShadow: "inset 0 0 0 1.5px var(--semantic-line-normal-neutral)",
       }}
-    >
-      {checked && (
-        <span
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            backgroundColor: "#1B1C1E",
-          }}
-        />
-      )}
-    </span>
+    />
   );
 }
 
 function CheckboxIcon({ checked }: { checked: boolean }) {
   return (
     <span
+      className={cn(
+        "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px]",
+        checked ? "bg-primary-normal" : "bg-background-normal"
+      )}
       style={{
-        width: 18,
-        height: 18,
-        borderRadius: 4,
-        flexShrink: 0,
-        border: `2px solid ${checked ? "#1B1C1E" : "#CED4DA"}`,
-        backgroundColor: checked ? "#1B1C1E" : "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        boxShadow: checked
+          ? "inset 0 0 0 1.5px var(--semantic-primary-normal)"
+          : "inset 0 0 0 1.5px var(--semantic-line-normal-neutral)",
       }}
     >
-      {checked && (
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path
-            d="M2 6l3 3 5-5"
-            stroke="white"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      )}
+      {checked && <Check width={16} height={16} className="text-white" />}
     </span>
   );
 }
@@ -219,8 +198,8 @@ export function MenuContent({
         className={cn(
           "z-50 flex flex-col overflow-hidden",
           "max-h-[400px] max-w-[320px] min-w-[140px]",
-          "rounded-xl border border-[#E9ECEF] bg-white",
-          "shadow-[0_4px_24px_rgba(0,0,0,0.12)]",
+          "border-line-solid-normal bg-background-elevated-normal rounded-xl border",
+          "shadow-elevation-normal-medium",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
           "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -251,7 +230,7 @@ export function MenuList({ children, className }: MenuListProps) {
       role="listbox"
       className={cn(
         "flex-1 overflow-y-auto py-1",
-        "scrollbar-thin scrollbar-thumb-[#DEE2E6] scrollbar-track-transparent",
+        "scrollbar-thin scrollbar-thumb-line-solid-normal scrollbar-track-transparent",
         className
       )}
     >
@@ -275,7 +254,7 @@ export function MenuGroup({ title, children, className }: MenuGroupProps) {
   return (
     <div role="group" className={cn("flex flex-col", className)}>
       {title && (
-        <div className="sticky top-0 z-10 bg-white px-4 py-2 text-[12px] font-semibold tracking-wide text-[#9EA7B2]">
+        <div className="bg-background-elevated-normal text-caption-1-bold text-label-alternative sticky top-0 z-10 px-4 py-2">
           {title}
         </div>
       )}
@@ -395,13 +374,13 @@ export function MenuItem({
       className={cn(
         "flex min-h-[44px] items-center gap-3 px-4 py-2.5",
         "cursor-pointer outline-none select-none",
-        "text-[14px] text-[#1B1C1E] transition-colors duration-100",
-        "hover:bg-[#F8F9FA]",
-        "focus-visible:bg-[#F1F3F5]",
-        "active:bg-[#F1F3F5]",
-        isChecked && variant === "normal" && "font-medium text-[#1B1C1E]",
+        "text-label-1-normal-regular text-label-normal transition-colors duration-100",
+        "hover:bg-fill-alternative",
+        "focus-visible:bg-fill-normal",
+        "active:bg-fill-normal",
+        isChecked && variant === "normal" && "text-label-1-normal-medium",
         disabled && "pointer-events-none cursor-default opacity-40",
-        divider && "border-b border-[#F1F3F5]",
+        divider && "border-line-solid-alternative border-b",
         className
       )}
     >
@@ -415,7 +394,7 @@ export function MenuItem({
 
       {/* trailing */}
       {trailingNode && (
-        <span className="flex shrink-0 items-center text-[#1B1C1E]">
+        <span className="text-label-normal flex shrink-0 items-center">
           {trailingNode}
         </span>
       )}
@@ -472,7 +451,7 @@ export function MenuActionArea({
     <div
       className={cn(
         "flex items-center justify-between gap-2",
-        "shrink-0 border-t border-[#F1F3F5] px-4 py-3",
+        "border-line-solid-alternative shrink-0 border-t px-4 py-3",
         className
       )}
     >
