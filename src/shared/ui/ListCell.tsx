@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/shared/lib/cn";
+import { ChevronRight } from "../icons";
 
 // ─────────────────────────────────────────────
 // 타입
@@ -51,8 +52,10 @@ const CONTENT_VARIANT_STYLE: Record<ListCellContentVariant, string> = {
   switch: "flex items-center justify-center shrink-0",
   button: "flex items-center justify-center shrink-0",
   badge: "flex items-center justify-center shrink-0",
-  chevron: "flex items-center gap-1 text-sm text-[#9EA7B2] shrink-0",
-  value: "flex items-center text-sm text-[#9EA7B2] shrink-0",
+  chevron:
+    "flex items-center gap-1 text-body-1-normal-regular text-label-alternative shrink-0",
+  value:
+    "flex items-center text-body-1-normal-regular text-label-alternative shrink-0",
   custom: "flex items-center shrink-0",
 };
 
@@ -115,22 +118,9 @@ export const ListCellContent = React.forwardRef<
       {children}
 
       {variant === "chevron" && chevron && (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          aria-hidden
-          style={{ flexShrink: 0 }}
-        >
-          <path
-            d="M6 4l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <div className="py-1 pl-2">
+          <ChevronRight width={16} height={16} />
+        </div>
       )}
     </span>
   )
@@ -204,7 +194,7 @@ export const ListCell = React.forwardRef<HTMLElement, ListCellProps>(
         aria-disabled={disabled || undefined}
         className={cn(
           "flex w-full list-none",
-          divider && "border-b border-[#E8EBF0]",
+          divider && "border-line-solid-alternative border-b",
           className
         )}
         style={style}
@@ -230,11 +220,10 @@ export const ListCell = React.forwardRef<HTMLElement, ListCellProps>(
             isInteractive && [
               "relative cursor-pointer select-none",
               "transition-colors duration-100",
-              "hover:bg-[rgba(0,0,0,0.04)]",
-              "active:bg-[rgba(0,0,0,0.08)]",
+              "hover:bg-fill-alternative",
+              "active:bg-fill-normal",
               "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-blue-500",
             ],
-            selected && "bg-[rgba(75,117,255,0.08)]",
             disabled && "pointer-events-none cursor-default opacity-40"
           )}
           style={
@@ -260,8 +249,9 @@ export const ListCell = React.forwardRef<HTMLElement, ListCellProps>(
           >
             <span
               className={cn(
-                "text-[15px] leading-[22px] font-normal text-[#1B1C1E]",
-                ellipsis && "truncate"
+                "text-body-1-normal-regular text-label-normal",
+                ellipsis && "truncate",
+                selected && "text-body-1-normal-medium text-primary-normal"
               )}
             >
               {children}
@@ -269,7 +259,7 @@ export const ListCell = React.forwardRef<HTMLElement, ListCellProps>(
             {textProps?.caption && (
               <span
                 className={cn(
-                  "text-[13px] leading-[18px] text-[#9EA7B2]",
+                  "text-label-2-regular text-label-alternative",
                   ellipsis && "truncate",
                   textProps.captionClassName
                 )}
