@@ -4,6 +4,7 @@
 @import "../styles/tokens/typography.css";
 @import "../styles/animation/spinner.css";
 @import "../styles/animation/popup.css";
+@import "../styles/animation/tooltip.css";
 @import "../styles/animation/progress-indicator.css";
 
 @theme {
@@ -79,7 +80,9 @@
   /* Inverse */
   --color-inverse-primary: var(--semantic-inverse-primary);
   --color-inverse-background: var(--semantic-inverse-background);
+  --color-inverse-background-rgb: var(--semantic-inverse-background-rgb);
   --color-inverse-label: var(--semantic-inverse-label);
+  --color-inverse-label-rgb: var(--semantic-inverse-label-rgb);
 
   /* Accent Background */
   --color-accent-bg-red-orange: var(--semantic-accent-bg-red-orange);

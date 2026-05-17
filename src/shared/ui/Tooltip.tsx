@@ -3,6 +3,15 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "@/shared/lib/cn";
+import { Close } from "@/shared/icons";
+
+// ─────────────────────────────────────────────
+// Context
+// ─────────────────────────────────────────────
+
+const TooltipInternalContext = React.createContext<{ close: () => void }>({
+  close: () => {},
+});
 
 // ─────────────────────────────────────────────
 // 타입
@@ -46,26 +55,20 @@ function parsePosition(position: TooltipPosition): {
 const SIZE_CONFIG: Record<
   TooltipSize,
   {
-    minWidth: string;
-    fontSize: string;
     px: string;
     py: string;
-    shortcutSize: string;
+    typography: string;
   }
 > = {
   small: {
-    minWidth: "36px",
-    fontSize: "12px",
     px: "8px",
-    py: "4px",
-    shortcutSize: "11px",
+    py: "5px",
+    typography: "text-caption-2-medium",
   },
   medium: {
-    minWidth: "64px",
-    fontSize: "13px",
-    px: "12px",
+    px: "10px",
     py: "8px",
-    shortcutSize: "12px",
+    typography: "text-label-1-normal-medium",
   },
 };
 
@@ -119,19 +122,19 @@ export function Tooltip({
 }: TooltipProps) {
   const isAlways = mode === "always";
   const [clickOpen, setClickOpen] = React.useState(false);
+  const [dismissed, setDismissed] = React.useState(false);
 
   const resolvedOpen =
     openProp !== undefined
       ? openProp
       : isAlways
-        ? true
+        ? !dismissed
         : mode === "click"
           ? clickOpen
           : undefined;
 
   const handleOpenChange = (next: boolean) => {
-    if (mode === "click") setClickOpen(next);
-    onOpenChange?.(next);
+    if (mode !== "click") onOpenChange?.(next);
   };
 
   const processedChildren =
@@ -153,20 +156,28 @@ export function Tooltip({
         })
       : children;
 
+  const close = React.useCallback(() => {
+    if (mode === "always") setDismissed(true);
+    if (mode === "click") setClickOpen(false);
+    onOpenChange?.(false);
+  }, [mode, onOpenChange]);
+
   return (
-    <TooltipPrimitive.Provider
-      delayDuration={mode === "hover" ? enterDelay : 0}
-      skipDelayDuration={350}
-    >
-      <TooltipPrimitive.Root
-        open={resolvedOpen}
-        defaultOpen={defaultOpen ?? isAlways}
-        onOpenChange={handleOpenChange}
-        disableHoverableContent={mode !== "hover"}
+    <TooltipInternalContext.Provider value={{ close }}>
+      <TooltipPrimitive.Provider
+        delayDuration={mode === "hover" ? enterDelay : 0}
+        skipDelayDuration={350}
       >
-        {processedChildren}
-      </TooltipPrimitive.Root>
-    </TooltipPrimitive.Provider>
+        <TooltipPrimitive.Root
+          open={resolvedOpen}
+          defaultOpen={defaultOpen ?? isAlways}
+          onOpenChange={handleOpenChange}
+          disableHoverableContent={mode !== "hover"}
+        >
+          {processedChildren}
+        </TooltipPrimitive.Root>
+      </TooltipPrimitive.Provider>
+    </TooltipInternalContext.Provider>
   );
 }
 Tooltip.displayName = "Tooltip";
@@ -225,6 +236,8 @@ export function TooltipContent({
   const { side, align } = parsePosition(position);
   const cfg = SIZE_CONFIG[size];
 
+  const { close: closeTooltip } = React.useContext(TooltipInternalContext);
+
   const onCloseRef = React.useRef(onClose);
   React.useEffect(() => {
     onCloseRef.current = onClose;
@@ -238,64 +251,90 @@ export function TooltipContent({
       forceMount={forceMount || undefined}
       className={cn(
         "z-50 max-w-[280px] break-words",
-        "rounded-lg bg-[#1B1C1E] text-white",
-        "shadow-[0_4px_16px_rgba(0,0,0,0.2)]",
-        "animate-in fade-in-0 zoom-in-95 duration-100",
-        "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-        "data-[side=top]:slide-in-from-bottom-1",
-        "data-[side=bottom]:slide-in-from-top-1",
-        "data-[side=left]:slide-in-from-right-1",
-        "data-[side=right]:slide-in-from-left-1",
+        "text-inverse-label rounded-lg bg-[rgba(var(--semantic-inverse-background-rgb),0.88)]",
+        "data-[state=open]:animate-tooltip-in",
+        "data-[state=closed]:animate-tooltip-out",
         className
       )}
-      style={{ minWidth: cfg.minWidth, fontSize: cfg.fontSize, ...style }}
+      style={{ ...style }}
     >
       <div
-        className="flex items-start gap-2"
+        className="relative z-[1] flex items-start gap-2"
         style={{ padding: `${cfg.py} ${cfg.px}` }}
       >
-        <span className="flex-1 leading-[1.5] text-white/90">{children}</span>
+        <div className="flex flex-1 flex-col gap-[6px]">
+          <div className="flex gap-1">
+            <span className={cfg.typography}>{children}</span>
 
-        {/* shortcut */}
-        {shortcut && (
-          <span
-            className="shrink-0 rounded bg-white/15 px-1 py-0.5 font-mono leading-none text-white/70"
-            style={{ fontSize: cfg.shortcutSize }}
-          >
-            {shortcut}
-          </span>
-        )}
+            {/* shortcut */}
+            {shortcut && (
+              <span
+                className={cn(
+                  cfg.typography,
+                  "w-fit shrink-0 text-[rgba(var(--semantic-inverse-label-rgb),0.61)]"
+                )}
+              >
+                {shortcut}
+              </span>
+            )}
+          </div>
+        </div>
 
         {closeButton && (
           <button
             type="button"
             aria-label="닫기"
-            onClick={() => onCloseRef.current?.()}
-            className="shrink-0 rounded p-0.5 text-white/50 transition-colors outline-none hover:text-white focus-visible:ring-1 focus-visible:ring-white"
+            onClick={() => {
+              closeTooltip();
+              onCloseRef.current?.();
+            }}
+            className={cn(
+              "group relative mt-0.5 flex shrink-0 cursor-pointer items-center justify-center",
+              "border-none bg-transparent p-0 text-[rgba(var(--semantic-inverse-label-rgb),0.61)]",
+              "focus-visible:outline-primary-normal focus-visible:outline-2 focus-visible:outline-offset-[1px]"
+            )}
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path
-                d="M3 3l8 8M11 3l-8 8"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            <div
+              role="presentation"
+              className={cn(
+                "absolute top-1/2 left-1/2 -z-[1] -translate-x-1/2 -translate-y-1/2",
+                "rounded-full bg-[var(--semantic-inverse-label)]",
+                "scale-0 opacity-0",
+                "transition-[transform,opacity] duration-[120ms] ease-in",
+                "group-hover:scale-100 group-hover:opacity-[0.0375]"
+              )}
+              style={{
+                width: "calc(100% + 16px)",
+                height: "calc(100% + 16px)",
+              }}
+            />
+            <Close width={16} height={16} />
           </button>
         )}
       </div>
 
       {/* action 영역 */}
       {action && (
-        <div className="border-t border-white/10 px-3 py-2">{action}</div>
+        <div className="border-static-white/10 border-t px-3 py-2">
+          {action}
+        </div>
       )}
 
       {/* arrow */}
-      <TooltipPrimitive.Arrow
-        className="fill-[#1B1C1E]"
-        width={10}
-        height={5}
-      />
+      <TooltipPrimitive.Arrow asChild width={14} height={6}>
+        <svg
+          viewBox="0 0 14 6"
+          width={14}
+          height={6}
+          fill="none"
+          className={cn(side === "top" && "-mt-px")}
+        >
+          <path
+            d="M0 0 L3 3.2 Q5 7 7 3.2 L10 0 Z"
+            fill="rgba(var(--semantic-inverse-background-rgb),0.88)"
+          />
+        </svg>
+      </TooltipPrimitive.Arrow>
     </TooltipPrimitive.Content>
   );
 
