@@ -293,9 +293,7 @@ const PopupHeading: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className }) => (
-  <p className={cn("text-headline-2-bold text-label-strong m-0", className)}>
-    {children}
-  </p>
+  <p className={cn("text-headline-2-bold m-0", className)}>{children}</p>
 );
 
 const PopupSummary: React.FC<{
@@ -317,12 +315,7 @@ const PopupDescription: React.FC<{
   className?: string;
 }> = ({ children, className }) => (
   <DialogPrimitive.Description asChild>
-    <p
-      className={cn(
-        "text-body-2-reading-regular text-label-assistive m-0",
-        className
-      )}
-    >
+    <p className={cn("text-body-2-reading-medium m-0", className)}>
       {children}
     </p>
   </DialogPrimitive.Description>
