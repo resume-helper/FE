@@ -2,7 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { useState } from "react";
 import { cva } from "class-variance-authority";
 import { cn } from "@/shared/lib/cn";
-import SvgCheck from "@/shared/icons/Check";
+import { Check } from "../icons";
 
 const controlVariants = cva(
   [
@@ -100,7 +100,7 @@ function CheckMark({
         disabled={disabled ?? false}
         className={controlVariants({ size, tight, isChecked })}
       >
-        <SvgCheck style={{ fontSize: size === "small" ? "20px" : "24px" }} />
+        <Check style={{ fontSize: size === "small" ? "20px" : "24px" }} />
       </Checkbox.Root>
 
       {label != null && (
