@@ -15,6 +15,7 @@ export { default as ChevronRight } from "./ChevronRight";
 export { default as ChevronUp } from "./ChevronUp";
 export { default as CircleCheckFill } from "./CircleCheckFill";
 export { default as CircleCloseFill } from "./CircleCloseFill";
+export { default as CircleExclamationFill } from "./CircleExclamationFill";
 export { default as Clock } from "./Clock";
 export { default as Close } from "./Close";
 export { default as Company } from "./Company";
