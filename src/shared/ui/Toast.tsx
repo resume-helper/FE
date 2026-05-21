@@ -2,9 +2,11 @@
 
 import { Toaster } from "sonner";
 import { cn } from "@/shared/lib/cn";
-import CircleCheckFill from "@/shared/icons/CircleCheckFill";
-import TriangleExclamationFill from "@/shared/icons/TriangleExclamationFill";
-import CircleCloseFill from "@/shared/icons/CircleCloseFill";
+import {
+  CircleCheckFill,
+  CircleExclamationFill,
+  TriangleExclamationFill,
+} from "@/shared/icons";
 
 const iconStyle = { width: 20, height: 20, flexShrink: 0 } as const;
 
@@ -57,7 +59,7 @@ export function Toast() {
         ),
         error: (
           <IconWrapper>
-            <CircleCloseFill
+            <CircleExclamationFill
               className="text-status-negative"
               style={iconStyle}
             />
