@@ -18,6 +18,7 @@ const ContentArea = styled.div`
 const Main = styled.main`
   flex: 1;
   overflow-y: auto;
+  background: var(--semantic-background-normal-alternative);
 `;
 
 const Inner = styled.div`

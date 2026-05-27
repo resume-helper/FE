@@ -56,7 +56,8 @@ jobs:
             package-lock.json \
             next.config.ts \
             ecosystem.config.cjs \
-            .env.production
+            .env.production \
+            .npmrc
 
       - uses: actions/upload-artifact@v4
         with:
