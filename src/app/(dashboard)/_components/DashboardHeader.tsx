@@ -23,10 +23,8 @@ const TITLE_MAP: Record<string, string> = {
   "/block-library": "블록 라이브러리",
   "/block-library/create": "블록 생성",
   "/web-resume": "웹 이력서",
-  "/web-resume/create": "웹 이력서 제작",
   "/pdf-resume": "PDF 이력서",
-  "/pdf-resume/create": "PDF 이력서 제작",
-  "/settings": "설정",
+  "/settings": "회원탈퇴",
 };
 
 const StyledHeader = styled.header<{ $borderColor: string }>`

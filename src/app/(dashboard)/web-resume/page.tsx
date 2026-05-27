@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import {
   FlexBox,
   Typography,
@@ -10,17 +13,23 @@ import {
   IconButton,
 } from "@wanteddev/wds";
 import { IconCircle, IconShareIos } from "@wanteddev/wds-icon";
+import { CreateResumeModal } from "../_components/CreateResumeModal";
 
 export default function Page() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <FlexBox flexDirection="column" gap="16px">
+      <CreateResumeModal open={modalOpen} onOpenChange={setModalOpen} />
       <FlexBox flexDirection="column" gap="20px">
         <FlexBox alignItems="center" justifyContent="space-between">
           <Typography variant="title1" weight="medium">
             Web Resume List
           </Typography>
 
-          <Button size="medium">이력서 생성하기</Button>
+          <Button size="medium" onClick={() => setModalOpen(true)}>
+            이력서 생성하기
+          </Button>
         </FlexBox>
 
         <FlexBox alignItems="center" justifyContent="space-between">

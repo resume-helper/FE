@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import {
-  Alert,
-  AlertTrigger,
-  AlertContainer,
-  AlertContent,
-  AlertHeading,
-  AlertActionArea,
   Button,
   FlexBox,
+  FormField,
+  FormLabel,
+  FormControl,
+  TextField,
   Typography,
 } from "@wanteddev/wds";
 
@@ -20,35 +19,89 @@ const TEMPLATES = [
 ];
 
 interface CreateResumeModalProps {
-  children?: React.ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 export function CreateResumeModal({
-  children,
-  open: openProp,
+  open = false,
   onOpenChange,
 }: CreateResumeModalProps) {
-  const [internalOpen, setInternalOpen] = useState(false);
+  const [title, setTitle] = useState("");
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
 
-  const open = openProp !== undefined ? openProp : internalOpen;
-  const setOpen = onOpenChange ?? setInternalOpen;
-
-  const handleConfirm = () => {
-    setOpen(false);
+  const handleClose = () => {
+    setTitle("");
+    setSelectedTemplate(null);
+    onOpenChange?.(false);
   };
 
-  return (
-    <Alert open={open} onOpenChange={setOpen}>
-      {children && <AlertTrigger>{children}</AlertTrigger>}
-      <AlertContainer sx={[{ width: "720px", maxWidth: "720px" }]}>
-        <AlertContent>
-          <AlertHeading>이력서 제작하기</AlertHeading>
-          <FlexBox flexDirection="column" gap="16px" sx={{ marginTop: "16px" }}>
-            <Typography variant="body2" weight="regular">
-              이력서 템플릿을 선택해주세요.
+  const handleConfirm = () => {
+    const params = new URLSearchParams();
+    if (title) params.set("title", title);
+    if (selectedTemplate) params.set("templateId", String(selectedTemplate));
+    handleClose();
+    window.open(`/resume/create?${params.toString()}`, "_blank");
+  };
+
+  if (!open || typeof document === "undefined") return null;
+
+  return createPortal(
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1300,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+      }}
+    >
+      {/* Dimmer */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0, 0, 0, 0.43)",
+        }}
+        onClick={handleClose}
+      />
+
+      {/* Modal Container */}
+      <FlexBox
+        flexDirection="column"
+        sx={{
+          position: "relative",
+          zIndex: 1,
+          width: "720px",
+          maxWidth: "100%",
+          background: "var(--semantic-background-elevated-normal)",
+          borderRadius: "12px",
+          overflow: "hidden",
+        }}
+      >
+        {/* Content */}
+        <FlexBox flexDirection="column" gap="20px" sx={{ padding: "20px" }}>
+          <Typography variant="headline1" weight="bold">
+            이력서 제작하기
+          </Typography>
+
+          <FormField>
+            <FormLabel required>이력서 제목</FormLabel>
+            <FormControl>
+              <TextField
+                width="100%"
+                placeholder="이력서 제목을 입력해주세요."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </FormControl>
+          </FormField>
+
+          <FlexBox flexDirection="column" gap="8px">
+            <Typography variant="label1" weight="medium">
+              템플릿 선택
             </Typography>
             <FlexBox gap="12px">
               {TEMPLATES.map((template) => (
@@ -87,14 +140,21 @@ export function CreateResumeModal({
               ))}
             </FlexBox>
           </FlexBox>
-        </AlertContent>
-        <AlertActionArea justifyContent="flex-end" gap="8px">
-          <Button variant="outlined" onClick={() => setOpen(false)}>
+        </FlexBox>
+
+        {/* Action Area */}
+        <FlexBox
+          justifyContent="flex-end"
+          gap="8px"
+          sx={{ padding: "0 20px 12px" }}
+        >
+          <Button variant="outlined" onClick={handleClose}>
             취소
           </Button>
           <Button onClick={handleConfirm}>확인</Button>
-        </AlertActionArea>
-      </AlertContainer>
-    </Alert>
+        </FlexBox>
+      </FlexBox>
+    </div>,
+    document.body
   );
 }

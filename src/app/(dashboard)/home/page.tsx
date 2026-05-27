@@ -8,21 +8,25 @@ import {
   IconButton,
 } from "@wanteddev/wds";
 import { IconChevronRight, IconPersons, IconPlus } from "@wanteddev/wds-icon";
+import { useState } from "react";
 import { ResumeCard } from "./_components/ResumeCard";
 import { CreateResumeModal } from "../_components/CreateResumeModal";
 
 export default function Page() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <FlexBox flexDirection="column" gap="16px">
+      <CreateResumeModal open={modalOpen} onOpenChange={setModalOpen} />
       <FlexBox flexDirection="column" gap="20px">
         <FlexBox alignItems="center" justifyContent="space-between">
           <Typography variant="title1" weight="medium">
             홈
           </Typography>
 
-          <CreateResumeModal>
-            <Button size="medium">이력서 제작하기</Button>
-          </CreateResumeModal>
+          <Button size="medium" onClick={() => setModalOpen(true)}>
+            이력서 제작하기
+          </Button>
         </FlexBox>
 
         <FlexBox gap="16px">

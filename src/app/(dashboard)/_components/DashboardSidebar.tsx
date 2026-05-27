@@ -31,9 +31,7 @@ const SIDEBAR_COLLAPSED_WIDTH = 64;
 
 const RESUME_ITEMS = [
   { label: "웹 이력서", href: "/web-resume" },
-  { label: "웹 이력서 제작", href: "/web-resume/create" },
   { label: "PDF 이력서", href: "/pdf-resume" },
-  { label: "PDF 이력서 제작", href: "/pdf-resume/create" },
 ];
 
 interface NavItemProps {
@@ -300,40 +298,11 @@ export function DashboardSidebar() {
 
       <NavItem
         href="/settings"
-        label="설정"
+        label="회원탈퇴"
         icon={IconSetting}
         active={pathname === "/settings"}
         isCollapsed={isCollapsed}
       />
-
-      {!isCollapsed && (
-        <FlexBox
-          alignItems="center"
-          gap="8px"
-          sx={{
-            marginTop: "auto",
-            padding: "12px 20px",
-            borderTop: `1px solid ${getColorByToken(theme, "semantic.line.solid.alternative")}`,
-          }}
-        >
-          <TextButton
-            size="small"
-            color="assistive"
-            trailingContent={<IconChevronRight width={14} height={14} />}
-            sx={{ flex: 1 }}
-          >
-            서비스 소개
-          </TextButton>
-          <TextButton
-            size="small"
-            color="assistive"
-            trailingContent={<IconChevronRight width={14} height={14} />}
-            sx={{ flex: 1 }}
-          >
-            문의하기
-          </TextButton>
-        </FlexBox>
-      )}
     </FlexBox>
   );
 }
