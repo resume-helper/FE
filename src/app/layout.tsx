@@ -1,8 +1,9 @@
 import "./globals.css";
+import "@wanteddev/wds/global.css";
+import "@wanteddev/wds/theme.css";
 import localFont from "next/font/local";
 import QueryProvider from "./providers/QueryProvider";
-import { GlobalAlert } from "@/shared/ui/GlobalAlert";
-import { Toast } from "@/shared/ui/Toast";
+import WDSProvider from "./providers/WDSProvider";
 
 const pretendard = localFont({
   src: "./fonts/PretendardJPVariable.woff2",
@@ -17,13 +18,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.variable}>
+    <html lang="ko" className={pretendard.variable} suppressHydrationWarning>
       <body>
-        <QueryProvider>
-          {children}
-          <GlobalAlert />
-          <Toast />
-        </QueryProvider>
+        <WDSProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </WDSProvider>
       </body>
     </html>
   );

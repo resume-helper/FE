@@ -1,21 +1,24 @@
-import {
-  LogoKakaoColor,
-  LogoNaverColor,
-  LogoGoogleColor,
-} from "@/shared/icons";
+import type { CSSProperties } from "react";
+import { IconLogoKakaoColor, IconLogoGoogleColor } from "@wanteddev/wds-icon";
+import LogoNaverColor from "@/features/auth/components/LogoNaverColor";
 
-export const SOCIAL_CONFIG = {
+export const SOCIAL_CONFIG: Record<
+  string,
+  {
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    style: CSSProperties;
+  }
+> = {
   kakao: {
-    icon: LogoKakaoColor,
-    className: "bg-kakao-bg text-kakao-text",
+    icon: IconLogoKakaoColor,
+    style: { background: "#FEE500" },
   },
   naver: {
     icon: LogoNaverColor,
-    className: "bg-naver-bg text-static-white",
+    style: { background: "#03C75A", color: "#FFFFFF" },
   },
   google: {
-    icon: LogoGoogleColor,
-    className:
-      "bg-background-normal text-label-neutral border border-google-border",
+    icon: IconLogoGoogleColor,
+    style: { background: "#FFFFFF", color: "#191919", borderColor: "#E0E0E0" },
   },
-} as const;
+};

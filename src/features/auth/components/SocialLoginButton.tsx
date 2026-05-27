@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/shared/ui/Button";
+import { Button } from "@wanteddev/wds";
 import { cn } from "@/shared/lib/cn";
 import type { OAuthProvider } from "@/features/auth/types/auth";
 import { SOCIAL_CONFIG } from "@/features/auth/config/socialConfig";
@@ -16,17 +16,15 @@ export function SocialLoginButton({
   onClick,
   children,
 }: SocialLoginButtonProps) {
-  const { icon: Icon, className } = SOCIAL_CONFIG[provider];
+  const { icon: Icon, style } = SOCIAL_CONFIG[provider];
 
   return (
     <Button
       onClick={onClick}
       fullWidth
-      leadingIcon={<Icon width={20} height={20} />}
-      className={cn(
-        "text-label-1-normal-medium h-10 gap-[10px] rounded-full px-4",
-        className
-      )}
+      leadingContent={<Icon width={20} height={20} />}
+      className={cn("h-10 gap-[10px] rounded-full px-4")}
+      style={style}
     >
       {children}
     </Button>
