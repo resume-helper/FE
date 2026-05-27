@@ -1,9 +1,5 @@
-@import "tailwindcss";
-
-@theme {
-  --breakpoint-lg: 1200px;
-}
-
-@theme inline {
-  --font-sans: var(--font-pretendard);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }

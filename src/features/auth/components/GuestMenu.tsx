@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import styled from "styled-components";
 import {
   Avatar,
   Button,
@@ -21,13 +22,38 @@ import { KakaoLoginButton } from "@/features/auth/components/KakaoLoginButton";
 import { NaverLoginButton } from "@/features/auth/components/NaverLoginButton";
 import { GoogleLoginButton } from "@/features/auth/components/GoogleLoginButton";
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const LoginContent = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const LoginText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+`;
+
+const SocialButtons = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
+`;
+
 export function GuestMenu() {
   const [loginOpen, setLoginOpen] = useState(false);
-
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-
   const [errorOpen, setErrorOpen] = useState(() => !!searchParams.get("error"));
 
   const handleSocialLogin = (provider: Parameters<typeof oauthLogin>[0]) => {
@@ -43,7 +69,7 @@ export function GuestMenu() {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <Wrapper>
       <Avatar variant="person" />
 
       {/* 로그인 모달 */}
@@ -53,23 +79,22 @@ export function GuestMenu() {
             로그인
           </Button>
         </ModalTrigger>
-
         <ModalContainer size="medium" aria-label="소셜 로그인">
           <ModalNavigation variant="normal">서비스명</ModalNavigation>
           <ModalContent>
             <ModalContentItem>
-              <div className="flex w-full flex-col gap-5">
-                <div className="flex flex-col gap-3">
-                  <ModalHeading className="text-center">
+              <LoginContent>
+                <LoginText>
+                  <ModalHeading>
                     [서비스명]에 오신 것을 환영합니다!
                   </ModalHeading>
-                  <ModalDescription className="text-center">
+                  <ModalDescription>
                     내 이력서는 얼마나 먹힐까 궁금하시지 않나요?
                     <br />
                     이력서 제작부터 피드백 까지 한번에 받아보세요
                   </ModalDescription>
-                </div>
-                <div className="flex w-full flex-col gap-3">
+                </LoginText>
+                <SocialButtons>
                   <KakaoLoginButton
                     onClick={() => handleSocialLogin("kakao")}
                   />
@@ -79,8 +104,8 @@ export function GuestMenu() {
                   <NaverLoginButton
                     onClick={() => handleSocialLogin("naver")}
                   />
-                </div>
-              </div>
+                </SocialButtons>
+              </LoginContent>
             </ModalContentItem>
           </ModalContent>
         </ModalContainer>
@@ -117,6 +142,6 @@ export function GuestMenu() {
           </ActionArea>
         </ModalContainer>
       </Modal>
-    </div>
+    </Wrapper>
   );
 }

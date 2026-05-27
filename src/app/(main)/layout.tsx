@@ -1,5 +1,16 @@
 import { Suspense } from "react";
+import styled from "styled-components";
 import Header from "@/shared/components/Header";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Main = styled.main`
+  flex: 1;
+  min-height: calc(100vh - 56px);
+`;
 
 export default function MainLayout({
   children,
@@ -7,14 +18,11 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col">
-      {/* 헤더 */}
+    <Wrapper>
       <Suspense>
         <Header />
       </Suspense>
-
-      {/* 메인 */}
-      <main className="min-h-[calc(100vh-56px)] flex-1">{children}</main>
-    </div>
+      <Main>{children}</Main>
+    </Wrapper>
   );
 }
