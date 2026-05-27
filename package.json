@@ -34,13 +34,12 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.74.0",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.5.0",
+    "styled-components": "^6.4.2",
     "zod": "^4.4.1",
     "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@svgr/cli": "^8.1.0",
-    "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.100.7",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -59,8 +58,6 @@
     "jsdom": "^29.1.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.8.0",
-    "tailwindcss": "^4",
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.5"
