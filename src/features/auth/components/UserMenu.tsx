@@ -1,9 +1,8 @@
 "use client";
 
+import { Avatar, Button } from "@wanteddev/wds";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAuthStore } from "@/features/auth/store/authStore";
-import { Avatar } from "@/shared/ui/Avatar";
-import { Button } from "@/shared/ui/Button";
 
 export function UserMenu() {
   const { mutate: logout, isPending } = useLogout();
