@@ -9,9 +9,7 @@ export default function MainLayout({
   return (
     <div className="flex flex-col">
       {/* 헤더 */}
-      <Suspense>
-        <Header />
-      </Suspense>
+      <Header />
 
       {/* 메인 */}
       <main className="min-h-[calc(100vh-56px)] flex-1">{children}</main>
