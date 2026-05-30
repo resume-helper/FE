@@ -1,5 +1,11 @@
 # 🚦 CHANGELOG
 
+## [1.1.1](https://github.com/resume-helper/FE/compare/v1.1.0...v1.1.1) (2026-05-30)
+
+### 📝 Docs
+
+- **README:** chromatic 주소 수정 ([048f2fd](https://github.com/resume-helper/FE/commit/048f2fdd58ff5d528b2efeff4cf1e8078d661c90))
+
 ## [1.1.0](https://github.com/resume-helper/FE/compare/v1.0.0...v1.1.0) (2026-05-30)
 
 ### ✨ Features
