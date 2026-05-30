@@ -2,7 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import { useState } from "react";
 import { cva } from "class-variance-authority";
 import { cn } from "@/shared/lib/cn";
-import { Check, Minus } from "../icons";
+import { Check, Minus } from "../../icons";
 
 const boxVariants = cva(
   [
