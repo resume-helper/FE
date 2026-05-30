@@ -85,13 +85,8 @@ ci(github): update CI workflow configuration
 
 이 프로젝트의 Storybook은 Chromatic에서 확인할 수 있습니다. (PR 및 `main` push 시 자동 게시)
 
-<!-- TODO: Chromatic 프로젝트 생성 후 아래 <APP_ID> 를 실제 값으로 교체하세요. -->
-
-- **Storybook (main):** https://main--&lt;APP_ID&gt;.chromatic.com
-- **Builds 대시보드:** https://www.chromatic.com/builds?appId=&lt;APP_ID&gt;
-
-> `<APP_ID>` 는 [chromatic.com](https://www.chromatic.com) 에서 프로젝트 생성 후 발급됩니다.
-> 발급된 토큰은 GitHub 저장소 Secrets 의 `CHROMATIC_PROJECT_TOKEN` 으로 등록해야 CI 가 동작합니다.
+- **Storybook (main):** https://main--6a1b0d15e443b4184c13e123.chromatic.com
+- **Builds 대시보드:** https://www.chromatic.com/builds?appId=6a1b0d15e443b4184c13e123
 
 ## CHANGELOG
 
