@@ -1,5 +1,11 @@
 # 🚦 CHANGELOG
 
+## [1.1.0](https://github.com/resume-helper/FE/compare/v1.0.0...v1.1.0) (2026-05-30)
+
+### ✨ Features
+
+- **storybook:** storybook + chromatic ci 구성 ([cef9d55](https://github.com/resume-helper/FE/commit/cef9d55566727d27c80cfd8c8dba2b99ab12a40d))
+
 ## 1.0.0 (2026-05-30)
 
 ### ✨ Features
