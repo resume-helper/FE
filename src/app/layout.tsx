@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import QueryProvider from "./providers/QueryProvider";
 import { GlobalAlert } from "@/shared/ui/GlobalAlert";
 import { Toast } from "@/shared/ui/Toast";
+import { SessionProvider } from "./providers/SessionProvider";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 
 const pretendard = localFont({
   src: "./fonts/PretendardJPVariable.woff2",
@@ -11,19 +14,23 @@ const pretendard = localFont({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="ko" className={pretendard.variable}>
       <body>
-        <QueryProvider>
-          {children}
-          <GlobalAlert />
-          <Toast />
-        </QueryProvider>
+        <SessionProvider session={session}>
+          <QueryProvider>
+            {children}
+            <GlobalAlert />
+            <Toast />
+          </QueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

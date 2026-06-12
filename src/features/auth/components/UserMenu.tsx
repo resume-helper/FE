@@ -4,6 +4,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import { Avatar } from "@/shared/ui/Avatar";
 import { Button } from "@/shared/ui/Button";
+import { LogoutCallback } from "../util/logout";
 
 export function UserMenu() {
   const { mutate: logout, isPending } = useLogout();
@@ -22,7 +23,9 @@ export function UserMenu() {
         color="assistive"
         size="small"
         loading={isPending}
-        onClick={() => logout()}
+        onClick={() => {
+          if (confirm("로그아웃?")) LogoutCallback();
+        }}
       >
         로그아웃
       </Button>

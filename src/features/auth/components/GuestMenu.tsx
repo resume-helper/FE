@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { oauthLogin } from "@/features/auth/api/api";
+import { signIn, useSession } from "next-auth/react";
+import type { OAuthProvider } from "@/features/auth/types/auth";
 import { KakaoLoginButton } from "@/features/auth/components/KakaoLoginButton";
 import { NaverLoginButton } from "@/features/auth/components/NaverLoginButton";
 import { GoogleLoginButton } from "@/features/auth/components/GoogleLoginButton";
@@ -31,8 +32,8 @@ export function GuestMenu() {
   const [errorOpen, setErrorOpen] = useState(() => !!searchParams.get("error"));
 
   // 소셜 로그인 핸들러
-  const handleSocialLogin = (provider: Parameters<typeof oauthLogin>[0]) => {
-    oauthLogin(provider);
+  const handleSocialLogin = (provider: OAuthProvider) => {
+    signIn(provider, { callbackUrl: pathname });
     setLoginOpen(false);
   };
 
@@ -46,6 +47,7 @@ export function GuestMenu() {
 
   return (
     <div className="flex items-center gap-3">
+      <button>dasd</button>
       <Avatar variant="person" />
 
       {/* 로그인 팝업 */}

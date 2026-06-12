@@ -835,3 +835,18 @@ export interface operations {
     };
   };
 }
+
+/** 2026.06.11 */
+export interface ApiLoginOAuth_params {
+  /** 소셜 로그인 타입 */
+  provider: "GOOGLE" | "NAVER" | "KAKAO";
+
+  /** 소셜 고유 식별값 */
+  providerUserId: string;
+
+  /** 유저 이메일 */
+  email: string;
+
+  /** 유저 이름 */
+  name: string;
+}

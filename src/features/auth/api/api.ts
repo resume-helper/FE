@@ -1,19 +1,13 @@
 import { api } from "@/shared/api/api";
-import { AUTH_ENDPOINTS, OAUTH_ENDPOINT } from "@/features/auth/constants/api";
+import { AUTH_ENDPOINTS } from "@/features/auth/constants/api";
 import type { components } from "@/shared/types/api";
 import type {
   GetMeRes,
   PostLogoutRes,
   PostRefreshRes,
-  OAuthProvider,
 } from "@/features/auth/types/auth";
 
 type ApiResponse = components["schemas"]["ApiResponse"];
-
-// 소셜 로그인
-export const oauthLogin = (provider: OAuthProvider) => {
-  window.location.href = OAUTH_ENDPOINT(provider);
-};
 
 // Access Token 갱신
 export const postRefresh = (): Promise<PostRefreshRes> =>

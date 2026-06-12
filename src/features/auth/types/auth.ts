@@ -14,3 +14,10 @@ export type UserResponse = components["schemas"]["UserResponse"];
 
 // 내 정보 조회 응답
 export type GetMeRes = UserResponse;
+
+/** oAuth 로그인 리스폰스 */
+declare global {
+  type ApiLoginOAuth = Response_Model<null>;
+}
+
+export {};
