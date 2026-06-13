@@ -17,11 +17,16 @@ declare module "next-auth" {
     user: AuthUser & DefaultSession["user"];
   }
 
-  type User = AuthUser;
+  interface User {
+    provider: SocialType;
+  }
 }
 
 declare module "next-auth/jwt" {
-  type JWT = AuthUser;
+  interface JWT {
+    id?: string;
+    provider?: SocialType;
+  }
 }
 
 export {};
