@@ -36,7 +36,7 @@ function IconButton({
       aria-disabled={disabled || undefined}
       className={cn(
         "relative inline-flex cursor-pointer items-center justify-center select-none",
-        "disabled:pointer-events-none disabled:cursor-not-allowed",
+        "disabled:cursor-not-allowed",
         // 크기 (normal/background는 항상 medium 고정)
         resolvedSize === "medium" &&
           !isNormalOrBackground &&
@@ -48,7 +48,7 @@ function IconButton({
         variant === "normal" && [
           "rounded-full",
           "after:bg-label-normal after:absolute after:-inset-2 after:rounded-full",
-          "after:opacity-0 after:transition-opacity after:duration-150",
+          "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
           "hover:after:opacity-[0.05] focus-visible:after:opacity-[0.08] active:after:opacity-[0.12]",
           "disabled:after:hidden",
         ],
@@ -59,7 +59,7 @@ function IconButton({
           alternative && "bg-[rgba(70,71,76,0.61)]",
           "disabled:bg-fill-alternative disabled:backdrop-blur-none",
           "after:bg-label-normal after:absolute after:inset-0 after:rounded-full",
-          "after:opacity-0 after:transition-opacity after:duration-150",
+          "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
           "hover:after:opacity-[0.05] focus-visible:after:opacity-[0.08] active:after:opacity-[0.12]",
           "disabled:after:hidden",
         ],
@@ -67,7 +67,7 @@ function IconButton({
         variant === "outlined" && [
           "border-line-normal-neutral overflow-hidden border",
           "after:bg-label-normal after:absolute after:inset-0",
-          "after:opacity-0 after:transition-opacity after:duration-150",
+          "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
           "hover:after:opacity-[0.05] focus-visible:after:opacity-[0.08] active:after:opacity-[0.12]",
           "disabled:after:hidden",
         ],
@@ -76,8 +76,8 @@ function IconButton({
           "bg-primary-normal overflow-hidden",
           "disabled:bg-fill-normal",
           "after:bg-label-normal after:absolute after:inset-0",
-          "after:opacity-0 after:transition-opacity after:duration-150",
-          "hover:after:opacity-[0.075] focus-visible:after:opacity-[0.12] active:after:opacity-[0.18]",
+          "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
+          "hover:after:opacity-[0.16] focus-visible:after:opacity-[0.16] active:after:opacity-[0.28]",
           "disabled:after:hidden",
         ],
         className
