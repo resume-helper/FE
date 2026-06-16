@@ -250,7 +250,7 @@ const PopupContent: React.FC<PopupContentProps> = ({ children, className }) => (
   <div
     className={cn(
       "flex flex-1 flex-col gap-[var(--popup-padding,20px)] overflow-y-auto p-[var(--popup-padding,20px)]",
-      "[scrollbar-color:#e0e0e0_transparent] [scrollbar-width:thin]",
+      "[scrollbar-width:thin] [scrollbar-color:#e0e0e0_transparent]",
       "[&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-sm [&::-webkit-scrollbar-thumb]:bg-[#e0e0e0]",
       className
     )}

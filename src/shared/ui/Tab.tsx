@@ -175,7 +175,7 @@ export function TabList({
             "relative flex min-w-0 flex-1 items-end",
             "gap-[calc(var(--wds-tab-padding-x)*2)]",
             resize === "hug"
-              ? "scrollbar-none overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              ? "[scrollbar-width:none] scrollbar-none overflow-x-auto [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
               : "overflow-x-hidden",
             resize === "fill" && "w-full",
             "border-line-normal-alternative border-b",

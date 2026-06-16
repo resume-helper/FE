@@ -140,7 +140,7 @@ export function CategoryList({
           ref={listRef as React.RefObject<HTMLDivElement>}
           className={cn(
             "flex flex-row items-center gap-1 overflow-x-auto",
-            "scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            "[scrollbar-width:none] scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
             "min-w-0 flex-1",
             horizontalPadding && "px-4",
             className

@@ -230,7 +230,7 @@ export function MenuList({ children, className }: MenuListProps) {
       role="listbox"
       className={cn(
         "flex-1 overflow-y-auto py-1",
-        "scrollbar-thin scrollbar-thumb-line-solid-normal scrollbar-track-transparent",
+        "scrollbar-thumb-line-solid-normal scrollbar-thin scrollbar-track-transparent",
         className
       )}
     >
