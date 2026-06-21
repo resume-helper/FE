@@ -6,10 +6,10 @@ const textButtonVariants = cva(
   [
     "relative inline-flex items-center justify-center gap-1",
     "whitespace-nowrap cursor-pointer select-none",
-    "transition-colors duration-150 ease-in-out",
+    "transition-colors duration-300 ease-in-out",
     "disabled:cursor-not-allowed disabled:pointer-events-none",
     "after:absolute after:inset-x-[-7px] after:inset-y-0 after:rounded-md",
-    "after:opacity-0 after:transition-opacity after:duration-150 after:ease-in-out",
+    "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
     "hover:after:opacity-[0.05] focus-visible:after:opacity-[0.08] active:after:opacity-[0.12]",
     "disabled:after:hidden",
     "data-[loading=true]:cursor-wait data-[loading=true]:after:hidden",

@@ -311,7 +311,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                 // 호버/액티브 오버레이
                 "overflow-hidden",
                 "after:bg-label-normal after:absolute after:inset-0",
-                "after:opacity-0 after:transition-opacity after:duration-150",
+                "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
                 "hover:after:opacity-[0.05] active:after:opacity-[0.12]",
                 "disabled:after:hidden"
               )}
