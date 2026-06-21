@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/shared/lib/cn";
-import { ChevronRight } from "../icons";
+import { ChevronRight } from "@/shared/icons";
 
 // ─────────────────────────────────────────────
 // 타입
@@ -214,7 +214,10 @@ export const ListCell = React.forwardRef<HTMLElement, ListCellProps>(
         {/* interaction 영역 */}
         <span
           className={cn(
-            "flex min-w-0 flex-1 items-start gap-3",
+            "flex min-w-0 flex-1 gap-3",
+            alignItems === "flex-start" && "items-start",
+            alignItems === "center" && "items-center",
+            alignItems === "flex-end" && "items-end",
             VERTICAL_PADDING[verticalPadding],
             !fillWidth && "rounded-lg",
             isInteractive && [

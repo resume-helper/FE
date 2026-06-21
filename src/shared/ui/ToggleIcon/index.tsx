@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "../lib/cn";
+import { cn } from "@/shared/lib/cn";
 
 const Variants = cva(
   "group relative flex justify-center items-center size-[32px] cursor-pointer rounded-[100%] transition duration-[0.25s]",

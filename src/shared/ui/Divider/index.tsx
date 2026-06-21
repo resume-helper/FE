@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "../lib/cn";
+import { cn } from "@/shared/lib/cn";
 
 const Variants = cva("block bg-[#70737C38]", {
   variants: {
