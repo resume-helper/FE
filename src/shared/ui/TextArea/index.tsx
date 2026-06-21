@@ -15,9 +15,12 @@ const textAreaContentVariants = cva("", {
   variants: {
     variant: {
       characterCounter: "text-label-2-medium text-label-alternative",
-      contentBadge: "inline-flex items-center",
+      badge: "inline-flex items-center",
+      chip: "inline-flex items-center",
+      icon: "inline-flex size-6 items-center justify-center text-[24px]",
       iconButton: "inline-flex items-center justify-center",
-      button: "text-body-1-normal-bold text-primary-normal cursor-pointer",
+      primaryIconButton: "inline-flex items-center justify-center",
+      textButton: "text-body-1-normal-bold text-primary-normal cursor-pointer",
     },
   },
   defaultVariants: {
@@ -47,15 +50,17 @@ function TextAreaContent({
 // ─── interaction layer CVA ────────────────────────────────────────────────────
 
 const interactionVariants = cva(
-  "absolute inset-0 rounded-xl pointer-events-none border transition-colors duration-150",
+  "absolute inset-0 rounded-xl pointer-events-none border transition-[border-color,border-width] duration-150 ease-out",
   {
     variants: {
       status: {
-        default: "border-line-normal-neutral",
-        invalid: "border-status-negative/[0.28]",
+        normal:
+          "border-line-normal-neutral group-hover:border-primary-normal/[0.43] group-hover:border-2 group-active:border-primary-normal/[0.43] group-active:border-2",
+        negative:
+          "border-status-negative/[0.28]! group-hover:border-2 group-active:border-2",
       },
       focused: {
-        true: "border-2 border-primary-normal/[0.43]",
+        true: "border-2 border-primary-normal/[0.43]!",
         false: "",
       },
       disabled: {
@@ -66,13 +71,13 @@ const interactionVariants = cva(
     compoundVariants: [
       // invalid 포커스 시에도 invalid 테두리 유지
       {
-        status: "invalid",
+        status: "negative",
         focused: true,
-        className: "border-2 border-status-negative/[0.28]",
+        className: "border-2 border-status-negative/[0.28]!",
       },
     ],
     defaultVariants: {
-      status: "default",
+      status: "normal",
       focused: false,
       disabled: false,
     },
@@ -86,18 +91,19 @@ type TextAreaProps = Omit<
   "rows"
 > & {
   label?: React.ReactNode;
-  required?: boolean;
+  heading?: boolean;
+  requiredBadge?: boolean;
   description?: React.ReactNode;
+  bottom?: boolean;
 
-  status?: "default" | "invalid";
+  status?: "normal" | "negative";
 
-  /** 내용에 따라 자동 확장(auto) vs 고정 높이(none) */
-  resize?: "auto" | "none";
-  /** resize="auto" 일 때 최소 줄 수 */
+  resize?: "normal" | "limit" | "fixed";
+  /** normal/limit 모드의 최소 줄 수 */
   minRows?: number;
-  /** resize="auto" 일 때 최대 줄 수 (이후 내부 스크롤) */
+  /** limit 모드의 최대 줄 수 */
   maxRows?: number;
-  /** resize="none" 일 때 고정 줄 수 */
+  /** fixed 모드의 줄 수 */
   rows?: number;
 
   /**
@@ -105,6 +111,8 @@ type TextAreaProps = Omit<
    * leadingContent를 직접 넘기면 override됨.
    */
   maxLength?: number;
+  /** maxLength 초과 입력 허용 여부 */
+  overflow?: boolean;
   leadingContent?: React.ReactNode;
   trailingContent?: React.ReactNode;
 
@@ -115,14 +123,17 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   function TextArea(
     {
       label,
-      required,
+      heading = true,
+      requiredBadge,
       description,
-      status = "default",
-      resize = "auto",
+      bottom = true,
+      status = "normal",
+      resize = "normal",
       minRows = 3,
-      maxRows,
+      maxRows = 8,
       rows = 3,
       maxLength,
+      overflow = true,
       leadingContent,
       trailingContent,
       disabled,
@@ -132,6 +143,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onChange,
       className,
       id: idProp,
+      style,
       ...props
     },
     ref
@@ -144,11 +156,10 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     const [internalValue, setInternalValue] = useState(defaultValue ?? "");
     const currentValue = isControlled ? value : internalValue;
 
-    // auto resize를 위한 내부 ref
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [focused, setFocused] = useState(false);
 
-    const setRef = useCallback(
+    const combinedRef = useCallback(
       (node: HTMLTextAreaElement | null) => {
         textareaRef.current = node;
         if (typeof ref === "function") ref(node);
@@ -157,23 +168,18 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       [ref]
     );
 
-    // 줄 높이 계산 후 height 적용
     const adjustHeight = useCallback(() => {
       const el = textareaRef.current;
-      if (!el || resize !== "auto") return;
+      if (!el || resize === "fixed") return;
 
       el.style.height = "auto";
-      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 24;
-      const paddingY =
-        parseFloat(getComputedStyle(el).paddingTop) +
-        parseFloat(getComputedStyle(el).paddingBottom);
+      const rowHeight = parseFloat(getComputedStyle(el).lineHeight) || 26;
+      const minHeight = rowHeight * minRows;
+      const maxHeight = resize === "limit" ? rowHeight * maxRows : Infinity;
+      const height = Math.min(Math.max(el.scrollHeight, minHeight), maxHeight);
 
-      const minH = lineHeight * minRows + paddingY;
-      const maxH = maxRows ? lineHeight * maxRows + paddingY : Infinity;
-      const desired = Math.min(Math.max(el.scrollHeight, minH), maxH);
-
-      el.style.height = `${desired}px`;
-      el.style.overflowY = el.scrollHeight > desired ? "auto" : "hidden";
+      el.style.height = `${height}px`;
+      el.style.overflowY = el.scrollHeight > height ? "auto" : "hidden";
     }, [resize, minRows, maxRows]);
 
     useEffect(() => {
@@ -185,41 +191,39 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       onChange?.(e);
     };
 
-    // charCount 자동 처리
     const charCount =
       maxLength != null
         ? typeof currentValue === "string"
           ? currentValue.length
           : 0
         : null;
+    const isOverflowing =
+      charCount != null && maxLength != null && charCount > maxLength;
     const resolvedLeadingContent =
       leadingContent !== undefined ? (
         leadingContent
       ) : charCount != null ? (
-        <TextAreaContent variant="characterCounter">
+        <TextAreaContent
+          variant="characterCounter"
+          className={isOverflowing ? "text-status-negative" : undefined}
+        >
           {charCount}/{maxLength}
         </TextAreaContent>
       ) : null;
 
     const showBottom =
-      resolvedLeadingContent != null || trailingContent != null;
-
-    // resize="none" 일 때 min-height로 고정 줄 수 표현 (CSS rows 대체)
-    const fixedStyle =
-      resize === "none"
-        ? ({ "--ta-rows": rows } as React.CSSProperties)
-        : undefined;
+      bottom && (resolvedLeadingContent != null || trailingContent != null);
 
     return (
       <div className={cn("flex flex-col gap-2", className)}>
         {/* 레이블 */}
-        {label != null && (
+        {heading && label != null && (
           <label
             htmlFor={id}
             className="text-label-1-normal-bold text-label-neutral flex items-center gap-0.5"
           >
             {label}
-            {required && (
+            {requiredBadge && (
               <span className="text-status-negative" aria-hidden="true">
                 *
               </span>
@@ -228,18 +232,27 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         )}
 
         {/* 입력 래퍼 */}
-        <div className="relative w-full">
+        <div className="group relative w-full">
           {/* 배경 레이어 (glassmorphism) */}
-          <div className="bg-background-elevated-1 absolute inset-0 rounded-xl backdrop-blur-[32px]" />
+          <div
+            className={cn(
+              "absolute inset-0 rounded-xl backdrop-blur-[32px]",
+              disabled ? "bg-fill-alternative" : "bg-background-elevated-1"
+            )}
+          />
 
           {/* 입력 박스 */}
-          <div className="relative flex flex-col gap-3 overflow-clip rounded-xl p-3">
+          <div
+            className={cn(
+              "relative flex flex-col gap-3 overflow-clip rounded-xl p-3",
+              disabled && "opacity-[0.36]"
+            )}
+          >
             <textarea
               {...props}
-              ref={setRef}
+              ref={combinedRef}
               id={id}
               value={isControlled ? value : internalValue}
-              defaultValue={isControlled ? undefined : undefined}
               onChange={handleChange}
               onFocus={(e) => {
                 setFocused(true);
@@ -251,16 +264,13 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
               }}
               disabled={disabled}
               readOnly={readOnly}
-              maxLength={maxLength}
+              rows={resize === "fixed" ? rows : undefined}
+              maxLength={overflow ? undefined : maxLength}
+              aria-invalid={status === "negative" || undefined}
               style={{
-                ...fixedStyle,
-                ...(resize === "none"
-                  ? {
-                      minHeight: `calc(var(--ta-rows, 3) * 1.625em + 0px)`,
-                      resize: "none",
-                      overflowY: "auto",
-                    }
-                  : { resize: "none", overflowY: "hidden" }),
+                resize: "none",
+                overflowY: resize === "fixed" ? "auto" : "hidden",
+                ...style,
               }}
               className={cn(
                 "w-full bg-transparent outline-none",
@@ -302,7 +312,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           <p
             className={cn(
               "text-caption-1-regular",
-              status === "invalid"
+              status === "negative"
                 ? "text-status-negative"
                 : "text-label-alternative"
             )}

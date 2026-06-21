@@ -1,7 +1,7 @@
-import { forwardRef, useId, useRef, useState } from "react";
+import { forwardRef, useCallback, useId, useRef, useState } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/shared/lib/cn";
-import { CircleCloseFill } from "@/shared/icons";
+import { CircleCloseFill, CircleExclamationFill } from "@/shared/icons";
 import { IconButton } from "@/shared/ui/IconButton";
 
 // ─── TextFieldContent ─────────────────────────────────────────────────────────
@@ -24,12 +24,12 @@ const textFieldContentVariants = cva("", {
 type TextFieldContentProps = React.HTMLAttributes<HTMLSpanElement> &
   VariantProps<typeof textFieldContentVariants>;
 
-function TextFieldContent({
+const TextFieldContent = ({
   variant,
   className,
   children,
   ...props
-}: TextFieldContentProps) {
+}: TextFieldContentProps) => {
   return (
     <span
       {...props}
@@ -38,20 +38,22 @@ function TextFieldContent({
       {children}
     </span>
   );
-}
+};
 
 // ─── interaction layer CVA ────────────────────────────────────────────────────
 
 const interactionVariants = cva(
-  "absolute inset-0 rounded-xl pointer-events-none border transition-colors duration-150",
+  "absolute inset-0 rounded-xl pointer-events-none border transition-[border-color,border-width] duration-150 ease-out",
   {
     variants: {
       status: {
-        default: "border-line-normal-neutral",
-        invalid: "border-status-negative/[0.28]",
+        default:
+          "border-line-normal-neutral group-hover:border-primary-normal/[0.43] group-hover:border-2 group-active:border-primary-normal/[0.43] group-active:border-2",
+        invalid:
+          "border-status-negative/[0.28]! group-hover:border-2 group-active:border-2",
       },
       focused: {
-        true: "border-2 border-primary-normal/[0.43]",
+        true: "border-2 border-primary-normal/[0.43]!",
         false: "",
       },
       disabled: {
@@ -63,7 +65,7 @@ const interactionVariants = cva(
       {
         status: "invalid",
         focused: true,
-        className: "border-2 border-status-negative/[0.28]",
+        className: "border-2 border-status-negative/[0.28]!",
       },
     ],
     defaultVariants: {
@@ -137,11 +139,14 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const currentValue = isControlled ? value : internalValue;
 
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const setRef = (node: HTMLInputElement | null) => {
-      inputRef.current = node;
-      if (typeof ref === "function") ref(node);
-      else if (ref) ref.current = node;
-    };
+    const combinedRef = useCallback(
+      (node: HTMLInputElement | null) => {
+        inputRef.current = node;
+        if (typeof ref === "function") ref(node);
+        else if (ref) ref.current = node;
+      },
+      [ref]
+    );
 
     const [focused, setFocused] = useState(false);
 
@@ -153,23 +158,24 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
     const handleClear = () => {
       if (!isControlled) setInternalValue("");
       onClear?.();
-      // 네이티브 change 이벤트로 onChange에도 빈 값 전달
-      const input = inputRef.current;
-      if (input) {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value"
-        )?.set;
-        nativeInputValueSetter?.call(input, "");
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-        input.focus();
-      }
+      inputRef.current?.focus();
     };
 
     const showClear =
       clearable && !disabled && !readOnly && Boolean(currentValue);
 
     const hasTrailingButton = trailingButton != null;
+    const resolvedTrailingContent =
+      trailingContent ??
+      (status === "invalid" ? (
+        <TextFieldContent
+          variant="icon"
+          className="text-status-negative"
+          aria-hidden="true"
+        >
+          <CircleExclamationFill />
+        </TextFieldContent>
+      ) : null);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (
@@ -207,7 +213,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           {/* ── 입력 영역 ── */}
           <div
             className={cn(
-              "relative min-w-0 flex-1",
+              "group relative min-w-0 flex-1",
               hasTrailingButton && "flex-1"
             )}
           >
@@ -236,7 +242,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               {/* input */}
               <input
                 {...props}
-                ref={setRef}
+                ref={combinedRef}
                 id={id}
                 value={isControlled ? value : internalValue}
                 onChange={handleChange}
@@ -267,16 +273,19 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
                   label="입력 내용 지우기"
                   variant="normal"
                   onClick={handleClear}
-                  className="text-label-assistive shrink-0"
+                  className={cn(
+                    "text-label-assistive shrink-0 transition-colors duration-300 ease-in-out",
+                    "hover:text-label-alternative focus-visible:text-label-alternative active:text-label-normal after:hidden"
+                  )}
                 >
                   <CircleCloseFill />
                 </IconButton>
               )}
 
               {/* trailingContent */}
-              {trailingContent != null && (
+              {resolvedTrailingContent != null && (
                 <div className="flex shrink-0 items-center">
-                  {trailingContent}
+                  {resolvedTrailingContent}
                 </div>
               )}
             </div>
@@ -301,14 +310,12 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               disabled={trailingButtonDisabled || disabled}
               onClick={onTrailingButtonClick}
               className={cn(
-                "relative flex shrink-0 items-center justify-center px-4 py-3",
+                "group relative flex shrink-0 items-center justify-center px-4 py-3",
                 "min-w-20 rounded-r-xl",
                 "disabled:cursor-not-allowed",
-                // 배경
                 trailingButtonDisabled || disabled
                   ? "bg-interaction-disable"
                   : "bg-background-elevated-1 backdrop-blur-[32px]",
-                // 호버/액티브 오버레이
                 "overflow-hidden",
                 "after:bg-label-normal after:absolute after:inset-0",
                 "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
@@ -319,10 +326,10 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               {/* border */}
               <span
                 className={cn(
-                  "pointer-events-none absolute inset-0 rounded-r-xl border",
+                  "pointer-events-none absolute inset-0 rounded-r-xl border transition-[border-color,border-width] duration-150 ease-out",
                   status === "invalid"
-                    ? "border-status-negative/[0.28]"
-                    : "border-line-normal-neutral"
+                    ? "border-status-negative/[0.28]! group-hover:border-2 group-active:border-2"
+                    : "border-line-normal-neutral group-hover:border-primary-normal/[0.43] group-active:border-primary-normal/[0.43] group-hover:border-2 group-active:border-2"
                 )}
                 aria-hidden="true"
               />
