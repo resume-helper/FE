@@ -7,21 +7,50 @@ import { Check, Minus } from "../../icons";
 const boxVariants = cva(
   [
     "relative flex items-center justify-center shrink-0 rounded-[5px]",
-    "border-[1.5px] transition-colors duration-150",
+    "transition-colors duration-300",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-normal focus-visible:ring-offset-1",
   ],
   {
     variants: {
+      variant: {
+        checkbox: "",
+        checkmark: "rounded-sm",
+      },
       size: {
         small: "size-4",
         medium: "size-[18px]",
       },
       isActive: {
-        true: "bg-primary-normal border-primary-normal text-static-white",
-        false: "bg-transparent border-line-normal-neutral text-transparent",
+        true: "",
+        false: "",
       },
     },
+    compoundVariants: [
+      {
+        variant: "checkbox",
+        isActive: true,
+        className:
+          "border-[1.5px] bg-primary-normal border-primary-normal text-static-white",
+      },
+      {
+        variant: "checkbox",
+        isActive: false,
+        className:
+          "border-[1.5px] bg-transparent border-line-normal-neutral text-transparent",
+      },
+      {
+        variant: "checkmark",
+        isActive: true,
+        className: "border-0 bg-transparent text-primary-normal",
+      },
+      {
+        variant: "checkmark",
+        isActive: false,
+        className: "border-0 bg-transparent text-label-alternative",
+      },
+    ],
     defaultVariants: {
+      variant: "checkbox",
       size: "medium",
       isActive: false,
     },
@@ -55,16 +84,22 @@ type CheckBoxProps = Omit<
   "asChild" | "checked"
 > & {
   checked?: boolean | "indeterminate";
+  variant?: "checkbox" | "checkmark";
   size?: "small" | "medium";
   bold?: boolean;
+  right?: boolean;
+  tight?: boolean;
   label?: React.ReactNode;
   typography?: string;
   typographyColor?: string;
 };
 
-function CheckBox({
+const CheckBox = ({
+  variant = "checkbox",
   size = "medium",
   bold = false,
+  right = false,
+  tight = false,
   checked,
   defaultChecked = false,
   onCheckedChange,
@@ -75,7 +110,7 @@ function CheckBox({
   className,
   id,
   ...props
-}: CheckBoxProps) {
+}: CheckBoxProps) => {
   const isControlled = checked !== undefined;
   const [internalChecked, setInternalChecked] = useState<
     boolean | "indeterminate"
@@ -85,17 +120,25 @@ function CheckBox({
   const isActive =
     currentChecked === true || currentChecked === "indeterminate";
 
-  const iconSize = size === "small" ? "14px" : "16px";
+  const iconSize =
+    variant === "checkmark"
+      ? size === "small"
+        ? "28px"
+        : "32px"
+      : size === "small"
+        ? "14px"
+        : "16px";
 
   return (
     <label
       className={cn(
         "inline-flex cursor-pointer items-start gap-1",
+        right && "flex-row-reverse",
         disabled && "cursor-not-allowed",
         className
       )}
     >
-      <div className="relative shrink-0 p-1">
+      <div className={cn("group relative shrink-0", tight ? "p-0" : "p-1")}>
         <Checkbox.Root
           {...props}
           id={id}
@@ -106,25 +149,30 @@ function CheckBox({
           }}
           disabled={disabled ?? false}
           className={cn(
-            boxVariants({ size, isActive }),
-            "cursor-pointer disabled:cursor-not-allowed disabled:opacity-[0.43]"
+            boxVariants({ variant, size, isActive }),
+            variant === "checkbox" &&
+              "cursor-pointer disabled:cursor-not-allowed disabled:opacity-[0.43]",
+            variant === "checkmark" &&
+              "cursor-pointer disabled:cursor-not-allowed disabled:opacity-[0.43]"
           )}
         >
           {currentChecked === "indeterminate" ? (
-            <Minus style={{ fontSize: iconSize }} />
+            <Minus style={{ width: iconSize, height: iconSize }} />
           ) : (
-            <Check style={{ fontSize: iconSize }} />
+            <Check style={{ width: iconSize, height: iconSize }} />
           )}
         </Checkbox.Root>
-        <span
-          aria-hidden="true"
-          className={cn(
-            "absolute inset-0 rounded-full opacity-0 transition-opacity duration-150",
-            isActive ? "bg-primary-normal" : "bg-label-normal",
-            "hover:opacity-[0.08] active:opacity-[0.12]",
-            disabled && "hidden"
-          )}
-        />
+        {variant === "checkbox" && (
+          <span
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300",
+              isActive ? "bg-primary-normal" : "bg-label-normal",
+              "group-hover:opacity-[0.08] group-active:opacity-[0.12]",
+              disabled && "hidden"
+            )}
+          />
+        )}
       </div>
 
       {label != null && (
@@ -140,7 +188,7 @@ function CheckBox({
       )}
     </label>
   );
-}
+};
 
 export { CheckBox };
 export type { CheckBoxProps };

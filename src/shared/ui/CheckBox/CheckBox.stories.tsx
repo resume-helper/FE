@@ -10,11 +10,15 @@ const meta = {
     label: "동의합니다",
     size: "medium",
     bold: false,
+    right: false,
+    tight: false,
     disabled: false,
   },
   argTypes: {
     size: { control: "inline-radio", options: ["small", "medium"] },
     bold: { control: "boolean" },
+    right: { control: "boolean" },
+    tight: { control: "boolean" },
     disabled: { control: "boolean" },
   },
 } satisfies Meta<typeof CheckBox>;
