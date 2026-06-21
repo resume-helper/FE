@@ -1,11 +1,10 @@
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
-
-import { cn } from "@/shared/lib/cn";
 import { twMerge } from "tailwind-merge";
+import { cn } from "@/shared/lib/cn";
 
-const Variants = cva(
+const variants = cva(
   "inline-flex items-center p-[3px_6px] font-[500] border rounded-[6px]",
   {
     variants: {
@@ -31,19 +30,18 @@ const Variants = cva(
   }
 );
 
-interface BADGE extends COMPONENT_CLASS_NAME, VariantProps<typeof Variants> {
+interface BadgeProps
+  extends COMPONENT_CLASS_NAME, VariantProps<typeof variants> {
   /** 텍스트 내용 */
   text: string;
-
-  /** 백그라운드컬러 */
+  /** 백그라운드 컬러 */
   accentBackgroundColor?: string;
-
   /** 텍스트 색상 */
   accentContentColor?: string;
-
   /** 아이콘 */
   icon?: React.ReactNode;
 }
+
 export const Badge = ({
   text,
   icon,
@@ -52,7 +50,7 @@ export const Badge = ({
   variant,
   accentBackgroundColor,
   accentContentColor,
-}: BADGE) => {
+}: BadgeProps) => {
   return (
     <p
       style={{
@@ -60,10 +58,8 @@ export const Badge = ({
         backgroundColor: accentBackgroundColor,
       }}
       className={twMerge(
-        cn(Variants({ variant, size, color })),
-        variant === "outlined" && "bg-transparent",
-        accentContentColor && `text-[${accentContentColor}]`,
-        accentBackgroundColor && `bg-[${accentBackgroundColor}]`
+        cn(variants({ variant, size, color })),
+        variant === "outlined" && "bg-transparent"
       )}
     >
       {icon && <span className="inline-flex items-center">{icon}</span>}
@@ -71,3 +67,5 @@ export const Badge = ({
     </p>
   );
 };
+
+export type { BadgeProps };
