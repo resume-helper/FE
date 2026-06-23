@@ -1,3 +1,5 @@
+"use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/shared/lib/cn";
 import { Spinner } from "@/shared/ui/Spinner";
