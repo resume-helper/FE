@@ -2,13 +2,15 @@ declare global {
   /**
    * 블록타입
    *
+   * BASIC_INFO : 기본정보
    * CAREER :  경력
    * SKILL :  스킬
    * PROJECT :  프로젝트
    * EDUCATION :  학력
    * CERTIFICATE :  자격증
    * ACTIVITY :  활동
-   * CUSTOM :  커스텀
+   * SUMMARY :  기본소개
+   * INTRODUCTION : 자기소개서
    */
   type BLOCK_TYPE =
     | "BASIC_INFO"
@@ -18,7 +20,8 @@ declare global {
     | `EDUCATION`
     | `CERTIFICATE`
     | `ACTIVITY`
-    | `CUSTOM`;
+    | "INTRODUCTION"
+    | `SUMMARY`;
 
   /**
    * 재직 형태

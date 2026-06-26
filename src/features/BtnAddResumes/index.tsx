@@ -9,11 +9,11 @@ import { BackgroundLayer } from "@/shared/ui/BackgroundLayer";
 import { SelectResumesTypeBox } from "./ui/SelectResumesTypeBox";
 import { Button } from "@/shared/ui/Button";
 
-interface BTN_ADD_RESUMES {
+interface BTN_ADD_RESUMES extends COMPONENT_CLASS_NAME {
   type?: "PDF" | "WEB";
 }
 
-export const BtnAddResumes = ({ type }: BTN_ADD_RESUMES) => {
+export const BtnAddResumes = ({ type, className }: BTN_ADD_RESUMES) => {
   const [isAdd, SetIsAdd] = useState(false);
 
   const navigation = useRouter();
@@ -22,7 +22,7 @@ export const BtnAddResumes = ({ type }: BTN_ADD_RESUMES) => {
 
   function OnClickResumesAddCallback() {
     if (type) {
-      navigation.push(`/r/resumes/${type}/add`);
+      navigation.push(`/r/resumes/${type}/add?${searchParams.toString()}`);
     } else {
       SetIsAdd(true);
     }
@@ -30,7 +30,11 @@ export const BtnAddResumes = ({ type }: BTN_ADD_RESUMES) => {
 
   return (
     <>
-      <Button size={"large"} onClick={OnClickResumesAddCallback}>
+      <Button
+        className={className ?? ""}
+        size={"large"}
+        onClick={OnClickResumesAddCallback}
+      >
         이력서 생성
       </Button>
       {isAdd && (

@@ -1,15 +1,17 @@
 "use client";
 
-import { Spinner } from "@/shared/ui/Spinner";
-
 import { useResumseListHook } from "@/entities/resumes/list/hook/useResumseListHook";
+
 import { LatestResumesWebListEmpty } from "@/entities/resumes/list/ui/LatestResumesWebListEmpty";
 
+import { Spinner } from "@/shared/ui/Spinner";
+import { List } from "@/shared/ui/ListCell";
+
 export const LatestResumesWebList = () => {
-  const { latest, isLoading } = useResumseListHook("WEB", "NEWEST");
+  const { latest, isLoading } = useResumseListHook("WEB");
 
   return (
-    <ol className="pt-[8px]">
+    <List>
       {isLoading && (
         <li className="mt-[50px] text-center">
           <Spinner className="inline-block" />
@@ -21,7 +23,7 @@ export const LatestResumesWebList = () => {
       ) : (
         latest?.map((el, i) => {
           return (
-            <li className="h-[78px]" key={`최근등록한-웹이력서-${i}`}>
+            <li className="h-[78px]" key={`최근등록한-WEB-이력서-${i}`}>
               <dl className="pt-[16px]">
                 <dt className="truncate text-[1.0625rem] font-[500]">
                   {el["title"]}
@@ -36,6 +38,6 @@ export const LatestResumesWebList = () => {
           );
         })
       )}
-    </ol>
+    </List>
   );
 };

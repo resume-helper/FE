@@ -6,9 +6,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { Logo } from "@/shared/ui/Logo";
-// import { IconHome } from "@/shared/icon/Home";
-// import { IconPaper } from "@/shared/icon/Paper";
-// import { IconBox } from "@/shared/icon/Box";
 
 import { useAfterLoginSideMenuStore } from "@/shared/store/useAfterLoginSideMenuStore";
 import SvgChevronDown from "@/shared/icons/ChevronDown";
@@ -73,8 +70,10 @@ export const AfterLoginSideMenu = () => {
               )}
             </li>
             <li className="mt-[4px]">
-              <Link className={`btn`} href={"/r/blocks"}>
-                {/* <IconBox/>  */}
+              <Link
+                className={`btn ${pathname === "/r/blocks" && ACTIVE_CLASS}`}
+                href={"/r/blocks"}
+              >
                 블록 라이브러리
               </Link>
             </li>

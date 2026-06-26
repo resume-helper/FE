@@ -1,42 +1,63 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { API_SERVER_RESUMSES_WEB_LIST } from "@/entities/resumes/list/api/api.resumes.web.list";
+import { API_SERVER_RESUMSES_LIST } from "@/entities/resumes/list/api/api.server.resumes.list";
 import { API_SERVER_REFRESH } from "@/entities/auth/refresh/api/api.server.refresh";
 
 export async function POST(req: NextRequest) {
-  const { offset, limit, sort, type } =
-    (await req.json()) as API_CLIENT_RESUMSES_WEB_LIST_PARAMS;
+  const { offset, limit, sort, type, keyword } =
+    (await req.json()) as API_CLIENT_RESUMSES_LIST_PARAMS;
 
   try {
-    const result = await API_SERVER_RESUMSES_WEB_LIST(
+    const result = await API_SERVER_RESUMSES_LIST(
       offset,
       limit,
       type,
-      sort
+      sort,
+      keyword
     );
 
     return NextResponse.json(result, { status: 200 });
   } catch (err) {
-    const isRefresh = await API_SERVER_REFRESH();
+    const error = (await err) as API_FAIL_RESPONSE;
 
-    if (isRefresh.success) {
-      const result = await API_SERVER_RESUMSES_WEB_LIST(
-        offset,
-        limit,
-        type,
-        sort
-      );
+    /** accessToken 만료 */
+    if (error["code"] === "UNAUTHORIZED") {
+      const isRefresh = await API_SERVER_REFRESH();
 
-      return NextResponse.json(result, { status: 200 });
+      /** 갱신 성공 */
+      if (isRefresh?.success) {
+        const result = await API_SERVER_RESUMSES_LIST(
+          offset,
+          limit,
+          type,
+          sort,
+          keyword
+        );
+
+        return NextResponse.json(result, { status: 200 });
+      } else {
+        /** 갱신 실패 (refreshToken 만료) */
+        // return NextResponse.json({
+        //   success : false,
+        //   data : [],
+        //   message : error["message"]
+        // },{ status: 500 });
+        return NextResponse.json({ status: 500 });
+      }
     } else {
-      return NextResponse.json(
-        {
-          success: false,
-          data: isRefresh.code as string,
-          message: isRefresh.message,
-        },
-        { status: 500 }
-      );
+      /**
+       * 토큰 외 에러
+       *
+       * RESUME_NOT_FOUND : 이력서 없음 또는 삭제됨
+       * FORBIDDEN : 본인 소유 아닌 이력서 접근
+       * VALIDATION_FAILED : 입력값 유효성 오류
+       */
+      // return NextResponse.json({
+      //   success : false,
+      //   data : [],
+      //   message : error["message"]
+      // }, { status: 200 });
+      return NextResponse.json([], { status: 200 });
     }
   }
 }

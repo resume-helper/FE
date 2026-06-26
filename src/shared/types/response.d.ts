@@ -16,8 +16,8 @@ declare global {
   }
 
   type API_FAIL_RESPONSE = {
-    code: string | "UNAUTHORIZED";
-    message: string | "인증이 필요합니다";
+    code: "UNAUTHORIZED" | string;
+    message: string;
     timestamp: string;
   };
 }

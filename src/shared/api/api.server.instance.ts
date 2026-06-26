@@ -5,6 +5,7 @@ export const BACKEND_API = ky.create({
   prefix: process.env.NEXT_PUBLIC_BACKEND_API_URL,
   timeout: 10000,
   credentials: "include",
+  throwHttpErrors: false,
   headers: {
     accept: "application/json",
   },

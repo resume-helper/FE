@@ -1,36 +1,92 @@
 "use client";
 
-import { Download } from "@/shared/icons";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+
+import { useEffect, useState } from "react";
+
+import { useShallow } from "zustand/shallow";
+
+import { useInterSectionObserver } from "@/shared/hook/useInterSectionObserver";
+import { useResumseListHook } from "@/entities/resumes/list/hook/useResumseListHook";
+
+import { Spinner } from "@/shared/ui/Spinner";
+import { List } from "@/shared/ui/ListCell";
+import { Button } from "@/shared/ui/Button";
+import { ResumsePdfListItem } from "@/entities/resumes/list/ui/ResumsePdfListItem";
+import { useResumesListDeleteStore } from "@/entities/resumes/list/store/useResumesListDeleteStore";
 
 export const ResumesPdfList = () => {
-  return (
-    <>
-      <ol className="rounded-[16px] bg-[#fff] px-[24px]">
-        {Array.from({ length: 20 }).map((_, i) => {
-          return (
-            <li
-              className="flex h-[88px] items-center [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-t-[#F4F4F5]"
-              key={`pdf이력서_${i}`}
-            >
-              <dl className="flex h-[40px] leading-[40px] text-[#171719]">
-                <dt className="w-[721px] truncate text-[1.0625rem]">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Explicabo eum doloribus voluptatem debitis alias corporis
-                  eveniet optio accusamus necessitatibus veniam hic, doloremque,
-                  ducimus cumque tempora exercitationem a! Eaque, rem ducimus.
-                </dt>
+  const searchParams = useSearchParams();
 
-                <dd className="ml-[20px] w-[91px] text-[0.875rem]">
-                  2026.06.22
-                </dd>
-              </dl>
-              <button title={`이력서 다운로드`}>
-                <Download />
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-    </>
+  const { CheckDeleteIdsCallback, isDelete } = useResumesListDeleteStore(
+    useShallow((state) => ({
+      CheckDeleteIdsCallback: state.CheckDeleteIdsCallback,
+      isDelete: state.isDelete,
+    }))
   );
+
+  const { total, data, isFetching, isLoading, fetchNextPage, hasNextPage } =
+    useResumseListHook("PDF");
+
+  const { ref, isView } = useInterSectionObserver<HTMLLIElement>({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (!isView) return;
+    if (isLoading) return;
+    if (total === 0) return;
+    if (isFetching) return;
+    if (!hasNextPage) return;
+
+    fetchNextPage();
+  }, [isView]);
+
+  if (total === 0) {
+    return (
+      <div className="mt-[200px] text-center">
+        <dl>
+          <dt className="text-[1.0625rem] font-[500]">웹 이력서가 없어요.</dt>
+          <dd className="mt-[4px] text-[0.9375rem] text-[#2E2F33E0]">
+            웹 이력서를 생성하고 링크로 공유해보세요.
+          </dd>
+        </dl>
+        <Button
+          className="mt-[20px]"
+          as={Link}
+          href={`/r/resumes/web/add?${searchParams.toString()}`}
+        >
+          이력서 생성
+        </Button>
+      </div>
+    );
+  } else {
+    return (
+      <List className="relative min-h-[calc(100dvh-232px)] rounded-[16px] bg-[#fff] p-[8px_24px]">
+        {data?.pages.map((page) => {
+          if (!page) return <></>;
+
+          const list = page.content;
+
+          return list?.map((el, i) => {
+            return (
+              <ResumsePdfListItem
+                isDelete={isDelete}
+                key={`PDF-이력서-리스트-${el.title}-${i}`}
+                item={el}
+              />
+            );
+          });
+        })}
+        {isLoading ||
+          (isFetching && (
+            <li>
+              <Spinner className="absolute bottom-[0px] left-1/2 -translate-1/2" />
+            </li>
+          ))}
+        <li ref={ref} style={{ height: "1px" }}></li>
+      </List>
+    );
+  }
 };

@@ -12,18 +12,19 @@ declare global {
     updatedAt: string;
   }
 
-  interface API_CLIENT_RESUMSES_WEB_LIST_PARAMS {
+  interface API_CLIENT_RESUMSES_LIST_PARAMS {
     offset: number;
     limit: number;
-    sort: SORT_TYPE;
     type: RESUMSES_TYPES;
+    sort: SORT_TYPE;
+    keyword?: string;
   }
 
-  type API_SERVER_RESUMSES_WEB_LIST = RESPONSE_MODEL<RESUMSE_LIST_ITEM[]>;
-
-  type API_CLIENT_RESUMSES_WEB_LIST = INFINITY_RESPONSE_ITEM<
-    RESUMSE_LIST_ITEM[]
+  type API_SERVER_RESUMSES_LIST = RESPONSE_MODEL<
+    INFINITY_RESPONSE_ITEM<RESUMSE_LIST_ITEM[]>
   >;
+
+  type API_CLIENT_RESUMSES_LIST = INFINITY_RESPONSE_ITEM<RESUMSE_LIST_ITEM[]>;
 }
 
 export {};

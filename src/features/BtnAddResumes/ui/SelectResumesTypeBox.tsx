@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/shared/ui/Button";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -80,18 +81,18 @@ export const SelectResumesTypeBox = ({
         </div>
       </div>
       <div className="mt-[19px] flex justify-end gap-[8px] [&>button]:h-[44px] [&>button]:w-[120px] [&>button]:rounded-[12px] [&>button]:text-[1rem] [&>button]:font-[600]">
-        <button
+        <Button
+          variant={"outlined"}
           onClick={cancelCallback}
-          className="border border-[#70737C29] text-[#171719]"
+          size={"large"}
+          disabled={false}
+          color={"assistive"}
         >
           취소
-        </button>
-        <button
-          onClick={OnClickSubmitCallback}
-          className="bg-[#0066FF] text-[#fff]"
-        >
+        </Button>
+        <Button onClick={OnClickSubmitCallback} size={"large"} disabled={false}>
           확인
-        </button>
+        </Button>
       </div>
     </article>
   );

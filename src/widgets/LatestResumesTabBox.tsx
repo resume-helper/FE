@@ -7,11 +7,15 @@ import { useState } from "react";
 
 import { ChevronRight } from "@/shared/icons";
 
-import { LatestResumesPdfList } from "@/features/LatestResumesPdfList";
-
 const LatestResumesWebList = dynamic(() =>
   import("@/features/LatestResumesWebList").then(
     (rs) => rs.LatestResumesWebList
+  )
+);
+
+const LatestResumesPdfList = dynamic(() =>
+  import("@/features/LatestResumesPdfList").then(
+    (rs) => rs.LatestResumesPdfList
   )
 );
 

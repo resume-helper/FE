@@ -1,14 +1,19 @@
 import { CombineZero } from "./combineZero";
 
-export function DateFormat(time: string | Date) {
+export function DateFormat(time: string | Date, type: string) {
   const date = new Date(time);
 
   const year = date.getFullYear();
   const month = CombineZero(date.getMonth() + 1);
   const day = CombineZero(date.getDate());
 
-  const result = `${year}.${month}.${day}`;
+  switch (type) {
+    case "yyyy-mm":
+      return `${year}.${month}`;
+    case "yyyy-mm-dd":
+      return `${year}.${month}.${day}`;
 
-  console.log(result, "##");
-  return result;
+    default:
+      return "-";
+  }
 }
