@@ -3,11 +3,14 @@
 import { useSearchParams } from "next/navigation";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { LogoutCallback } from "@/entities/auth/social-login/util/logout";
+
 import { API_CLIENT_BLOCKS_LIST } from "../api/api.client.blocks.list";
+import { LogoutCallback } from "@/entities/auth/social-login/util/logout";
 
 export const useBlocksListHook = () => {
   const searchParams = useSearchParams();
+
+  const key = searchParams.get("blockType");
 
   const {
     data,
@@ -19,15 +22,14 @@ export const useBlocksListHook = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["resumes", "list", searchParams.get("searchSort") ?? "ALL"],
+    queryKey: ["blocks", "list", key ?? "ALL"],
     queryFn: async ({ pageParam }) => {
       const params: API_CLIENT_BLOCKS_LIST_PARAMS = {
         offset: pageParam,
         limit: 20,
       };
 
-      if (searchParams.get("searchSort"))
-        params["type"] = searchParams.get("searchSort") as BLOCK_TYPE;
+      if (key) params["type"] = key as BLOCK_TYPE;
 
       return await API_CLIENT_BLOCKS_LIST(params);
     },
@@ -45,7 +47,7 @@ export const useBlocksListHook = () => {
     },
   });
 
-  //   if (isError) { LogoutCallback() }
+  // if (isError) { LogoutCallback() }
 
   return {
     data,

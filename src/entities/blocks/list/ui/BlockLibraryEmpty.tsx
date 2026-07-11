@@ -6,17 +6,15 @@ import { Button } from "@/shared/ui/Button";
 
 export const BlockLibraryEmpty = () => {
   return (
-    <li className="mt-[204px] text-center">
+    <li className="mt-[204px] w-full text-center">
       <dl>
-        <dt className="text-[1.0625rem] font-[500]">작성된 블록이 없어요.</dt>
-        <dd className="mt-[4px] text-[0.9375rem] text-[#2E2F33E0]">
+        <dt className="text-[1.375rem] font-[600]">작성된 블록이 없어요.</dt>
+        <dd className="mt-[4px] text-[1.25rem] text-[#2E2F33E0]">
           경험을 블록을 정리해보세요.
         </dd>
       </dl>
       <Button
-        className="mt-[16px]"
-        color={"assistive"}
-        size={"small"}
+        className="mt-[20px]"
         variant={"solid"}
         as={Link}
         href={"/r/blocks/add"}

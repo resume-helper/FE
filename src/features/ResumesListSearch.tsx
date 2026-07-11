@@ -63,12 +63,12 @@ export const ResumesListSearch = () => {
 
   return (
     <div className="flex items-center">
-      <div className="flex h-[40px] w-[240px] items-center gap-[12px] border border-[#E0E0E0] px-[10px] px-[16px] text-[#33333380]">
+      <div className="flex h-[40px] w-[240px] items-center gap-[12px] border border-[#E0E0E0] bg-[#fff] px-[10px] px-[16px] text-[#33333380]">
         <SvgSearch />
         <input
           defaultValue={defaultKeyword ?? ""}
           onInput={OnInputCallback}
-          className="border-none text-[0.875rem] outline-none"
+          className="text-[0.875rem] outline-none"
           type="text"
           placeholder="이력서 제목 검색"
         />

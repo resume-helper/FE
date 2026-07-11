@@ -3,7 +3,7 @@
 import { useSessionHook } from "@/entities/auth/social-login/hook/useSessionHook";
 
 import { BtnAddBlocks } from "@/features/BtnAddBlocks";
-import { BtnAddResumes } from "@/features/BtnAddResumes";
+import { BtnAddResumesSelect } from "@/features/BtnAddResumesSelect";
 
 export const DashBoardHomeHead = () => {
   const { user } = useSessionHook();
@@ -19,7 +19,7 @@ export const DashBoardHomeHead = () => {
       </h2>
       <div className="flex gap-[8px]">
         <BtnAddBlocks />
-        <BtnAddResumes />
+        <BtnAddResumesSelect />
       </div>
     </section>
   );

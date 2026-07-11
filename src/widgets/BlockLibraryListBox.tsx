@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
+
 import { BlocksLibraryList } from "@/features/BlocksLibraryList";
 import { Button } from "@/shared/ui/Button";
-import Link from "next/link";
+import { BlocksLibraryCategoryNavi } from "@/features/BlocksLibraryCategoryNavi";
 
 export const BlockLibraryListBox = () => {
   return (
@@ -13,6 +15,7 @@ export const BlockLibraryListBox = () => {
           블록 생성
         </Button>
       </h2>
+      <BlocksLibraryCategoryNavi />
       <BlocksLibraryList />
     </section>
   );

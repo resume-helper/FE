@@ -2,7 +2,7 @@
 
 import { useBlocksListHook } from "@/entities/blocks/list/hook/useBlocksListHook";
 
-import { BlockLibraryEmpty } from "@/entities/blocks/list/ui/BlockLibraryEmpty";
+import { LatestBlockLibraryEmpty } from "@/entities/blocks/list/ui/LatestBlockLibraryEmpty";
 import {
   LatestBlockLibraryActivityItem,
   LatestBlockLibraryBasicInfoItem,
@@ -34,7 +34,7 @@ export const LatestBlocksLibraryList = () => {
   return (
     <List>
       {total === 0 ? (
-        <BlockLibraryEmpty />
+        <LatestBlockLibraryEmpty />
       ) : (
         <>
           {latest?.map((el, i) => {

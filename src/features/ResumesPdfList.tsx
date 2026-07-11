@@ -3,28 +3,21 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-import { useEffect, useState } from "react";
-
-import { useShallow } from "zustand/shallow";
+import { useEffect } from "react";
 
 import { useInterSectionObserver } from "@/shared/hook/useInterSectionObserver";
 import { useResumseListHook } from "@/entities/resumes/list/hook/useResumseListHook";
 
-import { Spinner } from "@/shared/ui/Spinner";
+import { useResumsesDeleteStore } from "@/entities/resumes/delete/store/useResumsesDeleteStore";
+
 import { List } from "@/shared/ui/ListCell";
 import { Button } from "@/shared/ui/Button";
+
 import { ResumsePdfListItem } from "@/entities/resumes/list/ui/ResumsePdfListItem";
-import { useResumesListDeleteStore } from "@/entities/resumes/list/store/useResumesListDeleteStore";
+import { ListLoadingIcon } from "@/shared/ui/ListLoadingIcon";
 
 export const ResumesPdfList = () => {
   const searchParams = useSearchParams();
-
-  const { CheckDeleteIdsCallback, isDelete } = useResumesListDeleteStore(
-    useShallow((state) => ({
-      CheckDeleteIdsCallback: state.CheckDeleteIdsCallback,
-      isDelete: state.isDelete,
-    }))
-  );
 
   const { total, data, isFetching, isLoading, fetchNextPage, hasNextPage } =
     useResumseListHook("PDF");
@@ -32,6 +25,10 @@ export const ResumesPdfList = () => {
   const { ref, isView } = useInterSectionObserver<HTMLLIElement>({
     threshold: 0,
   });
+
+  const ResetDeleteStore = useResumsesDeleteStore(
+    (state) => state.ResetDeleteStore
+  );
 
   useEffect(() => {
     if (!isView) return;
@@ -42,6 +39,10 @@ export const ResumesPdfList = () => {
 
     fetchNextPage();
   }, [isView]);
+
+  useEffect(() => {
+    return () => ResetDeleteStore();
+  }, []);
 
   if (total === 0) {
     return (
@@ -72,19 +73,13 @@ export const ResumesPdfList = () => {
           return list?.map((el, i) => {
             return (
               <ResumsePdfListItem
-                isDelete={isDelete}
                 key={`PDF-이력서-리스트-${el.title}-${i}`}
                 item={el}
               />
             );
           });
         })}
-        {isLoading ||
-          (isFetching && (
-            <li>
-              <Spinner className="absolute bottom-[0px] left-1/2 -translate-1/2" />
-            </li>
-          ))}
+        {(isLoading || isFetching) && <ListLoadingIcon />}
         <li ref={ref} style={{ height: "1px" }}></li>
       </List>
     );

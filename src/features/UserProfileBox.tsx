@@ -8,6 +8,9 @@ import { useSessionHook } from "@/entities/auth/social-login/hook/useSessionHook
 import { LogoutCallback } from "@/entities/auth/social-login/util/logout";
 
 import SvgChevronDown from "@/shared/icons/ChevronDown";
+import SvgPerson from "@/shared/icons/Person";
+
+import profillImgNullSrc from "@/assets/icons/personFill.svg";
 
 export const UserProfileBox = () => {
   const { user } = useSessionHook();
@@ -46,14 +49,16 @@ export const UserProfileBox = () => {
         )}
       </div>
       <div className="order-1 mr-[12px] size-[32px] overflow-hidden rounded-[100%]">
-        <Image
-          width={32}
-          height={32}
-          src={user?.profileImageUrl as string}
-          alt={`${user?.name} 프로필 이미지`}
-          unoptimized
-          loading="eager"
-        />
+        {
+          <Image
+            width={32}
+            height={32}
+            src={(user?.profileImageUrl as string) ?? profillImgNullSrc}
+            alt={`${user?.name} 프로필 이미지`}
+            unoptimized
+            loading="eager"
+          />
+        }
       </div>
     </div>
   );

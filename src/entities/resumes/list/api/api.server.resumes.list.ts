@@ -18,15 +18,11 @@ export async function API_SERVER_RESUMSES_LIST(
 
   if (title) searchParams["title"] = title;
 
-  const api = await BACKEND_API("resumes", {
+  const result = await BACKEND_API("resumes", {
     searchParams,
-  });
+  })
+    .json<API_SERVER_RESUMSES_LIST>()
+    .catch<API_FAIL_RESPONSE>();
 
-  if (api.status === 401) {
-    throw await api.json().catch<API_FAIL_RESPONSE>();
-  }
-
-  const response = await api.json<API_SERVER_RESUMSES_LIST>();
-
-  return response["data"];
+  return result;
 }

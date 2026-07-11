@@ -1,8 +1,12 @@
 declare global {
+  /** 인증 필요 */
+  type UNAUTHORIZED = "UNAUTHORIZED";
+
   interface RESPONSE_MODEL<T> {
     success: boolean;
     data: T;
     message: null | string;
+    code: UNAUTHORIZED | string | null;
   }
 
   interface INFINITY_RESPONSE_ITEM<T> {
@@ -15,11 +19,7 @@ declare global {
     hasPrevious: boolean;
   }
 
-  type API_FAIL_RESPONSE = {
-    code: "UNAUTHORIZED" | string;
-    message: string;
-    timestamp: string;
-  };
+  type API_FAIL_RESPONSE = RESPONSE_MODEL<null>;
 }
 
 export {};

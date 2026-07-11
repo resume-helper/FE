@@ -7,13 +7,13 @@ import { usePathname } from "next/navigation";
 import { UserProfileBox } from "@/features/UserProfileBox";
 import { useAfterLoginSideMenuStore } from "@/shared/store/useAfterLoginSideMenuStore";
 import { LeftSide } from "@/shared/icons/LeftSide";
-import { Button } from "@/shared/ui/Button";
 
 const PAGE_TITLE: Record<string, string> = {
   "/r": "홈",
   "/r/resumes/pdf": "PDF 이력서",
   "/r/resumes/web": "WEB 이력서",
   "/r/blocks": "블록 라이브러리",
+  "/r/blocks/add": "블록 생성",
 };
 
 export const AfterLoginHeader = () => {

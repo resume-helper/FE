@@ -2,7 +2,7 @@
 
 import { BlockLibraryListBox } from "@/widgets/BlockLibraryListBox";
 
-const BlocksListPageView = () => {
+const BlocksLibraryListPageView = () => {
   return (
     <>
       <h1 className="sr-only">블록 라이브러리 목록 페이지</h1>
@@ -11,4 +11,4 @@ const BlocksListPageView = () => {
   );
 };
 
-export default BlocksListPageView;
+export default BlocksLibraryListPageView;

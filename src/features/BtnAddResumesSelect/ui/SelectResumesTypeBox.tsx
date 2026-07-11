@@ -2,7 +2,7 @@
 
 import { Button } from "@/shared/ui/Button";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
@@ -18,8 +18,6 @@ export const SelectResumesTypeBox = ({
   const [isSelected, SetIsSelected] = useState<SELECT_TYPE | "">("");
 
   const navigation = useRouter();
-
-  const searchParams = useSearchParams();
 
   function OnClickSubmitCallback() {
     if (!isSelected) return;

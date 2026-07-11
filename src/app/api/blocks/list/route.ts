@@ -4,48 +4,42 @@ import { API_SERVER_BLOCKS_LIST } from "@/entities/blocks/list/api/api.server.bl
 import { API_SERVER_REFRESH } from "@/entities/auth/refresh/api/api.server.refresh";
 
 export async function POST(req: NextRequest) {
-  const { offset, limit, type } =
-    (await req.json()) as API_CLIENT_BLOCKS_LIST_PARAMS;
-
   try {
+    const { offset, limit, type } =
+      (await req.json()) as API_CLIENT_BLOCKS_LIST_PARAMS;
+
     const result = await API_SERVER_BLOCKS_LIST(offset, limit, type);
 
-    return NextResponse.json(result, { status: 200 });
-  } catch (err) {
-    const error = (await err) as API_FAIL_RESPONSE;
-
-    /** accessToken 만료 */
-    if (error["code"] === "UNAUTHORIZED") {
-      const isRefresh = await API_SERVER_REFRESH();
-
-      /** 갱신 성공 */
-      if (isRefresh?.success) {
-        const result = await API_SERVER_BLOCKS_LIST(offset, limit, type);
-
-        return NextResponse.json(result, { status: 200 });
-      } else {
-        /** 갱신 실패 (refreshToken 만료) */
-        // return NextResponse.json({
-        //   success : false,
-        //   data : [],
-        //   message : error["message"]
-        // },{ status: 500 });
-        return NextResponse.json({ status: 500 });
-      }
+    if (result["success"]) {
+      return NextResponse.json(result["data"], {
+        status: 200,
+      });
     } else {
-      /**
-       * 토큰 외 에러
-       *
-       * RESUME_NOT_FOUND : 이력서 없음 또는 삭제됨
-       * FORBIDDEN : 본인 소유 아닌 이력서 접근
-       * VALIDATION_FAILED : 입력값 유효성 오류
-       */
-      // return NextResponse.json({
-      //   success : false,
-      //   data : [],
-      //   message : error["message"]
-      // }, { status: 200 });
-      return NextResponse.json([], { status: 200 });
+    /** api 통신 실패 */
+      /** accessToken 토큰 만료 */
+      if (result["code"] === "UNAUTHORIZED") {
+        const isRefresh = await API_SERVER_REFRESH();
+
+        /** accessToken 갱신 성공 */
+        if (isRefresh.success) {
+          const retry = await API_SERVER_BLOCKS_LIST(offset, limit, type);
+
+          return NextResponse.json(retry["success"] ? retry["data"] : [], {
+            status: 200,
+          });
+        } else {
+        /** refreshToken 만료 (로그아웃) */
+          return NextResponse.json({ status: 500 });
+        }
+      } else {
+      /** 토큰 만료 외 에러 */
+        console.log(result, "토큰 만료 외 에러");
+        return NextResponse.json([], { status: 200 });
+      }
     }
+  } catch (err) {
+    console.log(err, "알수없는 에러");
+
+    return NextResponse.json([], { status: 200 });
   }
 }

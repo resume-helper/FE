@@ -8,10 +8,11 @@ import { useEffect } from "react";
 import { useInterSectionObserver } from "@/shared/hook/useInterSectionObserver";
 import { useResumseListHook } from "@/entities/resumes/list/hook/useResumseListHook";
 
-import { DateFormat } from "@/shared/util/dateFormat";
+import { useResumsesDeleteStore } from "@/entities/resumes/delete/store/useResumsesDeleteStore";
 
-import SvgDownload from "@/shared/icons/Download";
-import { Spinner } from "@/shared/ui/Spinner";
+import { ResumesWebListItem } from "@/entities/resumes/list/ui/ResumesWebListItem";
+import { ListLoadingIcon } from "@/shared/ui/ListLoadingIcon";
+
 import { List } from "@/shared/ui/ListCell";
 import { Button } from "@/shared/ui/Button";
 
@@ -25,6 +26,10 @@ export const ResumesWebList = () => {
     threshold: 0,
   });
 
+  const ResetDeleteStore = useResumsesDeleteStore(
+    (state) => state.ResetDeleteStore
+  );
+
   useEffect(() => {
     if (!isView) return;
     if (isLoading) return;
@@ -34,6 +39,10 @@ export const ResumesWebList = () => {
 
     fetchNextPage();
   }, [isView]);
+
+  useEffect(() => {
+    return () => ResetDeleteStore();
+  }, []);
 
   if (total === 0) {
     return (
@@ -54,6 +63,7 @@ export const ResumesWebList = () => {
       </div>
     );
   } else {
+    //
     return (
       <List className="relative min-h-[calc(100dvh-232px)] rounded-[16px] bg-[#fff] p-[8px_24px]">
         {data?.pages.map((page) => {
@@ -61,45 +71,14 @@ export const ResumesWebList = () => {
 
           const list = page.content;
 
-          return list?.map((el, i) => {
-            return (
-              <li
-                className="flex h-[94px] items-center text-[#171719]"
-                key={`WEB-이력서-리스트-${el.title}-${i}`}
-              >
-                <p
-                  className={`mr-[16px] h-[24px] w-[48px] shrink-0 leading-[24px] ${el.isPublic ? "bg-[#EBFAF0] text-[#00BF40]" : "bg-[#FFF0F0] text-[#FF4242]"} rounded-[6px] text-center text-[0.75rem]`}
-                >
-                  {el.isPublic ? "공개" : "비공개"}
-                </p>
-                <dl className="pt-[16px]">
-                  <dt className="w-[572px] truncate text-[1.0625rem] font-[500]">
-                    {el.title}
-                  </dt>
-                  <dd className="space-x-[10px] text-[0.8125rem] font-[400] text-[#37383C9C]">
-                    <span>조회수 842</span>
-                    <span>체류시간 00초</span>
-                    <span>별점 4.2</span>
-                  </dd>
-                </dl>
-                <div className="ml-auto flex items-center gap-[8px]">
-                  <p className="text-[0.875rem]">
-                    {DateFormat(el.createdAt, "yyyy-mm-dd")}
-                  </p>
-                  <button title={`${el.title} 이력서 다운로드`}>
-                    <SvgDownload className="size-[20px]" />
-                  </button>
-                </div>
-              </li>
-            );
-          });
+          return list?.map((el, i) => (
+            <ResumesWebListItem
+              key={`WEB-이력서-리스트-${el.title}-${i}`}
+              item={el}
+            />
+          ));
         })}
-        {isLoading ||
-          (isFetching && (
-            <li>
-              <Spinner className="absolute bottom-[0px] left-1/2 -translate-1/2" />
-            </li>
-          ))}
+        {(isLoading || isFetching) && <ListLoadingIcon />}
         <li ref={ref} style={{ height: "1px" }}></li>
       </List>
     );

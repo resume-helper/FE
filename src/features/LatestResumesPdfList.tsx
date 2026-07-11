@@ -10,6 +10,8 @@ import { List } from "@/shared/ui/ListCell";
 export const LatestResumesPdfList = () => {
   const { latest, isLoading } = useResumseListHook("PDF");
 
+  if (!latest) return <></>;
+
   return (
     <List>
       {isLoading && (

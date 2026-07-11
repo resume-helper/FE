@@ -11,7 +11,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: catchTime /** 4시간 */,
       gcTime: catchTime,
-      refetchOnMount: false, // ✅ 마운트 시 재요청 막기
+      // refetchOnMount: false, // ✅ 마운트 시 재요청 막기
       refetchOnWindowFocus: false, // ✅ 포커스 시 재요청 막기
       retry: false,
     },

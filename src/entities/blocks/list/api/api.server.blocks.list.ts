@@ -16,15 +16,11 @@ export async function API_SERVER_BLOCKS_LIST(
 
   if (type) searchParams["type"] = type;
 
-  const api = await BACKEND_API("blocks", {
+  const result = await BACKEND_API("blocks", {
     searchParams,
-  });
+  })
+    .json<API_SERVER_BLOCKS_LIST>()
+    .catch<API_FAIL_RESPONSE>();
 
-  if (api.status === 401) {
-    throw await api.json().catch<API_FAIL_RESPONSE>();
-  }
-
-  const response = await api.json<API_SERVER_BLOCKS_LIST>();
-
-  return response["data"];
+  return result;
 }

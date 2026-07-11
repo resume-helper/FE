@@ -6,6 +6,11 @@ import { useState } from "react";
 
 import { Button } from "@/shared/ui/Button";
 import { Portal } from "@/shared/ui/Portal";
+import {
+  LogoKakaoColor,
+  LogoGoogleColor,
+  LogoNaverColor,
+} from "@/shared/icons";
 
 export const BtnLogin = () => {
   const [isMenu, SetIsMenu] = useState(false);
@@ -55,12 +60,13 @@ export const BtnLogin = () => {
                 </dd>
               </dl>
 
-              <ul className="mt-[20px] space-y-[12px] [&>li>button]:h-[52px] [&>li>button]:w-[480px] [&>li>button]:cursor-pointer [&>li>button]:rounded-[100px] [&>li>button]:font-[600] [&>li>button]:tracking-[0.57%]">
+              <ul className="mt-[20px] space-y-[12px] [&>li>button]:flex [&>li>button]:h-[52px] [&>li>button]:w-[480px] [&>li>button]:cursor-pointer [&>li>button]:items-center [&>li>button]:justify-center [&>li>button]:gap-[8px] [&>li>button]:rounded-[100px] [&>li>button]:font-[600] [&>li>button]:tracking-[0.57%] [&>li>button>svg]:size-[20px]">
                 <li>
                   <button
                     onClick={() => OnClickSSOLoginCallback("kakao")}
                     className="bg-[#FEE500]"
                   >
+                    <LogoKakaoColor />
                     카카오 로그인
                   </button>
                 </li>
@@ -69,14 +75,16 @@ export const BtnLogin = () => {
                     onClick={() => OnClickSSOLoginCallback("google")}
                     className="border border-[#747775] bg-[#fff]"
                   >
+                    <LogoGoogleColor />
                     구글로 로그인
                   </button>
                 </li>
                 <li>
                   <button
                     onClick={() => OnClickSSOLoginCallback("naver")}
-                    className="bg-[#03C75A]"
+                    className="bg-[#03C75A] text-[#fff]"
                   >
+                    <LogoNaverColor />
                     네이버 로그인
                   </button>
                 </li>
