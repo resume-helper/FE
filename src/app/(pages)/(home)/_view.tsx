@@ -2,14 +2,19 @@
 
 import Image from "next/image";
 
+import { useState } from "react";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 // import { IconStar } from "@/shared/icon/Star"
+import { LoginModal } from "@/features/BtnLogin";
 import { BeforeLoginHeader } from "@/widgets/BeforeLoginHeader";
 import { BeforeLoginFooter } from "@/widgets/BeforeLoginFooter";
 
 const HomePageView = () => {
+  const [loginOpen, setLoginOpen] = useState(false);
+
   return (
     <>
       <BeforeLoginHeader />
@@ -30,7 +35,10 @@ const HomePageView = () => {
                   피드백까지 받아보세요
                 </dd>
               </dl>
-              <button className="mt-[24px] h-[48px] w-[126px] rounded-[12px] bg-[#0066FF] leading-[150%] font-[600] tracking-[0.57%] text-[#fff]">
+              <button
+                onClick={() => setLoginOpen(true)}
+                className="mt-[24px] h-[48px] w-[126px] rounded-[12px] bg-[#0066FF] leading-[150%] font-[600] tracking-[0.57%] text-[#fff]"
+              >
                 무료로 시작하기
               </button>
             </div>
@@ -92,10 +100,16 @@ const HomePageView = () => {
               저희 서비스 사용 후기를 확인해 보세요
             </h2>
             <div className="m-[20px_48px] flex items-center justify-center gap-[8px] [&>button]:h-[32px] [&>button]:rounded-[8px] [&>button]:border [&>button]:text-[0.8125rem] [&>button]:leading-[32px] [&>button]:font-[600]">
-              <button className="w-[76px] border-[#70737C29] text-[#171719]">
+              <button
+                onClick={() => setLoginOpen(true)}
+                className="w-[76px] border-[#70737C29] text-[#171719]"
+              >
                 회원가입
               </button>
-              <button className="w-[123px] border-[#0066FF] bg-[#0066FF] text-[#fff]">
+              <button
+                onClick={() => setLoginOpen(true)}
+                className="w-[123px] border-[#0066FF] bg-[#0066FF] text-[#fff]"
+              >
                 지금바로 사용하기
               </button>
             </div>
@@ -202,6 +216,7 @@ const HomePageView = () => {
         </main>
       </div>
       <BeforeLoginFooter />
+      {loginOpen && <LoginModal onClose={() => setLoginOpen(false)} />}
     </>
   );
 };

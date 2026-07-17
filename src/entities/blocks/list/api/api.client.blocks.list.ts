@@ -13,3 +13,13 @@ export async function API_CLIENT_BLOCKS_LIST(
     throw err;
   }
 }
+
+export async function API_CLIENT_BLOCKS_COUNTS() {
+  return CLIENT_API("blocks/counts", { json: {} }).json<BLOCK_COUNTS>();
+}
+
+export async function API_CLIENT_BLOCKS_DELETE(blockId: number) {
+  return CLIENT_API("blocks/delete", { json: { blockId } }).json<{
+    success: boolean;
+  }>();
+}
