@@ -35,10 +35,33 @@ export const authOptions: NextAuthOptions = {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+
+      // BE SocialLoginRequest 는 provider·email·name 전부 필수 — 기본 프로필엔 provider 가 없어 400
+      async profile(profile) {
+        return {
+          id: String(profile.id) /** 고유 식별 값 */,
+          name: profile.kakao_account?.profile?.nickname ?? "" /** 닉네임 */,
+          email:
+            profile.kakao_account?.email ?? "" /** 이메일 (동의항목 필요) */,
+          provider: "KAKAO" /** social login type */,
+        };
+      },
     }),
     NaverProvider({
       clientId: process.env.NAVER_CLIENT_ID!,
       clientSecret: process.env.NAVER_CLIENT_SECRET!,
+
+      async profile(profile) {
+        return {
+          id: profile.response.id /** 고유 식별 값 */,
+          name:
+            profile.response.name ??
+            profile.response.nickname ??
+            "" /** 이름 */,
+          email: profile.response.email ?? "" /** 이메일 */,
+          provider: "NAVER" /** social login type */,
+        };
+      },
     }),
   ],
   callbacks: {
