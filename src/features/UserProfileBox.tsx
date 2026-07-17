@@ -28,7 +28,7 @@ export const UserProfileBox = () => {
           <>
             <ul className="absolute top-[40px] right-[0] z-3 w-[176px] rounded-[16px] border border-[#EAEBEC] bg-[#fff] p-[8px] shadow-[0px_4px_6px_-1px_#1717170F,_0px_2px_4px_-2px_#1717170F] [&>li>*]:block [&>li>*]:h-[40px] [&>li>*]:rounded-[8px] [&>li>*]:px-[12px] [&>li>*]:leading-[40px] [&>li>*]:font-[400]">
               <li>
-                <Link href="" className="bg-[#f6f6f6] text-[#171719]">
+                <Link href="/r/mypage" className="bg-[#f6f6f6] text-[#171719]">
                   마이페이지
                 </Link>
               </li>

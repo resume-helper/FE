@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/shared/ui/Button";
 import { ResumesListSearch } from "@/features/ResumesListSearch";
 import { BtnAddResumes } from "@/features/BtnAddResumes";
+import { ResumesListDeleteBtns } from "@/features/ResumesListDeleteBtns";
 import { ResumesWebList } from "@/features/ResumesWebList";
 
 export const ResumesWebListBox = () => {
@@ -14,14 +14,7 @@ export const ResumesWebListBox = () => {
       </h2>
       <article className="mb-[20px] flex h-[48px] items-center">
         <ResumesListSearch />
-        <Button
-          className="ml-auto"
-          variant={"outlined"}
-          size={"medium"}
-          color={"assistive"}
-        >
-          선택
-        </Button>
+        <ResumesListDeleteBtns className="ml-auto" />
       </article>
       <ResumesWebList />
     </section>

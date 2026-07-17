@@ -5,6 +5,12 @@ declare global {
     type?: BLOCK_TYPE;
   }
 
+  /** BE BlockCountsResponse */
+  interface BLOCK_COUNTS {
+    totalCount: number;
+    counts: { type: BLOCK_TYPE; count: number }[];
+  }
+
   type BLOCK_LIST_CONTENT =
     | CAREER_BLOCK_ITEM
     | PROJECT_BLOCK_ITEM
