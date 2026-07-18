@@ -46,14 +46,21 @@ export const UserProfileBox = () => {
         )}
       </div>
       <div className="order-1 mr-[12px] size-[32px] overflow-hidden rounded-[100%]">
-        <Image
-          width={32}
-          height={32}
-          src={user?.profileImageUrl as string}
-          alt={`${user?.name} 프로필 이미지`}
-          unoptimized
-          loading="eager"
-        />
+        {user?.profileImageUrl ? (
+          <Image
+            width={32}
+            height={32}
+            src={user.profileImageUrl}
+            alt={`${user?.name} 프로필 이미지`}
+            unoptimized
+            loading="eager"
+          />
+        ) : (
+          // 프로필 이미지 미제공(소셜 동의 안 함 등) — 이름 첫 글자 아바타
+          <span className="flex size-full items-center justify-center bg-[#0066FF] text-[0.8125rem] font-[600] text-white">
+            {user?.name?.charAt(0) ?? ""}
+          </span>
+        )}
       </div>
     </div>
   );

@@ -15,8 +15,11 @@ export const RESUME_TEMPLATES: {
   { value: "C", label: "Template C", description: "미니멀·라인" },
 ];
 
-/** 미리보기용 요약 — contentJson 에서 대표 필드를 뽑는다 */
-function summarize(type: EditorBlockType, content: Record<string, unknown>) {
+/** 미리보기용 요약 — contentJson 에서 대표 필드를 뽑는다 (블록 카드 프리뷰에서도 재사용) */
+export function summarize(
+  type: EditorBlockType,
+  content: Record<string, unknown>
+) {
   const s = (k: string) =>
     typeof content[k] === "string" ? (content[k] as string) : "";
   switch (type) {

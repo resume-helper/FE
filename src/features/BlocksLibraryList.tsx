@@ -12,7 +12,8 @@ import { useInterSectionObserver } from "@/shared/hook/useInterSectionObserver";
 import { List } from "@/shared/ui/ListCell";
 import { Spinner } from "@/shared/ui/Spinner";
 import { DateFormat } from "@/shared/util/dateFormat";
-import { BlockLibraryProjectItem } from "@/entities/blocks/list/ui/BlockLibraryItem";
+import { summarize } from "@/features/ResumeBuilder/preview";
+import type { EditorBlockType } from "@/entities/blocks/editor/model/blockContentSchemas";
 
 /** 수정 진입 시 목록 아이템을 에디터로 넘기는 sessionStorage 키 (BE 단건 조회 API 부재) */
 export const BLOCK_EDIT_STASH_KEY = "resumate:block-edit";
@@ -63,10 +64,19 @@ export const BlocksLibraryList = () => {
         const list = page.content;
 
         return list?.map((el, i) => {
+          const preview = summarize(
+            el.type as EditorBlockType,
+            el.contentJson as unknown as Record<string, unknown>
+          );
+          const previewBody = (preview as { body?: string } | undefined)?.body;
+          const previewSubtitle = (preview as { subtitle?: string } | undefined)
+            ?.subtitle;
+
           return (
             <li
-              className="relative h-[186px] w-[calc(50%-6px)] rounded-[12px] bg-[#fff] p-[20px_24px]"
+              className="relative h-[186px] w-[calc(50%-6px)] cursor-pointer rounded-[12px] bg-[#fff] p-[20px_24px] transition-shadow hover:shadow-[0px_4px_12px_0px_#17171714]"
               key={`블록라이브러리-${el.title}-${i}`}
+              onClick={() => onEditClick(el)}
             >
               <h3 className="flex gap-[8px] truncate">
                 <span className="h-[20px] shrink-0 rounded-[6px] bg-[#EBF7F9] px-[_11px] text-center text-[0.6875rem] leading-[24px] font-[500] text-[#0098B2]">
@@ -77,11 +87,19 @@ export const BlocksLibraryList = () => {
                 {el.title}
               </h3>
 
-              {el.type === "PROJECT" && (
-                <BlockLibraryProjectItem
-                  item={el.contentJson as PROJECT_BLOCK_ITEM}
-                />
-              )}
+              {/* 내용 프리뷰 — 대표 필드 요약 (부제 1줄 + 본문 2줄) */}
+              <div className="mt-[8px] flex flex-col gap-[2px]">
+                {previewSubtitle && (
+                  <p className="truncate text-[0.8125rem] text-[#37383C9C]">
+                    {previewSubtitle}
+                  </p>
+                )}
+                {previewBody && (
+                  <p className="line-clamp-2 text-[0.8125rem] text-[#2E2F33E0]">
+                    {previewBody}
+                  </p>
+                )}
+              </div>
 
               <p className="absolute bottom-[20px] left-[24px] text-[0.875rem] text-[#37383C9C]">
                 {DateFormat(el.createdAt, "yyyy-mm-dd")}
@@ -91,14 +109,20 @@ export const BlocksLibraryList = () => {
                 <button
                   type="button"
                   className="text-[#37383C9C] underline"
-                  onClick={() => onEditClick(el)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEditClick(el);
+                  }}
                 >
                   수정
                 </button>
                 <button
                   type="button"
                   className="text-[#FF4242] underline"
-                  onClick={() => onDeleteClick(el)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteClick(el);
+                  }}
                 >
                   삭제
                 </button>
