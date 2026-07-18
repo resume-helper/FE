@@ -1,77 +1,27 @@
-name: CD
+name: CD (Docker / EC2)
 
 on:
   push:
-    branches: [main]
+    branches: [ dev ]
 
 jobs:
-  build:
+  deploy:
+    name: Build & Deploy frontend to EC2
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
-      - uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/**') }}
-          restore-keys: |
-            nextjs-${{ hashFiles('package-lock.json') }}-
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Fetch env vars from Parameter Store
-        run: |
-          aws ssm get-parameters-by-path \
-            --path "/resume-helper/production/" \
-            --with-decryption \
-            --region ${{ secrets.AWS_REGION }} \
-            --query "Parameters[*].[Name,Value]" \
-            --output text | \
-          awk '{n=split($1,a,"/"); print a[n] "=" $2}' > .env.production
-
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
-      - name: Package build artifacts
+      - name: Build (standalone)
         run: |
-          tar -czf build.tar.gz \
-            .next \
-            public \
-            package.json \
-            package-lock.json \
-            next.config.ts \
-            ecosystem.config.cjs \
-            .env.production
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: build.tar.gz
-          retention-days: 1
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-
-      - name: Extract build artifacts
-        run: tar -xzf build.tar.gz
+          echo "NEXT_PUBLIC_BACKEND_API_URL=http://backend:8080/api" > .env.production
+          npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -80,62 +30,38 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Get runner IP and open port 22
-        id: open-port
+      - name: Open SSH for runner IP
+        id: sg
         run: |
           RUNNER_IP=$(curl -s https://checkip.amazonaws.com)
-          echo "runner_ip=${RUNNER_IP}" >> $GITHUB_OUTPUT
+          echo "ip=$RUNNER_IP" >> $GITHUB_OUTPUT
           aws ec2 authorize-security-group-ingress \
             --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${RUNNER_IP}/32
+            --protocol tcp --port 22 --cidr "$RUNNER_IP/32" || true
 
       - name: Setup SSH key
         run: |
-          echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/deploy_key
-          chmod 600 /tmp/deploy_key
+          echo "${{ secrets.EC2_SSH_KEY }}" > /tmp/key.pem
+          chmod 600 /tmp/key.pem
 
-      - name: Sync .next directory
+      - name: Ship standalone build to EC2
         run: |
-          rsync -avz --delete \
-            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
-            .next/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/.next/
+          SSHO="ssh -i /tmp/key.pem -o StrictHostKeyChecking=no"
+          $SSHO ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p ~/app/FE/.next'
+          rsync -az --delete -e "$SSHO" .next/standalone/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:'~/app/FE/.next/standalone/'
+          rsync -az --delete -e "$SSHO" .next/static/    ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:'~/app/FE/.next/static/'
+          rsync -az          -e "$SSHO" public/          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:'~/app/FE/public/'
+          rsync -az          -e "$SSHO" Dockerfile       ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:'~/app/FE/'
 
-      - name: Sync public directory
+      - name: Compose up frontend + check
         run: |
-          rsync -avz \
-            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
-            public/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/public/
+          ssh -i /tmp/key.pem -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+            'cd ~/app/deploy && docker compose up -d --build frontend && \
+             curl -s --retry 20 --retry-delay 2 --retry-all-errors -o /dev/null -w "frontend: %{http_code}\n" http://localhost/'
 
-      - name: Sync config and env files
-        run: |
-          rsync -avz \
-            -e "ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no" \
-            package.json package-lock.json next.config.ts ecosystem.config.cjs .env.production \
-            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
-
-      - name: Install production dependencies and restart app
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            source "$NVM_DIR/nvm.sh"
-            cd /home/ubuntu/app
-            npm ci --omit=dev --ignore-scripts
-            pm2 describe resume-helper > /dev/null 2>&1 \
-              && pm2 reload resume-helper \
-              || pm2 start ecosystem.config.cjs --env production
-            pm2 save
-
-      - name: Close port 22
+      - name: Close SSH for runner IP
         if: always()
         run: |
           aws ec2 revoke-security-group-ingress \
             --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} \
-            --protocol tcp \
-            --port 22 \
-            --cidr ${{ steps.open-port.outputs.runner_ip }}/32
+            --protocol tcp --port 22 --cidr "${{ steps.sg.outputs.ip }}/32" || true

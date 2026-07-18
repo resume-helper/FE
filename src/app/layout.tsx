@@ -1,8 +1,14 @@
-import "./globals.css";
+import "@/styles/globals.css";
 import localFont from "next/font/local";
-// import QueryProvider from "./providers/_QueryProvider";
+
+import { getServerSession } from "next-auth";
+
+import { authOptions } from "@/auth";
+
 import { GlobalAlert } from "@/shared/ui/GlobalAlert";
 import { Toast } from "@/shared/ui/Toast";
+
+import { SessionProvider } from "@/provider/SessionProvider";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardJPVariable.woff2",
@@ -11,20 +17,22 @@ const pretendard = localFont({
   display: "swap",
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = async ({ children }: LAYOUT_CHILD) => {
+  const session = await getServerSession(authOptions);
+
   return (
-    <html lang="ko" className={pretendard.variable}>
-      <body>
-        {/*<QueryProvider>*/}
-        {children}
-        <GlobalAlert />
-        <Toast />
-        {/*</QueryProvider>*/}
+    <html lang="ko">
+      <body className={pretendard.variable}>
+        <SessionProvider session={session}>
+          {children}
+          <GlobalAlert />
+          <Toast />
+        </SessionProvider>
+
+        <div id="portal-root"></div>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

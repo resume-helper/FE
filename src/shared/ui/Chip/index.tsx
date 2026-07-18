@@ -6,7 +6,7 @@ const chipVariants = cva(
     "relative inline-flex cursor-pointer items-center overflow-hidden select-none",
     "disabled:pointer-events-none disabled:cursor-not-allowed",
     "after:absolute after:inset-0",
-    "after:opacity-0 after:transition-opacity after:duration-150",
+    "after:opacity-0 after:transition-opacity after:duration-300 after:ease-in-out",
     "hover:after:opacity-[0.05] focus-visible:after:opacity-[0.08] active:after:opacity-[0.12]",
     "disabled:after:hidden",
   ],

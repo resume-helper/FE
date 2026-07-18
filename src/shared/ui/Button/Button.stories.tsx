@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import Link from "next/link";
 import { Button } from "@/shared/ui/Button";
 
 const meta = {
@@ -59,5 +60,15 @@ export const Sizes: Story = {
         Large
       </Button>
     </div>
+  ),
+};
+
+// polymorphic: next/link로 렌더링 (as 사용)
+export const AsNextLink: Story = {
+  args: { children: "Go to home" },
+  render: (args) => (
+    <Button as={Link} href="/">
+      {args.children}
+    </Button>
   ),
 };
