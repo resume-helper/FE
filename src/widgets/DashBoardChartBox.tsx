@@ -21,7 +21,7 @@ interface DashboardStats {
 
 async function fetchDashboardStats(): Promise<DashboardStats> {
   const list = await API_CLIENT_RESUMSES_LIST({
-    offset: 0,
+    offset: 1, // 목록 API 는 1-베이스 (0 이면 BE PageRequest 가 -1 로 죽는다)
     limit: 50,
     type: "WEB",
     sort: "NEWEST",
