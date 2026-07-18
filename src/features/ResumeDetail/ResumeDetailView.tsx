@@ -133,6 +133,15 @@ export default function ResumeDetailView({
         </div>
 
         <div className="flex items-center gap-[8px]">
+          {mode === "PDF" && (
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="text-label-1-normal-medium h-[36px] rounded-[10px] bg-[#0066FF] px-[12px] text-white"
+            >
+              PDF 다운로드
+            </button>
+          )}
           {mode === "PDF" && detail.pdfDownloadUrl && (
             <a
               href={detail.pdfDownloadUrl}

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { API_CLIENT_BLOCKS_DELETE } from "@/entities/blocks/list/api/api.client.blocks.list";
+import { BLOCK_TYPE_LABELS } from "@/entities/blocks/editor/model/blockEditorMeta";
 import { useBlocksListHook } from "@/entities/blocks/list/hook/useBlocksListHook";
 import { useAlertStore } from "@/shared/store/alertStore";
 import { useInterSectionObserver } from "@/shared/hook/useInterSectionObserver";
@@ -69,7 +70,9 @@ export const BlocksLibraryList = () => {
             >
               <h3 className="flex gap-[8px] truncate">
                 <span className="h-[20px] shrink-0 rounded-[6px] bg-[#EBF7F9] px-[_11px] text-center text-[0.6875rem] leading-[24px] font-[500] text-[#0098B2]">
-                  {el.type}
+                  {BLOCK_TYPE_LABELS[
+                    el.type as keyof typeof BLOCK_TYPE_LABELS
+                  ] ?? el.type}
                 </span>
                 {el.title}
               </h3>
