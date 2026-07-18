@@ -7,7 +7,7 @@ import {
   type Path,
 } from "react-hook-form";
 
-import { Select } from "@/shared/ui/Select";
+import { Select, SelectItem } from "@/shared/ui/Select";
 import { TextField } from "@/shared/ui/TextField";
 
 /** RHF Controller + shared/ui TextField 연결 (에러 메시지 = description) */
@@ -75,10 +75,16 @@ export function RhfSelect<T extends FieldValues>({
           placeholder={placeholder ?? "선택해주세요"}
           status={fieldState.error ? "invalid" : "normal"}
           description={fieldState.error?.message}
-          options={options.map((o) => ({ value: o.value, label: o.label }))}
           value={(field.value as string) ?? undefined}
           onValueChange={field.onChange}
-        />
+        >
+          {/* text 모드 Select 는 options prop 이 아니라 children(SelectItem)을 렌더한다 */}
+          {options.map((o) => (
+            <SelectItem key={o.value} value={o.value}>
+              {o.label}
+            </SelectItem>
+          ))}
+        </Select>
       )}
     />
   );
