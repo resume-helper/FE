@@ -200,6 +200,7 @@ function FeedbackSidebar({
   const [tags, setTags] = useState<string[]>([]);
   const [comment, setComment] = useState("");
   const [done, setDone] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const targetKey = target === "OVERALL" ? "overall" : target;
   const alreadySubmitted =
@@ -220,9 +221,20 @@ function FeedbackSidebar({
         comment: target === "OVERALL" && comment.trim() ? comment.trim() : null,
         tags,
       }),
+    onMutate: () => setSubmitError(null),
     onSuccess: () => {
       window.localStorage.setItem(submittedKey(resumeId, targetKey), "1");
       setDone(true);
+    },
+    onError: async (err) => {
+      // BFF 가 BE 실패 사유(본인 이력서·유효성 등)를 message 로 전달한다
+      const body = await (err as { response?: Response }).response
+        ?.json()
+        .catch(() => null);
+      setSubmitError(
+        (body as { message?: string } | null)?.message ??
+          "피드백을 제출하지 못했어요. 잠시 후 다시 시도해주세요."
+      );
     },
   });
 
@@ -232,6 +244,7 @@ function FeedbackSidebar({
     setTags([]);
     setComment("");
     setDone(false);
+    setSubmitError(null);
   };
 
   const canSubmit =
@@ -345,6 +358,10 @@ function FeedbackSidebar({
           >
             피드백 제출
           </button>
+
+          {submitError && (
+            <p className="text-label-2-medium text-[#dc2626]">{submitError}</p>
+          )}
         </>
       )}
     </aside>

@@ -47,15 +47,15 @@ export const ResumesPdfList = () => {
     return (
       <div className="mt-[200px] text-center">
         <dl>
-          <dt className="text-[1.0625rem] font-[500]">웹 이력서가 없어요.</dt>
+          <dt className="text-[1.0625rem] font-[500]">PDF 이력서가 없어요.</dt>
           <dd className="mt-[4px] text-[0.9375rem] text-[#2E2F33E0]">
-            웹 이력서를 생성하고 링크로 공유해보세요.
+            PDF 이력서를 생성하고 다운로드해보세요.
           </dd>
         </dl>
         <Button
           className="mt-[20px]"
           as={Link}
-          href={`/r/resumes/web/add?${searchParams.toString()}`}
+          href={`/r/resumes/pdf/add?${searchParams.toString()}`}
         >
           이력서 생성
         </Button>

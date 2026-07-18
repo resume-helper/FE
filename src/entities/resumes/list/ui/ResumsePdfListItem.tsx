@@ -41,9 +41,10 @@ export const ResumsePdfListItem = ({
       </h3>
       <div className="flex items-start gap-[10px]">
         <p>{DateFormat(item.createdAt, "yyyy-mm-dd")}</p>
-        <button title={`이력서 다운로드`}>
+        {/* 다운로드(인쇄)는 상세 화면에서 실행한다 */}
+        <Link href={`/r/resumes/pdf/${item.id}`} title="이력서 다운로드">
           <SvgDownload className="size-[20px]" />
-        </button>
+        </Link>
       </div>
     </li>
   );
