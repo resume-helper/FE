@@ -118,6 +118,7 @@ export default function ResumeBuilderView({ mode }: { mode: RESUMSES_TYPES }) {
       return API_CLIENT_RESUMES_SAVE({
         title: title.trim(),
         type: mode,
+        template,
         blocks: ordered.map((b, i) => ({ blockId: b.id, orderIndex: i })),
       });
     },
@@ -152,12 +153,12 @@ export default function ResumeBuilderView({ mode }: { mode: RESUMSES_TYPES }) {
 
   return (
     <section className="mx-auto flex w-full max-w-[1200px] flex-col gap-[24px] p-[32px]">
-      <h2 className="text-heading-1-bold">
+      <h2 className="text-heading-1-bold print:hidden">
         {mode === "PDF" ? "PDF" : "웹"} 이력서 만들기
       </h2>
 
       {/* 템플릿 선택 (기획 9-1) */}
-      <div className="flex gap-[12px]">
+      <div className="flex gap-[12px] print:hidden">
         {RESUME_TEMPLATES.map((t) => (
           <button
             key={t.value}
@@ -181,15 +182,15 @@ export default function ResumeBuilderView({ mode }: { mode: RESUMSES_TYPES }) {
       </div>
 
       <input
-        className="border-line-normal-normal text-body-1-normal-medium h-[48px] rounded-[12px] border px-[16px]"
+        className="border-line-normal-normal text-body-1-normal-medium h-[48px] rounded-[12px] border px-[16px] print:hidden"
         placeholder="이력서 제목을 입력해주세요"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <div className="grid grid-cols-[minmax(320px,1fr)_minmax(0,1.4fr)] gap-[24px]">
+      <div className="grid grid-cols-[minmax(320px,1fr)_minmax(0,1.4fr)] gap-[24px] print:block">
         {/* 좌: 블록 선택 영역 */}
-        <div className="flex flex-col gap-[16px]">
+        <div className="flex flex-col gap-[16px] print:hidden">
           {sections.map((section) => (
             <div
               key={section.type}
@@ -270,7 +271,7 @@ export default function ResumeBuilderView({ mode }: { mode: RESUMSES_TYPES }) {
       </div>
 
       {/* 하단 액션 */}
-      <div className="flex items-center justify-end gap-[8px]">
+      <div className="flex items-center justify-end gap-[8px] print:hidden">
         {mode === "PDF" && (
           <button
             type="button"
@@ -312,7 +313,7 @@ export default function ResumeBuilderView({ mode }: { mode: RESUMSES_TYPES }) {
 
       {/* 웹 이력서 — 저장 후 링크 설정 (기획 10-4) */}
       {mode === "WEB" && savedResult && (
-        <div className="border-line-normal-normal flex flex-col gap-[12px] rounded-[12px] border p-[16px]">
+        <div className="border-line-normal-normal flex flex-col gap-[12px] rounded-[12px] border p-[16px] print:hidden">
           <div className="flex items-center justify-between">
             <span className="text-body-1-normal-bold">링크 공개</span>
             <button

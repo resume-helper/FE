@@ -7,6 +7,7 @@ declare global {
   interface API_CLIENT_RESUMES_SAVE_PARAMS {
     title: string;
     type: RESUMSES_TYPES;
+    template: RESUME_TEMPLATE;
     blocks: RESUME_BUILDER_BLOCK_INPUT[];
   }
 

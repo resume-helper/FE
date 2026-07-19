@@ -91,16 +91,13 @@ export default function PublicResumeView({ slug }: { slug: string }) {
   }
 
   return (
-    <main className="mx-auto grid w-full max-w-[1100px] grid-cols-[minmax(0,1fr)_320px] gap-[24px] p-[32px]">
+    <main className="mx-auto grid w-full max-w-[1100px] grid-cols-1 gap-[24px] p-[32px] sm:grid-cols-[minmax(0,1fr)_320px] print:block print:p-0">
       <article>
-        <h1 className="text-heading-1-bold mb-[20px]">{resume.title}</h1>
-        <div className="flex flex-col gap-[20px]">
-          {sections.map((section) => (
-            <div key={section.type} data-section={section.type}>
-              <ResumePreview sections={[section]} template="A" />
-            </div>
-          ))}
-        </div>
+        <h1 className="text-heading-1-bold mb-[16px] print:hidden">
+          {resume.title}
+        </h1>
+        {/* 템플릿 렌더러가 섹션마다 data-section 을 달아 체류 계측이 동작한다 */}
+        <ResumePreview sections={sections} template={resume.template} />
       </article>
 
       {/* 우측 사이드바 — 섹션별·전체 피드백 (기획: 사이드바 고정 노출) */}
@@ -253,7 +250,7 @@ function FeedbackSidebar({
     (target === "OVERALL" && !!comment.trim());
 
   return (
-    <aside className="border-line-normal-normal sticky top-[24px] flex h-fit flex-col gap-[14px] rounded-[16px] border p-[20px]">
+    <aside className="border-line-normal-normal sticky top-[24px] flex h-fit flex-col gap-[14px] rounded-[16px] border p-[20px] print:hidden">
       <h3 className="text-heading-2-bold">피드백 남기기</h3>
 
       <div className="flex flex-wrap gap-[4px]">

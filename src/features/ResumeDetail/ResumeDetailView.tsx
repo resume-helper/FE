@@ -108,7 +108,7 @@ export default function ResumeDetailView({
   return (
     <section className="mx-auto flex w-full max-w-[960px] flex-col gap-[20px] p-[32px]">
       {/* 브레드크럼 (기획 6.1·7.1) */}
-      <nav className="text-label-2-medium text-label-alternative">
+      <nav className="text-label-2-medium text-label-alternative print:hidden">
         <Link href="/r">이력서</Link>
         {" > "}
         <Link href={listPath}>{mode === "PDF" ? "PDF" : "웹"} 이력서 목록</Link>
@@ -116,7 +116,7 @@ export default function ResumeDetailView({
         <span className="text-label-normal">상세</span>
       </nav>
 
-      <div className="flex items-center justify-between gap-[12px]">
+      <div className="flex items-center justify-between gap-[12px] print:hidden">
         <div className="flex items-center gap-[8px]">
           <h2 className="text-heading-1-bold">{detail.title}</h2>
           {mode === "WEB" && (
@@ -188,7 +188,7 @@ export default function ResumeDetailView({
 
       {/* 웹 이력서 — 상세/피드백 탭 (기획 8-1·8-2) */}
       {mode === "WEB" && (
-        <div className="border-line-normal-normal flex gap-[4px] border-b">
+        <div className="border-line-normal-normal flex gap-[4px] border-b print:hidden">
           <button
             type="button"
             onClick={() => setTab("content")}
@@ -215,8 +215,8 @@ export default function ResumeDetailView({
       )}
 
       {(mode === "PDF" || tab === "content") && (
-        <div className="border-line-normal-normal rounded-[12px] border bg-white p-[24px]">
-          <ResumePreview sections={sections} template="A" />
+        <div className="border-line-normal-normal rounded-[12px] border bg-white p-[24px] print:border-0 print:p-0">
+          <ResumePreview sections={sections} template={detail.template} />
         </div>
       )}
 
