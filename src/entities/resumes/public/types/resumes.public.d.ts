@@ -3,6 +3,7 @@ declare global {
   interface PUBLIC_RESUME {
     id: number;
     title: string;
+    template: RESUME_TEMPLATE;
     blocks: RESUME_DETAIL_BLOCK[];
     updatedAt: string;
   }

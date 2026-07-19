@@ -12,11 +12,12 @@ interface RESUME_DETAIL_MODEL {
 export async function API_SERVER_RESUMES_CREATE(
   title: string,
   type: RESUMSES_TYPES,
+  template: RESUME_TEMPLATE,
   blocks: RESUME_BUILDER_BLOCK_INPUT[]
 ): Promise<RESUME_SAVE_RESULT> {
   const api = await BACKEND_API("resumes", {
     method: "post",
-    json: { title, type, blocks },
+    json: { title, type, template, blocks },
   });
 
   if (!api.ok) throw await api.json<API_FAIL_RESPONSE>();

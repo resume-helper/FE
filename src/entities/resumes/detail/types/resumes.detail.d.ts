@@ -12,6 +12,7 @@ declare global {
     id: number;
     title: string;
     type: RESUMSES_TYPES | null;
+    template: RESUME_TEMPLATE;
     slug: string | null;
     isPublic: boolean;
     pdfS3Key: string | null;
