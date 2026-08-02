@@ -18,7 +18,7 @@ export const BeforeLoginFooter = () => {
           </ul>
         </div>
         <p className="mt-[22px] text-[0.75rem] text-[#3C3C4399]">
-          © [서비스명]. 2026. All rights reserved
+          © Resumate. 2026. All rights reserved
         </p>
       </div>
     </footer>

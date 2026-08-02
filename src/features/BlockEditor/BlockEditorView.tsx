@@ -170,6 +170,14 @@ function BlockEditorFormBody({
     onSuccess: (saved) => {
       if (saved) invalidateDrafts();
     },
+    onError: async () => {
+      await showAlert({
+        title: "임시저장에 실패했어요",
+        content: "잠시 후 다시 시도해주세요.",
+        confirm: { label: "확인" },
+        cancel: { label: "닫기", variant: "assistive" },
+      });
+    },
   });
 
   // 최종 저장 (기획 8.2.7 — 저장 후 목록 이동, 불러온 임시저장은 자동 삭제 8.2.6)
@@ -189,6 +197,7 @@ function BlockEditorFormBody({
     onSuccess: () => {
       form.reset(form.getValues()); // dirty 해제 → 이탈 경고 없이 이동
       router.push("/r/blocks");
+      router.refresh(); // 목록 서버 컴포넌트 재검증 — 수정 후 스테일(옛 데이터) 방지
     },
     onError: async () => {
       await showAlert({

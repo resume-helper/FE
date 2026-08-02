@@ -224,14 +224,17 @@ function FeedbackSidebar({
       setDone(true);
     },
     onError: async (err) => {
-      // BFF 가 BE 실패 사유(본인 이력서·유효성 등)를 message 로 전달한다
-      const body = await (err as { response?: Response }).response
+      // BFF 가 BE 실패 사유(본인 이력서·유효성 등)를 code·message 로 전달한다
+      const body = (await (err as { response?: Response }).response
         ?.json()
-        .catch(() => null);
-      setSubmitError(
-        (body as { message?: string } | null)?.message ??
-          "피드백을 제출하지 못했어요. 잠시 후 다시 시도해주세요."
-      );
+        .catch(() => null)) as { code?: string; message?: string } | null;
+      // 본인 이력서(FORBIDDEN)는 원문("접근 권한이 없습니다") 대신 명확히 안내한다
+      const message =
+        body?.code === "FORBIDDEN"
+          ? "본인 이력서에는 피드백을 남길 수 없어요."
+          : (body?.message ??
+            "피드백을 제출하지 못했어요. 잠시 후 다시 시도해주세요.");
+      setSubmitError(message);
     },
   });
 

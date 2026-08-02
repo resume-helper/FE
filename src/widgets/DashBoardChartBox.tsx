@@ -119,7 +119,10 @@ export const DashBoardChartBox = () => {
         <h2 className="flex items-center justify-between text-[0.875rem] font-[600] text-[#37383C9C]">
           전체 열람 수{" "}
           {stats?.viewsDeltaPercent != null && (
-            <span className="text-[0.75rem] text-[#0B50D0]">
+            <span
+              title="최근 7일 대비 이전 7일 변화"
+              className="text-[0.75rem] text-[#0B50D0]"
+            >
               {formatSigned(stats.viewsDeltaPercent, "%")}
             </span>
           )}
@@ -142,7 +145,10 @@ export const DashBoardChartBox = () => {
         <h2 className="flex items-center justify-between text-[0.875rem] font-[600] text-[#37383C9C]">
           평균 체류시간{" "}
           {stats?.durationDeltaSec != null && (
-            <span className="text-[0.75rem] text-[#0B50D0]">
+            <span
+              title="최근 7일 대비 이전 7일 변화"
+              className="text-[0.75rem] text-[#0B50D0]"
+            >
               {formatSigned(stats.durationDeltaSec, "초")}
             </span>
           )}

@@ -19,7 +19,7 @@ const HomePageView = () => {
     <>
       <BeforeLoginHeader />
       <div className="mx-auto max-[768px]:max-w-[360px] min-[768px]:w-[768px] min-[1200px]:w-[1200px]">
-        <h1 className="sr-only">렌딩 페이지</h1>
+        <h1 className="sr-only">랜딩 페이지</h1>
         <main className="mt-[60px] px-[20px] min-[1200px]:px-[40px]">
           <section
             className={`flex w-full flex-col justify-between gap-[24px] max-[767px]:items-center min-[767px]:flex-row`}
@@ -184,7 +184,7 @@ const HomePageView = () => {
           </section>
           <section className="mt-[60px] w-full text-center">
             <h2 className="mb-[16px] text-center text-[1.25rem] leading-[136%] font-[600] min-[768px]:text-[1.375rem] min-[1200px]:text-[1.75rem]">
-              [서비스명]에서 <br /> 이런 기능을 쓸 수 있어요
+              Resumate에서 <br /> 이런 기능을 쓸 수 있어요
             </h2>
             <div className="flex w-full items-center justify-center gap-[9px] [&>button]:rounded-[8px] [&>button]:bg-[#F2F2F7] [&>button]:p-[7px] [&>button]:text-[0.8125rem] [&>button.on]:bg-[#0066FF] [&>button.on]:text-[#fff]">
               <button className="on">컨텐츠 블록</button>

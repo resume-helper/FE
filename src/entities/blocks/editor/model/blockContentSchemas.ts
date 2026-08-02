@@ -9,19 +9,30 @@ const YYYY_MM = /^\d{4}\.(0[1-9]|1[0-2])$/;
 const YYYY_MM_DD = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
 const PHONE = /^010-\d{4}-\d{4}$/;
 
+// z.string({ error }) — 값이 undefined(미입력)일 때도 기본 영어 타입 에러
+// ("Invalid input: expected string, received undefined") 대신 한글 메시지가 나오게 한다.
 const yyyyMm = (label: string) =>
-  z.string().regex(YYYY_MM, `${label}은(는) YYYY.MM 형식으로 입력해주세요`);
+  z
+    .string({ error: `${label}은(는) YYYY.MM 형식으로 입력해주세요` })
+    .regex(YYYY_MM, `${label}은(는) YYYY.MM 형식으로 입력해주세요`);
 const yyyyMmDd = (label: string) =>
   z
-    .string()
+    .string({ error: `${label}은(는) YYYY.MM.DD 형식으로 입력해주세요` })
     .regex(YYYY_MM_DD, `${label}은(는) YYYY.MM.DD 형식으로 입력해주세요`);
 const required = (label: string) =>
-  z.string().trim().min(1, `${label}을(를) 입력해주세요`);
+  z
+    .string({ error: `${label}을(를) 입력해주세요` })
+    .trim()
+    .min(1, `${label}을(를) 입력해주세요`);
 
 export const basicInfoSchema = z.object({
   name: required("이름"),
-  email: z.string().email("이메일 형식이 올바르지 않아요"),
-  phoneNumber: z.string().regex(PHONE, "010-0000-0000 형식으로 입력해주세요"),
+  email: z
+    .string({ error: "이메일 형식이 올바르지 않아요" })
+    .email("이메일 형식이 올바르지 않아요"),
+  phoneNumber: z
+    .string({ error: "010-0000-0000 형식으로 입력해주세요" })
+    .regex(PHONE, "010-0000-0000 형식으로 입력해주세요"),
   profileImage: z.string().optional(),
 });
 

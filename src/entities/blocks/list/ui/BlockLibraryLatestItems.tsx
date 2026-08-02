@@ -1,8 +1,14 @@
 "use client";
 
+import { EDUCATION_LEVEL_OPTIONS } from "@/entities/blocks/editor/model/blockEditorMeta";
 import { DateFormat } from "@/shared/util/dateFormat";
 
 const COMMON_WIDTH = "w-[320px]";
+
+// 학력 레벨 enum → 한글 라벨 (원시 enum `COLLEGE_OR_ABOVE` 노출 방지)
+const EDUCATION_LEVEL_LABEL: Record<string, string> = Object.fromEntries(
+  EDUCATION_LEVEL_OPTIONS.map((o) => [o.value, o.label])
+);
 
 export const LatestBlockLibraryCareerItem = ({
   item,
@@ -79,8 +85,8 @@ export const LatestBlockLibraryEducationItem = ({
         {item.title}
       </dt>
       <dd className="text-[0.8125rem] font-[400] text-[#37383C9C]">
-        {/* {DateFormat(item.contentJson.startDate, "yyyy-mm")} - {DateFormat(item.contentJson.endDate, "yyyy-mm")} */}
-        {item.contentJson.educationLevel}
+        {EDUCATION_LEVEL_LABEL[item.contentJson.educationLevel] ??
+          item.contentJson.educationLevel}
       </dd>
     </dl>
   );

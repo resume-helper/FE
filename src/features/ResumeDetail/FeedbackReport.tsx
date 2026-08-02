@@ -21,16 +21,22 @@ function formatSec(sec: number | null | undefined) {
   return `${Math.round(sec)}초`;
 }
 
-/** 이전 대비 증감 (기획 7.8.1) */
+/** 최근 7일 대 이전 7일 증감 (기획 7.8.1) */
 function Delta({ current, previous }: { current: number; previous: number }) {
   if (previous === 0 && current === 0) return null;
   const diff = current - previous;
   if (diff === 0)
     return (
-      <span className="text-label-2-medium text-label-alternative">-</span>
+      <span
+        title="최근 7일 대비 이전 7일 변화"
+        className="text-label-2-medium text-label-alternative"
+      >
+        -
+      </span>
     );
   return (
     <span
+      title="최근 7일 대비 이전 7일 변화"
       className={`text-label-2-medium ${diff > 0 ? "text-[#16a34a]" : "text-[#dc2626]"}`}
     >
       {diff > 0 ? "▲" : "▼"} {Math.abs(Math.round(diff * 10) / 10)}
@@ -106,9 +112,10 @@ export function FeedbackReport({ resumeId }: { resumeId: number }) {
           <span className="text-heading-1-bold">
             {formatSec(analytics?.last7Days.averageDurationSec)}
           </span>
-          {analytics && (
+          {/* 값이 "—"(최근 7일 데이터 없음)이면 증감(▼)을 표기하지 않는다 */}
+          {analytics && analytics.last7Days.averageDurationSec != null && (
             <Delta
-              current={analytics.last7Days.averageDurationSec ?? 0}
+              current={analytics.last7Days.averageDurationSec}
               previous={analytics.previous7Days.averageDurationSec ?? 0}
             />
           )}

@@ -2,8 +2,9 @@
 
 import { signIn } from "next-auth/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import Close from "@/shared/icons/Close";
 import { Button } from "@/shared/ui/Button";
 import { Portal } from "@/shared/ui/Portal";
 
@@ -12,6 +13,14 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
   function OnClickSSOLoginCallback(provider: "google" | "naver" | "kakao") {
     signIn(provider, { callbackUrl: window.location.href });
   }
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
 
   return (
     <Portal>
@@ -22,6 +31,14 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
         }}
       >
         <div className="absolute top-1/2 left-1/2 max-w-[520px] min-w-[320px] -translate-1/2 rounded-[24px] bg-[#fff] p-[20px] text-center">
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={onClose}
+            className="absolute top-[16px] right-[16px] cursor-pointer text-[#6b7280]"
+          >
+            <Close width={20} height={20} />
+          </button>
           <dl>
             <dt className="text-[1.5rem] leading-[133%] font-[700] tracking-[-2.3%]">
               Resumate
@@ -30,7 +47,7 @@ export const LoginModal = ({ onClose }: { onClose: () => void }) => {
               Resumate에 오신 것을 환영합니다!
             </dd>
             <dd className="text-[0.9375rem] leading-[160%] font-[500] tracking-[0.96%] [&>span]:block">
-              <span>내이력서는 얼마나 먹힐까 궁금하시지 않나요?</span>
+              <span>내 이력서는 얼마나 먹힐까 궁금하시지 않나요?</span>
               <span>이력서 제작부터 피드백까지 한번에 받아보세요!</span>
             </dd>
           </dl>
