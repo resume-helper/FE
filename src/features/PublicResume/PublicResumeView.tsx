@@ -223,11 +223,11 @@ function FeedbackSidebar({
       window.localStorage.setItem(submittedKey(resumeId, targetKey), "1");
       setDone(true);
     },
-    onError: async (err) => {
-      // BFF 가 BE 실패 사유(본인 이력서·유효성 등)를 code·message 로 전달한다
-      const body = (await (err as { response?: Response }).response
-        ?.json()
-        .catch(() => null)) as { code?: string; message?: string } | null;
+    onError: (err) => {
+      // beforeError 훅이 부착한 BE 실패 사유(code·message)를 읽는다
+      const body = (
+        err as { responseBody?: { code?: string; message?: string } }
+      ).responseBody;
       // 본인 이력서(FORBIDDEN)는 원문("접근 권한이 없습니다") 대신 명확히 안내한다
       const message =
         body?.code === "FORBIDDEN"
